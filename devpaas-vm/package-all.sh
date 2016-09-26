@@ -1,7 +1,7 @@
 #!/bin/bash -e
 echo "IMAGE CREATION PART ..."
-
-date
+SECONDS=0
+echo " Start: " `date`
 
 echo "Packaging Jenkins Server..."
 rm -rf output-virtualbox-iso
@@ -43,4 +43,6 @@ echo "VM CREATION PART ..."
 
 echo "VM CREATION PART ended successfully !"
 
-date
+duration=$SECONDS
+echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
+echo " End: " `date`
