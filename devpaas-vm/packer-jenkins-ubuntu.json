@@ -1,8 +1,22 @@
 {
   "variables": {
-		"atlas_token": "ATLAS_TOKEN_HERE"
+	"atlas_token":    "ATLAS_TOKEN_HERE",
+    "instance_name":  "mm-jenkins-2-v{{isotime \"20060102\"}}",
+    "image_name":     "mm-jenkins-2-v{{isotime \"20060102\"}}"
 	},
   "builders": [
+    {
+      "type": "googlecompute",
+      "project_id":         "name-marmac-php-helloworld",
+      "account_file":       "name-marmac-php-helloworld-3f6f0025f4a6.json",
+      "source_image":       "ubuntu-1604-xenial-v20161020",
+      "zone":               "europe-west1-d",
+      "instance_name":      "{{user `instance_name`}}",
+      "image_name":         "{{user `image_name`}}",
+      "image_description":  "Jenkins Server.",
+      "communicator":       "ssh",
+      "ssh_username":       "marmacAdmin"
+    },
     {
       "type": "virtualbox-iso",
       "boot_command": [
@@ -28,15 +42,15 @@
             ],
             "boot_wait": "10s",
             "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04-server-amd64.iso",
-            "iso_checksum_type": "md5",
-            "iso_checksum": "23e97cd5d4145d4105fbf29878534049",
-            "guest_os_type": "Ubuntu_64",
-            "http_directory": "http",
-            "ssh_username": "packer",
-            "ssh_password": "packer",
-            "ssh_wait_timeout": "10000s",
-            "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
-            "vm_name": "mm-jenkins-{{timestamp}}",
+            "iso_checksum_type":  "md5",
+            "iso_checksum":       "23e97cd5d4145d4105fbf29878534049",
+            "guest_os_type":      "Ubuntu_64",
+            "http_directory":     "http",
+            "ssh_username":       "marmacAdmin",
+            "ssh_password":       "packer",
+            "ssh_wait_timeout":   "10000s",
+            "shutdown_command":   "echo 'packer' | sudo -S shutdown -P now",
+            "vm_name":            "{{user `instance_name`}}",
             "vboxmanage": [
               [
                   "modifyvm",
@@ -64,6 +78,32 @@
       "execute_command": "{{.Vars}} sudo -S -E bash '{{.Path}}'",
       "only": ["virtualbox-iso"]
     },
+	{
+      "type":   "shell",
+      "inline": [
+        "echo '****** Preparing /tmp directories'",
+        "mkdir /tmp/jenkins",
+        "mkdir /tmp/jenkins/scripts",
+        "mkdir /tmp/jenkins/resources",
+        "mkdir /tmp/jenkins/jobs",
+        "mkdir /tmp/jenkins/tests"
+      ]
+    },
+	{
+      "type":         "file",
+      "source":       "resources/jenkins/configs/",
+      "destination":  "/tmp/jenkins/resources/"
+    },
+    {
+      "type":         "file",
+      "source":       "resources/jenkins/jobs/",
+      "destination":  "/tmp/jenkins/jobs/"
+    },
+    {
+      "type":         "file",
+      "source":       "resources/jenkins/tests/",
+      "destination":  "/tmp/jenkins/tests/"
+    },
     {
       "type": "shell",
       "scripts": [
@@ -87,7 +127,28 @@
       "scripts": [
           "scripts/jenkins/jenkins.sh"
       ]
-    }
+    },
+	{
+      "type":   "shell",
+      "inline": [
+        "echo '****** Stop Jenkins Service'",
+        "sudo service jenkins stop",
+
+        "echo '****** Moving Jenkins Configuration files '",
+        "sudo cp /tmp/jenkins/resources/etc-default-jenkins.conf        /etc/default/jenkins",
+		"sudo cp /tmp/jenkins/resources/config.xml                      /var/lib/jenkins/",
+		"sudo cp /tmp/jenkins/resources/hudson.tools.JDKInstaller.xml   /var/lib/jenkins/",
+        "sudo cp /tmp/jenkins/resources/hudson.tasks.Ant.xml            /var/lib/jenkins/",
+        "sudo cp /tmp/jenkins/resources/hudson.tasks.Maven.xml          /var/lib/jenkins/",
+		
+		"echo '****** Setting up Jenkins admin users'",
+        "cd /var/lib/jenkins",
+        "sudo mkdir -p users/admin",
+        "sudo cp /tmp/jenkins/resources/admin-config.xml /var/lib/jenkins/users/admin/config.xml",
+		"echo '****** Start Jenkins Service'",
+        "sudo service jenkins start"
+		]
+	}
   ],
   "post-processors": [
     {
