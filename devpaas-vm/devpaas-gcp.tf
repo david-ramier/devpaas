@@ -1,21 +1,26 @@
+variable "project_id"           {}
+variable "region"               {}
+variable "machine_type"         {}
+variable "jenkins_image_name"   {}
+
 // Configure the Google Cloud provider
 provider "google" {
-  credentials = "${file("name-marmac-php-helloworld-3f6f0025f4a6.json")}"
-  project     = "name-marmac-php-helloworld"
-  region      = "europe-west1-d"
+  credentials = ""        //"${var.gcp-secret-file}"
+  project     = "${var.project_id}"
+  region      = "${var.region}"
 }
 
 // Create a new instance
 resource "google_compute_instance" "jenkins" {
   name         = "mm-jenkins-01"
-  machine_type = "n1-standard-1"
-  zone         = "europe-west1-d"
-  tags 		   = ["jenkins"]
+  machine_type = "${var.machine_type}"
+  zone         = "${var.region}"
+  tags 		     = ["jenkins"]
 
   disk {
-    image = "mm-jenkins-2-v20161024"
+    image = "${var.jenkins_image_name}"
   }
-  
+
   network_interface {
     network = "default"
     access_config {
@@ -29,7 +34,7 @@ output "mm-jenkins-01" {
 }
 
 resource "google_compute_firewall" "default" {
-  name    = "tf-www-firewall"
+  name    = "mm-www-firewall"
   network = "default"
 
   allow {
