@@ -5,3 +5,4 @@ virtualbox-*.box
 *.vdi
 *.tfstate
 *.tfstate.backup
+gce_googlecompute.pem
