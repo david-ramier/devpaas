@@ -2,3 +2,6 @@
 *.tar.gz
 packer_cache/
 virtualbox-*.box
+*.vdi
+*.tfstate
+*.tfstate.backup
