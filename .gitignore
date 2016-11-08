@@ -6,3 +6,4 @@ virtualbox-*.box
 *.tfstate
 *.tfstate.backup
 gce_googlecompute.pem
+gcp_accountfile.json
