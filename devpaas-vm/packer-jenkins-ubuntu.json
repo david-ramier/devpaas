@@ -1,14 +1,14 @@
 {
   "variables": {
-	"atlas_token":    "ATLAS_TOKEN_HERE",
-    "instance_name":  "mm-jenkins-2-v{{isotime \"20060102\"}}",
-    "image_name":     "mm-jenkins-2-v{{isotime \"20060102\"}}"
-	},
+	  "atlas_token":     "ATLAS_TOKEN_HERE",
+    "instance_name":    "mm-jenkins-2-v{{isotime \"20060102\"}}",
+    "image_name":       "mm-jenkins-2-v{{isotime \"20060102\"}}"
+  },
   "builders": [
     {
       "type": "googlecompute",
       "project_id":         "name-marmac-php-helloworld",
-      "account_file":       "name-marmac-php-helloworld-3f6f0025f4a6.json",
+      "account_file":       "gcp_accountfile.json",
       "source_image":       "ubuntu-1604-xenial-v20161020",
       "zone":               "europe-west1-d",
       "instance_name":      "{{user `instance_name`}}",
@@ -136,11 +136,11 @@
 
         "echo '****** Moving Jenkins Configuration files '",
         "sudo cp /tmp/jenkins/resources/etc-default-jenkins.conf        /etc/default/jenkins",
-		"sudo cp /tmp/jenkins/resources/config.xml                      /var/lib/jenkins/",
-		"sudo cp /tmp/jenkins/resources/hudson.tools.JDKInstaller.xml   /var/lib/jenkins/",
+		    "sudo cp /tmp/jenkins/resources/config.xml                      /var/lib/jenkins/",
+		      "sudo cp /tmp/jenkins/resources/hudson.tools.JDKInstaller.xml   /var/lib/jenkins/",
         "sudo cp /tmp/jenkins/resources/hudson.tasks.Ant.xml            /var/lib/jenkins/",
         "sudo cp /tmp/jenkins/resources/hudson.tasks.Maven.xml          /var/lib/jenkins/",
-		
+
 		"echo '****** Setting up Jenkins admin users'",
         "cd /var/lib/jenkins",
         "sudo mkdir -p users/admin",
@@ -153,12 +153,12 @@
   "post-processors": [
     {
       "type": "compress",
-      "output": "mm-jenkins.tar.gz",
+      "output": "build/mm-jenkins.tar.gz",
       "only": ["virtualbox-iso"]
     },
     {
       "type": "vagrant",
-      "output": "{{.Provider}}-mm-jenkins.box",
+      "output": "build/{{.Provider}}-mm-jenkins.box",
       "only": ["virtualbox-iso"]
     },
     {
