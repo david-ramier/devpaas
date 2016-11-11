@@ -185,8 +185,7 @@
       "type": "shell",
       "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'",
       "scripts": [
-        "scripts/cleanup.sh",
-	      "scripts/zerodisk.sh"
+        "scripts/cleanup.sh"
       ]
     }
   ],
