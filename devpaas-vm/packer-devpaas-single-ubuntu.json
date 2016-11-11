@@ -2,8 +2,8 @@
   "variables": {
 	  "atlas_token":     "ATLAS_TOKEN_HERE",
     "home":             "{{env `HOME`}}",
-    "instance_name":    "mm-devpaas-single-v{{isotime \"20060102\"}}",
-    "image_name":       "mm-devpaas-single-v{{isotime \"20060102\"}}"
+    "instance_name":    "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
+    "image_name":       "mm-devpaas-single-v{{isotime \"20060102-0101\"}}"
   },
   "builders": [
     {
@@ -82,14 +82,15 @@
   	{
         "type":   "shell",
         "inline": [
-          "echo '****** Updating OS '",
+          "echo '****** Updating OS ******'",
           "sudo apt-get -y update",
-          "echo '****** Preparing /tmp directories'",
+          "echo '****** Preparing /tmp directories ******'",
           "mkdir /tmp/jenkins",
           "mkdir /tmp/jenkins/scripts",
           "mkdir /tmp/jenkins/resources",
           "mkdir /tmp/jenkins/jobs",
-          "mkdir /tmp/jenkins/tests"
+          "mkdir /tmp/jenkins/tests",
+          "mkdir -p /tmp/nexus/resources"
         ]
     },
 	  {
@@ -106,6 +107,11 @@
       "type":         "file",
       "source":       "resources/jenkins/tests/",
       "destination":  "/tmp/jenkins/tests/"
+    },
+    {
+      "type":         "file",
+      "source":       "resources/nexus/configs/",
+      "destination":  "/tmp/nexus/resources/"
     },
     {
       "type": "shell",
@@ -131,13 +137,13 @@
           "scripts/jenkins/jenkins.sh"
       ]
     },
-	{
+	  {
       "type":   "shell",
       "inline": [
-        "echo '****** Stop Jenkins Service'",
+        "echo '****** Stop Jenkins Service ******'",
         "sudo service jenkins stop",
 
-        "echo '****** Moving Jenkins Configuration files '",
+        "echo '****** Moving Jenkins Configuration files ******'",
         "sudo cp /tmp/jenkins/resources/etc-default-jenkins.conf        /etc/default/jenkins",
 		    "sudo cp /tmp/jenkins/resources/config.xml                      /var/lib/jenkins/",
 		    "sudo cp /tmp/jenkins/resources/hudson.tools.JDKInstaller.xml   /var/lib/jenkins/",
@@ -150,23 +156,53 @@
         "sudo cp /tmp/jenkins/resources/admin-config.xml /var/lib/jenkins/users/admin/config.xml",
 		    "echo '****** Start Jenkins Service'",
         "sudo service jenkins start"
-		]
-	}
+		    ]
+	  },
+    {
+      "type": "shell",
+      "scripts": [
+          "scripts/nexus/nexus.sh"
+      ]
+    },
+    {
+      "type":   "shell",
+      "inline": [
+        "echo '****** Nexus Service Configuration ******'",
+        "sudo cp /tmp/nexus/resources/nexus.service        /etc/systemd/system/",
+        "sudo systemctl daemon-reload",
+        "sudo systemctl enable nexus.service",
+        "sudo systemctl start nexus.service"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+          "scripts/sonarqube/sonar.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'",
+      "scripts": [
+        "scripts/cleanup.sh",
+	      "scripts/zerodisk.sh"
+      ]
+    }
   ],
   "post-processors": [
     {
       "type": "compress",
-      "output": "build/mm-jenkins.tar.gz",
+      "output": "build/mm-devpaas-single-ubuntu.tar.gz",
       "only": ["virtualbox-iso"]
     },
     {
       "type": "vagrant",
-      "output": "build/{{.Provider}}-mm-jenkins.box",
+      "output": "build/{{.Provider}}-mm-devpaas-single-ubuntu.box",
       "only": ["virtualbox-iso"]
     },
     {
 			"type": "atlas",
-			"artifact": "marcomaccio/mm-jenkins",
+			"artifact": "marcomaccio/mm-devpaas-single-ubuntu",
 			"artifact_type": "vagrant.box",
 			"metadata": {
 				"provider": "virtualbox"
