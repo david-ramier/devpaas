@@ -19,4 +19,7 @@ echo "***** Extract Nexus *****"
 sudo tar xvzf nexus-3.1.0-04-unix.tar.gz
 sudo ln -s nexus-3.1.0-04 nexus
 sudo rm -f nexus-3.1.0-04-unix.tar.gz
+echo "***** Create some dirs for Nexus *****"
+sudo mkdir -p nexus/bin/jsw/conf/
+sudo mkdir -p sonatype-work/home/
 sudo chown -R nexus:nexus /var/lib/sonatype
