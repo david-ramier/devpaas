@@ -56,7 +56,7 @@
                   "modifyvm",
                   "{{.Name}}",
                   "--memory",
-                  "2048"
+                  "3072"
               ],
               [
                   "modifyvm",
@@ -80,17 +80,10 @@
     },
   	{
         "type":   "shell",
-        "inline": [
-          "echo '****** Updating OS ******'",
-          "sudo apt-get -y update",
-          "echo '****** Preparing /tmp directories ******'",
-          "mkdir /tmp/jenkins",
-          "mkdir /tmp/jenkins/scripts",
-          "mkdir /tmp/jenkins/resources",
-          "mkdir /tmp/jenkins/jobs",
-          "mkdir /tmp/jenkins/tests",
-          "mkdir -p /tmp/nexus/resources",
-          "mkdir -p /tmp/sonarqube/resources"
+        "scripts": [
+          "scripts/jenkins/create-jenkins-temp-dirs.sh",
+          "scripts/nexus/create-nexus-temp-dirs.sh",
+          "scripts/sonarqube/create-sonarqube-temp-dirs.sh"
         ]
     },
 	  {
@@ -142,27 +135,6 @@
           "scripts/jenkins/jenkins.sh"
       ]
     },
-	  {
-      "type":   "shell",
-      "inline": [
-        "echo '****** Stop Jenkins Service ******'",
-        "sudo service jenkins stop",
-
-        "echo '****** Moving Jenkins Configuration files ******'",
-        "sudo cp /tmp/jenkins/resources/etc-default-jenkins.conf        /etc/default/jenkins",
-		    "sudo cp /tmp/jenkins/resources/config.xml                      /var/lib/jenkins/",
-		    "sudo cp /tmp/jenkins/resources/hudson.tools.JDKInstaller.xml   /var/lib/jenkins/",
-        "sudo cp /tmp/jenkins/resources/hudson.tasks.Ant.xml            /var/lib/jenkins/",
-        "sudo cp /tmp/jenkins/resources/hudson.tasks.Maven.xml          /var/lib/jenkins/",
-
-		    "echo '****** Setting up Jenkins admin users'",
-        "cd /var/lib/jenkins",
-        "sudo mkdir -p users/admin",
-        "sudo cp /tmp/jenkins/resources/admin-config.xml /var/lib/jenkins/users/admin/config.xml",
-		    "echo '****** Start Jenkins Service'",
-        "sudo service jenkins start"
-		    ]
-	  },
     {
       "type": "shell",
       "scripts": [
@@ -170,31 +142,10 @@
       ]
     },
     {
-      "type":   "shell",
-      "inline": [
-        "echo '****** Nexus Service Configuration ******'",
-        "sudo cp /tmp/nexus/resources/nexus.service        /etc/systemd/system/",
-        "sudo cp /tmp/nexus/resources/wrapper.conf         /var/lib/sonatype/nexus/bin/jsw/conf/",
-        "sudo systemctl daemon-reload",
-        "sudo systemctl enable nexus.service",
-        "sudo systemctl start nexus.service"
-      ]
-    },
-    {
       "type": "shell",
       "scripts": [
           "scripts/sonarqube/mysql.sh",
           "scripts/sonarqube/sonarqube.sh"
-      ]
-    },
-    {
-      "type":   "shell",
-      "inline": [
-        "echo '****** Sonarqube Service Configuration ******'",
-        "sudo cp /tmp/sonarqube/resources/sonarqube.service        /etc/systemd/system/",
-        "sudo systemctl daemon-reload",
-        "sudo systemctl enable sonarqube.service",
-        "sudo systemctl start sonarqube.service"
       ]
     },
     {

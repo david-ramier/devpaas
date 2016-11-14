@@ -21,3 +21,11 @@ echo "***** Create some dirs for Nexus *****"
 sudo mkdir -p nexus/bin/jsw/conf/
 sudo mkdir -p sonatype-work/home/
 sudo chown -R nexus:nexus /var/lib/sonatype
+
+echo '****** Nexus Service Configuration ******'
+sudo cp /tmp/nexus/resources/nexus.service        /etc/systemd/system/
+sudo cp /tmp/nexus/resources/wrapper.conf         /var/lib/sonatype/nexus/bin/jsw/conf/
+
+sudo systemctl daemon-reload
+sudo systemctl enable nexus.service
+sudo systemctl start nexus.service

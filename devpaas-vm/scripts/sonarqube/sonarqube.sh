@@ -26,3 +26,10 @@ sudo ln -s sonarqube-6.1 sonar
 sudo cp /tmp/sonarqube/resources/sonar.properties /var/lib/sonarqube/sonar/conf
 
 sudo chown -R sonar:sonar /var/lib/sonarqube
+
+echo '****** Sonarqube Service Configuration ******'
+sudo cp /tmp/sonarqube/resources/sonarqube.service        /etc/systemd/system/
+
+sudo systemctl daemon-reload
+sudo systemctl enable sonarqube.service
+sudo systemctl start sonarqube.service
