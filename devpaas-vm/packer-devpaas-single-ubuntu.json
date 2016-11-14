@@ -1,6 +1,5 @@
 {
   "variables": {
-	  "atlas_token":     "ATLAS_TOKEN_HERE",
     "home":             "{{env `HOME`}}",
     "instance_name":    "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
     "image_name":       "mm-devpaas-single-v{{isotime \"20060102-0101\"}}"
@@ -90,7 +89,8 @@
           "mkdir /tmp/jenkins/resources",
           "mkdir /tmp/jenkins/jobs",
           "mkdir /tmp/jenkins/tests",
-          "mkdir -p /tmp/nexus/resources"
+          "mkdir -p /tmp/nexus/resources",
+          "mkdir -p /tmp/sonarqube/resources"
         ]
     },
 	  {
@@ -112,6 +112,11 @@
       "type":         "file",
       "source":       "resources/nexus/configs/",
       "destination":  "/tmp/nexus/resources/"
+    },
+    {
+      "type":         "file",
+      "source":       "resources/sonarqube/configs/",
+      "destination":  "/tmp/sonarqube/resources/"
     },
     {
       "type": "shell",
@@ -178,7 +183,18 @@
     {
       "type": "shell",
       "scripts": [
-          "scripts/sonarqube/sonar.sh"
+          "scripts/sonarqube/mysql.sh",
+          "scripts/sonarqube/sonarqube.sh"
+      ]
+    },
+    {
+      "type":   "shell",
+      "inline": [
+        "echo '****** Sonarqube Service Configuration ******'",
+        "sudo cp /tmp/sonarqube/resources/sonarqube.service        /etc/systemd/system/",
+        "sudo systemctl daemon-reload",
+        "sudo systemctl enable sonarqube.service",
+        "sudo systemctl start sonarqube.service"
       ]
     },
     {
@@ -199,15 +215,6 @@
       "type": "vagrant",
       "output": "build/{{.Provider}}-mm-devpaas-single-ubuntu.box",
       "only": ["virtualbox-iso"]
-    },
-    {
-			"type": "atlas",
-			"artifact": "marcomaccio/mm-devpaas-single-ubuntu",
-			"artifact_type": "vagrant.box",
-			"metadata": {
-				"provider": "virtualbox"
-			},
-			"only": ["virtualbox-iso"]
-		}
+    }
   ]
 }
