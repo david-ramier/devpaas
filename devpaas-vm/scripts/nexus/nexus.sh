@@ -1,9 +1,6 @@
 #!/bin/bash -e
 
-# Create a group and user nexus to run it
-echo "***** Nexus group creation *****"
-#sudo groupadd -r nexus
-echo "***** Nexus user Creation *****"
+echo "***** Nexus user creation *****"
 sudo adduser --no-create-home --disabled-login --disabled-password nexus
 
 echo "***** Download Nexus *****"
@@ -19,6 +16,7 @@ echo "***** Extract Nexus *****"
 sudo tar xvzf nexus-3.1.0-04-unix.tar.gz
 sudo ln -s nexus-3.1.0-04 nexus
 sudo rm -f nexus-3.1.0-04-unix.tar.gz
+
 echo "***** Create some dirs for Nexus *****"
 sudo mkdir -p nexus/bin/jsw/conf/
 sudo mkdir -p sonatype-work/home/
