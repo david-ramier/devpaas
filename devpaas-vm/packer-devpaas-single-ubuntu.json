@@ -63,6 +63,12 @@
                   "{{.Name}}",
                   "--cpus",
                   "2"
+              ],
+              [
+                  "modifyvm",
+                  "{{.Name}}",
+                  "--vram",
+                  "32"
               ]
             ],
       "headless": "false"
@@ -83,7 +89,8 @@
         "scripts": [
           "scripts/jenkins/create-jenkins-temp-dirs.sh",
           "scripts/nexus/create-nexus-temp-dirs.sh",
-          "scripts/sonarqube/create-sonarqube-temp-dirs.sh"
+          "scripts/sonarqube/create-sonarqube-temp-dirs.sh",
+          "scripts/serverspec/create-serverspecur-temp-dirs.sh"
         ]
     },
 	  {
@@ -108,8 +115,23 @@
     },
     {
       "type":         "file",
+      "source":       "resources/nexus/tests/",
+      "destination":  "/tmp/nexus/tests/"
+    },
+    {
+      "type":         "file",
       "source":       "resources/sonarqube/configs/",
       "destination":  "/tmp/sonarqube/resources/"
+    },
+    {
+      "type":         "file",
+      "source":       "resources/sonarqube/tests/",
+      "destination":  "/tmp/sonarqube/tests/"
+    },
+    {
+      "type":         "file",
+      "source":       "resources/serverspec/configs/",
+      "destination":  "/tmp/serverspec/"
     },
     {
       "type": "shell",
@@ -146,6 +168,12 @@
       "scripts": [
           "scripts/sonarqube/mysql.sh",
           "scripts/sonarqube/sonarqube.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+          "scripts/serverspec/serverspec.sh"
       ]
     },
     {
