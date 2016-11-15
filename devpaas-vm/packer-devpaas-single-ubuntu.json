@@ -90,7 +90,7 @@
           "scripts/jenkins/create-jenkins-temp-dirs.sh",
           "scripts/nexus/create-nexus-temp-dirs.sh",
           "scripts/sonarqube/create-sonarqube-temp-dirs.sh",
-          "scripts/serverspec/create-serverspecur-temp-dirs.sh"
+          "scripts/serverspec/create-serverspec-temp-dirs.sh"
         ]
     },
 	  {
