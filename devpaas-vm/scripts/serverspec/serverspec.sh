@@ -1,16 +1,18 @@
 #!/bin/bash -e
 echo "***** Ruby installation *****"
-sudo apt-get -y ruby
+sudo apt-get -y install ruby
 
 echo "***** Serverspec installation by gem *****"
 sudo gem install serverspec
 
 echo "***** Running Serverspec Tests *****"
 cd /tmp/serverspec
-mkdir /tmp/serverspec/spec/localhost
+if [ ! -d "/tmp/serverspec/spec/localhost" ]; then
+  mkdir /tmp/serverspec/spec/localhost
+fi
 
-cp /tmp/tests/jenkins/serverspec-*.rb   /tmp/serverspec/spec/localhost/
-cp /tmp/tests/nexus/serverspec-*.rb     /tmp/serverspec/spec/localhost/
-cp /tmp/tests/sonarqube/serverspec-*.rb /tmp/serverspec/spec/localhost/
+cp /tmp/jenkins/tests/*.rb   /tmp/serverspec/spec/localhost/
+cp /tmp/nexus/tests/*.rb     /tmp/serverspec/spec/localhost/
+cp /tmp/sonarqube/tests/*.rb /tmp/serverspec/spec/localhost/
 
 rake spec
