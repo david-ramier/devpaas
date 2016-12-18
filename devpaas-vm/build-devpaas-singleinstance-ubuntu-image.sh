@@ -15,9 +15,10 @@ SECONDS=0
 echo " Start: " `date`
 
 export ATLAS_TOKEN=$1
+export ATLAS_USERNAME=$2
 
 echo '****** Build yve ubuntu-1604 image ******'
-packer build -force -only=$2 packer-devpaas-single-ubuntu.json
+packer build -force -only=$3 -var "atlas_username=$ATLAS_USERNAME" packer-devpaas-single-ubuntu.json
 
 duration=$SECONDS
 echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
