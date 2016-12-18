@@ -4,10 +4,9 @@ SECONDS=0
 echo " Start: " `date`
 
 echo "Packaging Jenkins Server..."
-rm -rf output-virtualbox-iso
-rm -f mm-jenkins.tar.gz
-rm -f virtualbox-mm-jenkins.box
-packer build packer-jenkins.json
+rm -rf build
+packer build -machine-readable -force $1 packer-jenkins-ubuntu.json
+
 echo "Jenkins Server Packaged !"
 
 echo "Packaging Agilefant Server..."
@@ -27,10 +26,7 @@ echo "Packaging Sonarqube Server..."
 echo "Sonarqube Server Packaged !"
 
 echo "Packaging Elastic, Logstash, Kibana (ELK) Server..."
-rm -rf output-virtualbox-iso
-rm -f mm-elk.tar.gz
-rm -f virtualbox-mm-elk.box
-packer build packer-elk.json
+packer build -machine-readable -force $1 packer-elk-ubuntu.json
 echo "Elastic, Logstash, Kibana (ELK) Server Packaged !"
 
 echo "Packaging NGINX Server..."

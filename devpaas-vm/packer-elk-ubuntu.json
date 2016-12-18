@@ -1,8 +1,28 @@
 {
   "variables": {
-		"atlas_token": "ATLAS_TOKEN_HERE"
+    "atlas_username":   "",
+    "atlas_token":      "ATLAS_TOKEN_HERE",
+    "home":             "{{env `HOME`}}",
+    "instance_name":    "mm-elk-2-v{{isotime \"20060102-0101\"}}",
+    "image_name":       "mm-elk-2-v{{isotime \"20060102-0101\"}}",
+    "gcp_project_id":   "name-marmac-yve",
+    "gcp_zone":         "europe-west1-d",
+    "gcp_source_image": "ubuntu-1604-xenial-v20161020",
+    "ssh_username":     "devpaasadmin"
 	},
   "builders": [
+    {
+      "type":               "googlecompute",
+      "project_id":         "{{user `gcp_project_id`}}",
+      "source_image":       "{{user `gcp_source_image`}}",
+      "account_file":       "{{ user `home` }}/.gcloud/gcp_{{user `gcp_project_id`}}.json",
+      "zone":               "{{ user `gcp_zone` }}",
+      "instance_name":      "{{user `instance_name`}}",
+      "image_name":         "{{user `image_name`}}",
+      "image_description":  "Jenkins Server.",
+      "communicator":       "ssh",
+      "ssh_username":       "{{ user `ssh_username` }}"
+    },
     {
       "type": "virtualbox-iso",
       "boot_command": [
@@ -36,7 +56,7 @@
             "ssh_password": "packer",
             "ssh_wait_timeout": "10000s",
             "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
-            "vm_name": "mm-jenkins-{{timestamp}}",
+            "vm_name": "mm-elk-{{timestamp}}",
             "vboxmanage": [
               [
                   "modifyvm",
@@ -73,36 +93,45 @@
     {
       "type": "shell",
       "scripts": [
-          "scripts/jenkins/graphviz.sh"
+          "scripts/elk/elastic.sh",
+          "scripts/elk/kibana.sh",
+          "scripts/elk/logstash.sh"
       ]
     },
     {
-      "type": "shell",
-      "scripts": [
-          "scripts/git.sh"
-      ]
+      "type": "file",
+      "source": "resources/elk",
+      "destination": "/tmp"
     },
     {
       "type": "shell",
-      "scripts": [
-          "scripts/jenkins/jenkins.sh"
+      "inline": [
+        "echo 'Copy Elasticsearch config file ...'",
+        "sudo cp /tmp/elk/elasticsearch.yml /etc/elasticsearch/",
+        "sudo chown root:root /etc/elasticsearch/elasticsearch.yml",
+        "echo 'Restart Elasticsearch service ...'",
+        "sudo service elasticsearch restart",
+        "echo 'Copy Kibana config file ...'",
+        "sudo cp /tmp/elk/kibana.yml /opt/kibana/config/",
+        "sudo chown root:root /opt/kibana/config/kibana.yml",
+        "echo 'Restart Kibana service ...'"
       ]
     }
   ],
   "post-processors": [
     {
       "type": "compress",
-      "output": "mm-jenkins.tar.gz",
+      "output": "mm-elk.tar.gz",
       "only": ["virtualbox-iso"]
     },
     {
       "type": "vagrant",
-      "output": "{{.Provider}}-mm-jenkins.box",
+      "output": "{{.Provider}}-mm-elk.box",
       "only": ["virtualbox-iso"]
     },
     {
 			"type": "atlas",
-			"artifact": "marcomaccio/mm-jenkins",
+			"artifact": "{{user `atlas_username`}}/mm-elk",
 			"artifact_type": "vagrant.box",
 			"metadata": {
 				"provider": "virtualbox"

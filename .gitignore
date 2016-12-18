@@ -2,3 +2,10 @@
 *.tar.gz
 packer_cache/
 virtualbox-*.box
+*.vdi
+*.tfstate
+*.tfstate.backup
+gce_googlecompute.pem
+gcp_accountfile.json
+*.vmdk
+*.ovf

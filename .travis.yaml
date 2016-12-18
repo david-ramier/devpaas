@@ -1,0 +1,30 @@
+branches:
+  only:
+    - master
+    - develop
+
+env:
+  matrix:
+   - PACKER_VERSION="0.7.1"
+   - PACKER_VERSION="0.7.1"
+
+before_script:
+ # Install Packer, what we're using to create our Graphite server
+ - curl -o /tmp/packer.zip -L "https://dl.bintray.com/mitchellh/packer/packer_${PACKER_VERSION}_linux_amd64.zip"
+ - sudo unzip -d /usr/local/bin /tmp/packer.zip
+# Install OS updates
+ - sudo apt-get update -y
+
+
+script:
+ # Run the packer build script to create an AMI with Graphite
+ - ./devpaas-vm/package-all.sh
+ # Make sure build script completed successfully
+ - if grep -q 'Builds finished but no artifacts were created' packer.log; then exit 1; fi
+
+notifications:
+  email:
+    recipients:
+      - marco.maccio@marmac.name
+    on_failure: change
+    on_success: never
