@@ -9,3 +9,5 @@ gce_googlecompute.pem
 gcp_accountfile.json
 *.vmdk
 *.ovf
+.idea/
+devpaas-vm/build/
