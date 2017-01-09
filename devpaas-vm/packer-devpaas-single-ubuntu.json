@@ -1,14 +1,14 @@
 {
   "variables": {
-    "atlas_username":   "",
-    "atlas_token":      "ATLAS_TOKEN_HERE",
-    "home":             "{{env `HOME`}}",
-    "instance_name":    "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
-    "image_name":       "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
-    "gcp_project_id":   "name-marmac-devpaas",
-    "gcp_zone":         "europe-west1-d",
-    "gcp_source_image": "ubuntu-1604-xenial-v20161020",
-    "ssh_username":     "devpaasadmin"
+    "atlas_username":     "",
+    "atlas_token":        "ATLAS_TOKEN_HERE",
+    "home":               "{{env `HOME`}}",
+    "instance_name":      "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
+    "image_name":         "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
+    "gcp_project_id":     "name-marmac-devpaas",
+    "gcp_zone":           "europe-west1-d",
+    "gcp_source_image":   "ubuntu-1604-xenial-v20161020",
+    "ssh_username":       "devpaasadmin"
   },
   "builders": [
     {
