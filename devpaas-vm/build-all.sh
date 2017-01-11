@@ -4,8 +4,8 @@ SECONDS=0
 echo " Start: " `date`
 
 echo "Packaging Jenkins Server..."
-rm -rf build
-packer build -machine-readable -force $1 packer-jenkins-ubuntu.json
+rm -rf packer/build
+packer build -machine-readable -force $1 packer/packer-jenkins-ubuntu.json
 
 echo "Jenkins Server Packaged !"
 
@@ -26,7 +26,7 @@ echo "Packaging Sonarqube Server..."
 echo "Sonarqube Server Packaged !"
 
 echo "Packaging Elastic, Logstash, Kibana (ELK) Server..."
-packer build -machine-readable -force $1 packer-elk-ubuntu.json
+packer build -machine-readable -force $1 packer/packer-elk-ubuntu.json
 echo "Elastic, Logstash, Kibana (ELK) Server Packaged !"
 
 echo "Packaging NGINX Server..."

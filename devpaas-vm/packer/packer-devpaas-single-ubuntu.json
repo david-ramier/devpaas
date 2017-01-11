@@ -2,15 +2,46 @@
   "variables": {
     "atlas_username":     "",
     "atlas_token":        "ATLAS_TOKEN_HERE",
+
     "home":               "{{env `HOME`}}",
+
     "instance_name":      "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
     "image_name":         "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
-    "gcp_project_id":     "name-marmac-devpaas",
-    "gcp_zone":           "europe-west1-d",
+
+    "gcp_project_id":     "",
+    "gcp_zone":           "",
     "gcp_source_image":   "ubuntu-1604-xenial-v20161020",
-    "ssh_username":       "devpaasadmin"
+
+    "aws_region":               "",
+    "aws_instance_type":        "",
+    "aws_source_image":         "",
+    "aws_vpc_id":               "",
+    "aws_subnet_id":            "",
+    "aws_ssh_keypair_name":     "",
+    "aws_ssh_private_key_file": "",
+
+    "ssh_username":             ""
   },
   "builders": [
+    {
+      "type":                     "amazon-ebs",
+      "ssh_pty":                  "true",
+      "instance_type":            "{{user `aws_instance_type`}}",
+      "region":                   "{{user `aws_region`}}",
+      "source_ami":               "{{user `aws_source_image`}}",
+      "ami_name":                 "{{user `image_name`}}",
+      "ami_description":          "{{user ``}} AMI",
+      "ami_virtualization_type":  "hvm",
+      "ssh_keypair_name":         "marcomaccio-eu-west-1",
+      "ssh_private_key_file":     "/Users/marcomaccio/.aws/marcomaccio-eu-west-1.pem",
+      "ssh_username":             "{{user `ssh_username`}}",
+      "vpc_id":                   "{{user `aws_vpc_id`}}",
+      "subnet_id":                "{{user `aws_subnet_id`}}",
+      "run_tags":         { "ami-create": "{{user ``}}" },
+      "tags":             { "ami": "{{user ``}}"},
+      "associate_public_ip_address": true
+
+    },
     {
       "type":               "googlecompute",
       "project_id":         "{{user `gcp_project_id`}}",

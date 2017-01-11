@@ -1,6 +1,6 @@
 .DS_Store
 *.tar.gz
-packer_cache/
+devpaas-vm/packer/packer_cache/
 virtualbox-*.box
 *.vdi
 *.tfstate
@@ -10,4 +10,4 @@ gcp_accountfile.json
 *.vmdk
 *.ovf
 .idea/
-devpaas-vm/build/
+devpaas-vm/packer/build/
