@@ -36,7 +36,7 @@ export GCP_SOURCE_IMAGE=${13}
 export SSH_USERNAME=${14}
 
 
-echo '****** Build marmac devpaas x ubuntu-1604 image ******'
+echo '****** Build marmac devpaas single instance x ubuntu-1604 image ******'
 packer build -force -only=$PACKER_PROVIDERS_LIST        \
         -var "atlas_username=$ATLAS_USERNAME"           \
         -var "aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME"   \
@@ -50,7 +50,7 @@ packer build -force -only=$PACKER_PROVIDERS_LIST        \
         -var "gcp_zone=$GCP_ZONE"                           \
         -var "gcp_source_image=$GCP_SOURCE_IMAGE"           \
         -var "ssh_username=$SSH_USERNAME"           \
-        packer-devpaas-single-ubuntu.json
+        packer-devpaas-single-ubuntu.json | sudo tee output-devpaas-singleinstance-ubuntu-16-04.txt
 
 duration=$SECONDS
 echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
