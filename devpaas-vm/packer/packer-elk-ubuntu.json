@@ -65,13 +65,13 @@
                   "modifyvm",
                   "{{.Name}}",
                   "--memory",
-                  "1024"
+                  "3072"
               ],
               [
                   "modifyvm",
                   "{{.Name}}",
                   "--cpus",
-                  "1"
+                  "2"
               ]
             ],
       "headless": "false"
