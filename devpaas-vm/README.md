@@ -58,3 +58,7 @@ User <|-- sm;
 User <|-- dev;
 User <|-- customer;
 @enduml)
+
+
+TODO: 
+Configure Kibana with NGINX as stated here https://www.digitalocean.com/community/tutorials/how-to-install-elasticsearch-logstash-and-kibana-elk-stack-on-ubuntu-16-04

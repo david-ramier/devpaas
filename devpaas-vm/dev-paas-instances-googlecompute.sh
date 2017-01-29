@@ -1,9 +1,9 @@
 #!/bin/sh
 # script call example:
-#   ./dev-paas-instances.sh [plan|apply|destroy] <gcp_projectid> <gcp_region> <gcp_imageId> <gcp_machine_type>
+#   ./dev-paas-instances-googlecompute.sh [plan|apply|destroy] <gcp_projectid> <gcp_region> <gcp_imageId> <gcp_machine_type>
 # echo $GOOGLE_ACCOUNT_FILE="<path_to_gcloud_json>"  (DEPRECATED)
 # export GOOGLE_CLOUD_KEYFILE_JSON="<path_to_gcloud_json>"
-# ex. ./dev-paas-instances.sh plan my-devpaas europe-west1 mm-jenkins-2-v20161102 n1-standard-1 
+# ex. ./dev-paas-instances-googlecompute.sh plan my-devpaas europe-west1 mm-jenkins-2-v20161102 n1-standard-1
 
 #TF_VAR_project_id=$1          \
 #TF_VAR_region=$2              \
