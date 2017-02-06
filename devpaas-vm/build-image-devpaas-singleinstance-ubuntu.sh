@@ -7,7 +7,7 @@
 # url:            https://github.com/marcomaccio/devpaas
 # description:    Create image for DEVPAAS (Instance) server based on image
 #
-# to run:         sh build-devpaas-singleinstance-ubuntu-image.sh virtualbox-iso
+# to run:         sh build-image-devpaas-singleinstance-ubuntu.sh virtualbox-iso
 #
 ########################################################################
 
@@ -16,24 +16,23 @@ echo " Start: " `date`
 export PACKER_LOG=1
 
 export PACKER_PROVIDERS_LIST=$1
-#export PACKER_DEBUG=
 
-export ATLAS_TOKEN=$2
-export ATLAS_USERNAME=$3
+export SSH_USERNAME=${2}
 
-export AWS_SSH_KEYPAIR_NAME=$4          #marcomaccio-eu-west-1
-export AWS_SSH_PRIVATE_KEY_FILE=$5      #/Users/marcomaccio/.aws/marcomaccio-eu-west-1.pem
-export AWS_REGION=$6
-export AWS_SOURCE_IMAGE=$7
-export AWS_INSTANCE_TYPE=$8
-export AWS_VPC_ID=$9
-export AWS_SUBNET_ID=${10}
+export ATLAS_TOKEN=$3
+export ATLAS_USERNAME=$4
 
-export GCP_PROJECT_ID=${11}
-export GCP_ZONE=${12}
-export GCP_SOURCE_IMAGE=${13}
+export AWS_SSH_KEYPAIR_NAME=$5          #marcomaccio-eu-west-1
+export AWS_SSH_PRIVATE_KEY_FILE=$6      #/Users/marcomaccio/.aws/marcomaccio-eu-west-1.pem
+export AWS_REGION=$7
+export AWS_SOURCE_IMAGE=$8
+export AWS_INSTANCE_TYPE=$9
+export AWS_VPC_ID=${10}
+export AWS_SUBNET_ID=${11}
 
-export SSH_USERNAME=${14}
+export GCP_PROJECT_ID=${12}
+export GCP_ZONE=${13}
+export GCP_SOURCE_IMAGE=${14}
 
 
 echo '****** Build marmac devpaas single instance x ubuntu-1604 image ******'
@@ -50,7 +49,7 @@ packer build -force -only=$PACKER_PROVIDERS_LIST        \
         -var "gcp_zone=$GCP_ZONE"                           \
         -var "gcp_source_image=$GCP_SOURCE_IMAGE"           \
         -var "ssh_username=$SSH_USERNAME"           \
-        packer-devpaas-single-ubuntu.json | sudo tee output-devpaas-singleinstance-ubuntu-16-04.txt
+        images/devpaas/packer-devpaas-single-ubuntu.json
 
 duration=$SECONDS
 echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."

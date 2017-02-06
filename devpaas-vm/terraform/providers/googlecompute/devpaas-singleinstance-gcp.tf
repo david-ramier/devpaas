@@ -12,10 +12,10 @@ provider "google" {
 
 // Create a new instance
 resource "google_compute_instance" "jenkins" {
-  name         = "mm-jenkins-01"
+  name         = "mm-devpaas-01"
   machine_type = "${var.machine_type}"
   zone         = "${var.region}"
-  tags 		     = ["jenkins"]
+  tags 		     = ["devpaas-si"]
 
   disk {
     image = "${var.jenkins_image_name}"
@@ -39,9 +39,9 @@ resource "google_compute_firewall" "default" {
 
   allow {
     protocol = "tcp"
-    ports    = ["8080"]
+    ports    = ["8080", "8081", "9000"]
   }
 
   source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["jenkins"]
+  target_tags   = ["jenkins", "nexus", "sonarqube"]
 }

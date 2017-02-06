@@ -23,7 +23,7 @@ if [ ! -d "$MM_DEVPAAS_DEPLOYMENT_HOME_DIR/mm-devpaas-ubuntu" ]; then
   mkdir -p $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/mm-devpaas-ubuntu
 fi
 
-echo '****** Copy devpaas elk ubuntu-16.04 image tar file into a deployment dir ******'
+echo '****** Copy devpaas image ubuntu-16.04 image tar file into a deployment dir ******'
 cp packer/build/$MM_DEVPAAS_UBUNTU_IMAGE_NAME.tar.gz $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/mm-devpaas-ubuntu/
 
 ls -al $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/mm-devpaas-ubuntu/
