@@ -1,3 +1,4 @@
+#!/bin/bash -ex
 # Clean up
 apt-get -y update
 apt-get -y upgrade
