@@ -21,4 +21,3 @@ sudo npm install -g typescript@^2.0.2 zone.js@^0.7.2
 # launch it with pm2 start server.js
 # Then it should get the dist of the Angular2 FE app
 # launch it with pm2 start server.js
-
