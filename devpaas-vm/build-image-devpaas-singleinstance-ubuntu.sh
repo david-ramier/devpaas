@@ -17,7 +17,7 @@ export PACKER_LOG=1
 
 export PACKER_PROVIDERS_LIST=$1
 
-export SSH_USERNAME=${2}
+export SSH_USERNAME=$2
 
 export ATLAS_TOKEN=$3
 export ATLAS_USERNAME=$4
@@ -52,5 +52,5 @@ packer build -force -only=$PACKER_PROVIDERS_LIST        \
         images/devpaas/packer-devpaas-single-ubuntu.json
 
 duration=$SECONDS
-echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
+echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
 echo " End: " `date`
