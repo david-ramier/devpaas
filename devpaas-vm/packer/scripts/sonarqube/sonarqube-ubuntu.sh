@@ -1,4 +1,5 @@
 #!/bin/bash -eux
+export SONARQUBE_HOME=/var/lib/sonarqube
 
 echo "***** Sonar user creation *****"
 sudo adduser --no-create-home --disabled-login --disabled-password sonar
@@ -12,24 +13,40 @@ mysql -h "localhost" < /tmp/sonarqube/resources/sonarqube.sql
 
 echo "***** Download sonarqube *****"
 mkdir $HOME/sonarqube/
-wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-6.1.zip \
-  -O $HOME/sonarqube/sonarqube-6.1.zip
+wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-6.2.zip \
+  -O $HOME/sonarqube/sonarqube-6.2.zip
 
-sudo mkdir /var/lib/sonarqube
-sudo cp $HOME/sonarqube/sonarqube-6.1.zip /var/lib/sonarqube
-cd /var/lib/sonarqube
+sudo mkdir $SONARQUBE_HOME
+sudo cp $HOME/sonarqube/sonarqube-6.2.zip /var/lib/sonarqube
+cd $SONARQUBE_HOME
+
 echo "***** Extract Sonarqube *****"
-sudo unzip sonarqube-6.1.zip
+sudo unzip sonarqube-6.2.zip
 
-sudo ln -s sonarqube-6.1 sonar
+sudo ln -s sonarqube-6.2 sonar
 
-sudo cp /tmp/sonarqube/resources/sonar.properties /var/lib/sonarqube/sonar/conf
+sudo cp /tmp/sonarqube/resources/sonar.properties $SONARQUBE_HOME/sonar/conf
 
-sudo chown -R sonar:sonar /var/lib/sonarqube
+sudo chown -R sonar:sonar $SONARQUBE_HOME
 
 echo '****** Sonarqube Service Configuration ******'
 sudo cp /tmp/sonarqube/resources/sonarqube.service        /etc/systemd/system/
 
 sudo systemctl daemon-reload
 sudo systemctl enable sonarqube.service
+sudo systemctl start sonarqube.service
+
+
+echo '****** Sonarqube Plugin Installation ******'
+
+echo '****** Stop Sonarqube service ******'
+sudo systemctl stop sonarqube.service
+
+cd /tmp/sonarqube/plugins
+
+echo '****** Download & Install SonarCSS plugin ******'
+wget https://github.com/racodond/sonar-css-plugin/releases/download/3.0/sonar-css-plugin-3.0.jar
+sudo mv sonar-css-plugin-3.0.jar $SONARQUBE_HOME/sonar/extensions/plugins/
+
+echo '****** Restart Sonarqube service ******'
 sudo systemctl start sonarqube.service
