@@ -32,8 +32,8 @@
       "ami_name":                 "{{user `image_name`}}",
       "ami_description":          "{{user ``}} AMI",
       "ami_virtualization_type":  "hvm",
-      "ssh_keypair_name":         "marcomaccio-eu-west-1",
-      "ssh_private_key_file":     "/Users/marcomaccio/.aws/marcomaccio-eu-west-1.pem",
+      "ssh_keypair_name":         "{{user `aws_ssh_keypair_name`}}",
+      "ssh_private_key_file":     "{{user `aws_ssh_private_key_file`}}",
       "ssh_username":             "{{user `ssh_username`}}",
       "vpc_id":                   "{{user `aws_vpc_id`}}",
       "subnet_id":                "{{user `aws_subnet_id`}}",
@@ -179,8 +179,18 @@
         "scripts/jenkins/jenkins-ubuntu.sh",
         "scripts/nexus/nexus3-ubuntu.sh",
         "scripts/sonarqube/mysql-ubuntu.sh",
-        "scripts/sonarqube/sonarqube-ubuntu.sh",
-        "scripts/serverspec/serverspec-ubuntu.sh"
+        "scripts/sonarqube/sonarqube-ubuntu.sh"
+
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/serverspec/serverspec-core-ubuntu.sh",
+        "scripts/serverspec/serverspec-jenkins.sh",
+        "scripts/serverspec/serverspec-nexus.sh",
+        "scripts/serverspec/serverspec-sonarqube.sh",
+        "scripts/serverspec/serverspec-launch-test.sh"
       ]
     },
     {
