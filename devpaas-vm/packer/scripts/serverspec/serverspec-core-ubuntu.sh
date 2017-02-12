@@ -10,4 +10,3 @@ cd /tmp/serverspec
 if [ ! -d "/tmp/serverspec/spec/localhost" ]; then
   mkdir /tmp/serverspec/spec/localhost
 fi
-

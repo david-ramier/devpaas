@@ -4,4 +4,3 @@ echo "***** Running Serverspec Tests x mongodb *****"
 
 cp /tmp/mongodb/tests/*.rb   /tmp/serverspec/spec/localhost/
 
-rake spec
