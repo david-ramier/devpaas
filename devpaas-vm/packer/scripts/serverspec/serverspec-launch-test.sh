@@ -1,15 +1,11 @@
 #!/bin/bash -e
 
-echo "***** Running Serverspec Tests *****"
-<<<<<<< HEAD
-
+echo "***** Changing permission to the serverspec files *****"
 sudo chown -R root:root /tmp/serverspec/
 
-cd /tmp/serverspec
+echo "***** Waiting 60s for all services to startup before running the test *****"
+sleep 60s
 
+echo "***** Running Serverspec Tests *****"
+cd /tmp/serverspec
 rake spec --trace
-=======
-cd /tmp/serverspec
-
-rake spec
->>>>>>> Re-organize the server spec bash script file to modularise better
