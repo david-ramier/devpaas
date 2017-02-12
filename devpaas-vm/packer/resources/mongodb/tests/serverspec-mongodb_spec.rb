@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe service('mongod'), :if => os[:family] == 'ubuntu' do
+describe service('mongodb'), :if => os[:family] == 'ubuntu' do
   it { should be_enabled }
   it { should be_running }
 end
