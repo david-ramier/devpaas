@@ -10,9 +10,3 @@ cd /tmp/serverspec
 if [ ! -d "/tmp/serverspec/spec/localhost" ]; then
   mkdir /tmp/serverspec/spec/localhost
 fi
-
-cp /tmp/jenkins/tests/*.rb   /tmp/serverspec/spec/localhost/
-cp /tmp/nexus/tests/*.rb     /tmp/serverspec/spec/localhost/
-cp /tmp/sonarqube/tests/*.rb /tmp/serverspec/spec/localhost/
-
-rake spec

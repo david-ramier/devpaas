@@ -7,7 +7,7 @@
 # url:            https://github.com/marcomaccio/devpaas
 # description:    Create image for DEVPAAS (Instance) server based on image
 #
-# to run:         sh build-devpaas-singleinstance-ubuntu-image.sh virtualbox-iso
+# to run:         sh build-image-devpaas-webserver-ubuntu.sh virtualbox-iso packer
 #
 ########################################################################
 
@@ -34,8 +34,10 @@ export GCP_PROJECT_ID=${12}
 export GCP_ZONE=${13}
 export GCP_SOURCE_IMAGE=${14}
 
-echo '****** Build marmac devpaas ELK x ubuntu-1604 image ******'
-packer build -force -only=$PACKER_PROVIDERS_LIST        \
+cd packer
+
+echo '****** Build marmac devpaas webserver x ubuntu-1604 image ******'
+packer build  -force -only=$PACKER_PROVIDERS_LIST        \
         -var "atlas_username=$ATLAS_USERNAME"           \
         -var "aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME"   \
         -var "aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE"   \
@@ -48,7 +50,7 @@ packer build -force -only=$PACKER_PROVIDERS_LIST        \
         -var "gcp_zone=$GCP_ZONE"                           \
         -var "gcp_source_image=$GCP_SOURCE_IMAGE"           \
         -var "ssh_username=$SSH_USERNAME"           \
-        packer-elk-ubuntu.json | sudo tee output-devpaas-elk-ubuntu-16-04.txt
+        images/webserver/packer-webserver-ubuntu.json
 
 duration=$SECONDS
 echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
