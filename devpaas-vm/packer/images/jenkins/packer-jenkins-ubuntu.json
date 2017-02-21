@@ -136,8 +136,8 @@
 
         "echo '****** Moving Jenkins Configuration files '",
         "sudo cp /tmp/jenkins/resources/etc-default-jenkins.conf        /etc/default/jenkins",
-		    "sudo cp /tmp/jenkins/resources/config.xml                      /var/lib/jenkins/",
-		      "sudo cp /tmp/jenkins/resources/hudson.tools.JDKInstaller.xml   /var/lib/jenkins/",
+        "sudo cp /tmp/jenkins/resources/config.xml                      /var/lib/jenkins/",
+		"sudo cp /tmp/jenkins/resources/hudson.tools.JDKInstaller.xml   /var/lib/jenkins/",
         "sudo cp /tmp/jenkins/resources/hudson.tasks.Ant.xml            /var/lib/jenkins/",
         "sudo cp /tmp/jenkins/resources/hudson.tasks.Maven.xml          /var/lib/jenkins/",
 
@@ -162,13 +162,13 @@
       "only": ["virtualbox-iso"]
     },
     {
-			"type": "atlas",
-			"artifact": "marcomaccio/mm-jenkins",
-			"artifact_type": "vagrant.box",
-			"metadata": {
-				"provider": "virtualbox"
-			},
-			"only": ["virtualbox-iso"]
-		}
+        "type": "atlas",
+        "artifact": "marcomaccio/mm-jenkins",
+        "artifact_type": "vagrant.box",
+        "metadata": {
+            "provider": "virtualbox"
+        },
+        "only": ["virtualbox-iso"]
+    }
   ]
 }
