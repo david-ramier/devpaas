@@ -3,4 +3,6 @@
 echo '****** Preparing /tmp directories for Nexus ******'
 
 mkdir -p /tmp/nexus/resources
+mkdir -p /tmp/nexus/resources/nexus2
+mkdir -p /tmp/nexus/resources/nexus3
 mkdir -p /tmp/nexus/tests
