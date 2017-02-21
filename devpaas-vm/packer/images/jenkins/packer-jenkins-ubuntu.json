@@ -96,11 +96,6 @@
     },
     {
       "type":         "file",
-      "source":       "resources/jenkins/jobs/",
-      "destination":  "/tmp/jenkins/jobs/"
-    },
-    {
-      "type":         "file",
       "source":       "resources/jenkins/tests/",
       "destination":  "/tmp/jenkins/tests/"
     },
