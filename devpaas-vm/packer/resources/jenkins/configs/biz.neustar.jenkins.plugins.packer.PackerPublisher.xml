@@ -2,13 +2,13 @@
 <biz.neustar.jenkins.plugins.packer.PackerPublisher_-DescriptorImpl plugin="packer@1.4">
   <installations>
     <biz.neustar.jenkins.plugins.packer.PackerInstallation>
-      <name>packer-0.10.1</name>
+      <name>packer-0.12.2</name>
       <home></home>
       <properties>
         <hudson.tools.InstallSourceProperty>
           <installers>
             <biz.neustar.jenkins.plugins.packer.PackerInstaller>
-              <id>0.10.1-linux-amd64</id>
+              <id>0.12.2-linux-amd64</id>
             </biz.neustar.jenkins.plugins.packer.PackerInstaller>
           </installers>
         </hudson.tools.InstallSourceProperty>
