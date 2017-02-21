@@ -31,24 +31,26 @@ export AWS_VPC_ID=${10}
 export AWS_SUBNET_ID=${11}
 
 export GCP_PROJECT_ID=${12}
-export GCP_ZONE=${13}
-export GCP_SOURCE_IMAGE=${14}
+export GCP_PROJECT_NAME=${13}
+export GCP_ZONE=${14}
+export GCP_SOURCE_IMAGE=${15}
 
 
 echo '****** Build marmac devpaas single instance x ubuntu-1604 image ******'
-packer build -force -only=$PACKER_PROVIDERS_LIST        \
-        -var "atlas_username=$ATLAS_USERNAME"           \
-        -var "aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME"   \
+packer build -force -only=$PACKER_PROVIDERS_LIST                    \
+        -var "ssh_username=$SSH_USERNAME"                           \
+        -var "atlas_username=$ATLAS_USERNAME"                       \
+        -var "aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME"           \
         -var "aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE"   \
-        -var "aws_region=$AWS_REGION"                       \
-        -var "aws_source_image=$AWS_SOURCE_IMAGE"           \
-        -var "aws_instance_type=$AWS_INSTANCE_TYPE"         \
-        -var "aws_vpc_id=$AWS_VPC_ID"                       \
-        -var "aws_subnet_id=$AWS_SUBNET_ID"                 \
-        -var "gcp_project_id=$GCP_PROJECT_ID"               \
-        -var "gcp_zone=$GCP_ZONE"                           \
-        -var "gcp_source_image=$GCP_SOURCE_IMAGE"           \
-        -var "ssh_username=$SSH_USERNAME"           \
+        -var "aws_region=$AWS_REGION"                               \
+        -var "aws_source_image=$AWS_SOURCE_IMAGE"                   \
+        -var "aws_instance_type=$AWS_INSTANCE_TYPE"                 \
+        -var "aws_vpc_id=$AWS_VPC_ID"                               \
+        -var "aws_subnet_id=$AWS_SUBNET_ID"                         \
+        -var "gcp_project_id=$GCP_PROJECT_ID"                       \
+        -var "gcp_project_name=$GCP_PROJECT_NAME"                   \
+        -var "gcp_zone=$GCP_ZONE"                                   \
+        -var "gcp_source_image=$GCP_SOURCE_IMAGE"                   \
         images/devpaas/packer-devpaas-single-ubuntu.json
 
 duration=$SECONDS
