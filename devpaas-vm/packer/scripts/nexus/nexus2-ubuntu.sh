@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -eux
 
 echo "***** Nexus user creation *****"
 sudo adduser --no-create-home --disabled-login --disabled-password nexus
@@ -10,12 +10,12 @@ wget --no-check-certificate \
  'https://download.sonatype.com/nexus/oss/nexus-2.14.2-01-bundle.tar.gz' \
  -O $HOME/nexus/nexus-2.14.2-01-bundle.tar.gz
 
+echo "***** Create Sonatype dir and copy the tar.gz file *****"
 sudo mkdir /var/lib/sonatype
 sudo cp $HOME/nexus/nexus-2.14.2-01-bundle.tar.gz /var/lib/sonatype/
 
-cd /var/lib/sonatype/
-
 echo "***** Extract Nexus 2 *****"
+cd /var/lib/sonatype/
 sudo tar xvzf nexus-2.14.2-01-bundle.tar.gz
 sudo ln -s nexus-2.14.2-01 nexus
 sudo rm -f nexus-2.14.2-01-bundle.tar.gz
