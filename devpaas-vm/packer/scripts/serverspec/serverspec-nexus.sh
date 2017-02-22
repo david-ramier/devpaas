@@ -1,5 +1,5 @@
-#!/bin/bash -e
+#!/bin/bash -eux
 
-echo "***** Running Serverspec Tests x Apache *****"
+echo "***** Copying Serverspec Tests x Nexus *****"
 
 cp /tmp/nexus/tests/*.rb     /tmp/serverspec/spec/localhost/
