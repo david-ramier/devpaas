@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -eux
 
 echo "***** Nexus user creation *****"
 sudo adduser --no-create-home --disabled-login --disabled-password nexus
