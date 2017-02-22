@@ -1,6 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash -eux
 
-echo "***** Running Serverspec Tests x NGINX *****"
+echo "***** Copying Serverspec Tests x NGINX *****"
 
 cp /tmp/nginx/tests/*.rb   /tmp/serverspec/spec/localhost/
 
