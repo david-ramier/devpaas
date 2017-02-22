@@ -6,6 +6,6 @@ sudo chown -R root:root /tmp/serverspec/
 
 cd /tmp/serverspec
 
-sleep 10s
+sleep 30s
 
 rake spec --trace
