@@ -12,3 +12,5 @@ Moreover aims of this platform is enabling cost saving strategies based on the a
 ## Motivations
  
 ## Road Map
+
+## Architecture
