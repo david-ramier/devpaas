@@ -2,7 +2,7 @@ variable "project_id"             {}
 variable "region"                 {}
 variable "devpaas_machine_type"   {}
 variable "devpaas_image_name"     {}
-variable "account_file_path"      { default = "/Users/marcomaccio/.gcloud/gcp_name-marmac-devpaas.json"}
+variable "account_file_path"      {}
 
 //variable "webserver_machine_type" {}
 //variable "webserver_image_name"   {}
