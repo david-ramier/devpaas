@@ -2,12 +2,14 @@ variable "project_id"             {}
 variable "region"                 {}
 variable "devpaas_machine_type"   {}
 variable "devpaas_image_name"     {}
+variable "account_file_path"      { default = "/Users/marcomaccio/.gcloud/gcp_name-marmac-devpaas.json"}
+
 //variable "webserver_machine_type" {}
 //variable "webserver_image_name"   {}
 
 // Configure the Google Cloud provider
 provider "google" {
-  credentials = ""        //"${var.gcp-secret-file}"
+  credentials = "${file(var.account_file_path)}"
   project     = "${var.project_id}"
   region      = "${var.region}"
 }
