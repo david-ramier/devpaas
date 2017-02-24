@@ -1,7 +1,7 @@
 variable "project_id"             {}
 variable "region"                 {}
-variable "jenkins_machine_type"   {}
-variable "jenkins_image_name"     {}
+variable "devpaas_machine_type"   {}
+variable "devpaas_image_name"     {}
 variable "webserver_machine_type" {}
 variable "webserver_image_name"   {}
 
@@ -15,12 +15,12 @@ provider "google" {
 // Create a new instance
 resource "google_compute_instance" "jenkins" {
   name         = "mm-devpaas-01"
-  machine_type = "${var.jenkins_machine_type}"
+  machine_type = "${var.devpaas_machine_type}"
   zone         = "${var.region}"
   tags 		   = ["devpaas-si"]
 
   disk {
-    image = "${var.jenkins_image_name}"
+    image = "${var.devpaas_image_name}"
   }
 
   network_interface {
