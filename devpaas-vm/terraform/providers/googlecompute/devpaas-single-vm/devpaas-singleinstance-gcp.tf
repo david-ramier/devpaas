@@ -31,7 +31,9 @@ resource "google_compute_instance" "jenkins" {
   }
 }
 
-// Create a new instance
+
+/**
+ Create a new instance
 resource "google_compute_instance" "webserver" {
   name         = "mm-webserver-01"
   machine_type = "${var.webserver_machine_type}"
@@ -49,8 +51,7 @@ resource "google_compute_instance" "webserver" {
     }
   }
 }
-
-
+*/
 
 resource "google_compute_firewall" "default" {
   name    = "mm-www-firewall"
@@ -69,6 +70,8 @@ output "mm-jenkins-01" {
   value = "${google_compute_instance.jenkins.network_interface.access_config.assigned_nat_ip}"
 }
 
+/**
 output "mm-webserver-01" {
   value = "${google_compute_instance.webserver.network_interface.access_config.assigned_nat_ip}"
 }
+*/
