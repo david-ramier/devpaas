@@ -2,8 +2,8 @@ variable "project_id"             {}
 variable "region"                 {}
 variable "devpaas_machine_type"   {}
 variable "devpaas_image_name"     {}
-variable "webserver_machine_type" {}
-variable "webserver_image_name"   {}
+//variable "webserver_machine_type" {}
+//variable "webserver_image_name"   {}
 
 // Configure the Google Cloud provider
 provider "google" {
