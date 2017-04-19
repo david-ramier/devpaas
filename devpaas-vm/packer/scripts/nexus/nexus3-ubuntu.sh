@@ -4,7 +4,7 @@ echo "***** Nexus user creation *****"
 sudo adduser --no-create-home --disabled-login --disabled-password nexus
 
 echo "***** Download Nexus 3 *****"
-mkdir $HOME/nexus/
+mkdir -p $HOME/nexus/
 wget --no-check-certificate \
  'https://sonatype-download.global.ssl.fastly.net/nexus/3/nexus-3.1.0-04-unix.tar.gz' \
  -O $HOME/nexus/nexus-3.1.0-04-unix.tar.gz

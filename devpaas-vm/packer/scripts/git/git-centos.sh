@@ -1,4 +1,5 @@
 #!/bin/bash -ex
+
 echo "***** GIT installation"
-sudo apt-get update
-sudo apt-get install git
+sudo yum -y update
+sudo yum -y install git
