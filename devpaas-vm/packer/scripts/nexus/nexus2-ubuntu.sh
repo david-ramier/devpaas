@@ -4,8 +4,7 @@ echo "***** Nexus user creation *****"
 sudo adduser --no-create-home --disabled-login --disabled-password nexus
 
 echo "***** Download Nexus 2 *****"
-mkdir $HOME/nexus/
-
+mkdir -p $HOME/nexus/
 wget --no-check-certificate \
  'https://download.sonatype.com/nexus/oss/nexus-2.14.2-01-bundle.tar.gz' \
  -O $HOME/nexus/nexus-2.14.2-01-bundle.tar.gz
@@ -32,5 +31,3 @@ sudo cp /tmp/nexus/resources/wrapper.conf         /var/lib/sonatype/nexus/bin/js
 sudo systemctl daemon-reload
 sudo systemctl enable nexus.service
 sudo systemctl start nexus.service
-
-
