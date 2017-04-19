@@ -5,9 +5,9 @@
 
     "home":                     "{{env `HOME`}}",
 
-    "instance_name":            "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
-    "image_name":               "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
-    "image_description":        "MM DevPaas Single Instance with Jenkins, Nexus3, SonarQube, MySql Ubuntu 16.04 VM Image",
+    "instance_name":            "mm-devpaas-base-ubuntu-v{{isotime \"20060102-0101\"}}",
+    "image_name":               "mm-devpaas-base-ubuntu-v{{isotime \"20060102-0101\"}}",
+    "image_description":        "MM DevPaas NGINX Ubuntu 16.04 VM Image",
     "image_version":            "0.1",
 
     "aws_ssh_username":         "",
@@ -78,7 +78,7 @@
       "type": "virtualbox-iso",
       "guest_os_type":      "Ubuntu_64",
       "format":             "ova",
-      "headless":           false,
+      "headless":           true,
       "http_directory":     "http",
 
       "disk_size":          81920,
@@ -107,7 +107,7 @@
         " keyboard-configuration/layout=USA<wait>",
         " keyboard-configuration/variant=USA<wait>",
         " locale=en_US<wait>",
-        " netcfg/get_hostname=mm-devpaas-single-ubuntu<wait>",
+        " netcfg/get_hostname=mm-devpaas-nginx-ubuntu<wait>",
         " netcfg/get_domain=marmac.labs<wait>",
         " noapic<wait>",
         " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
@@ -137,74 +137,54 @@
       "only": ["virtualbox-iso"]
     },
     {
-        "type":   "shell",
-        "scripts": [
-          "scripts/serverspec/create-serverspec-temp-dirs.sh",
-          "scripts/jenkins/create-jenkins-temp-dirs.sh",
-          "scripts/nexus/create-nexus-temp-dirs.sh",
-          "scripts/sonarqube/create-sonarqube-temp-dirs.sh"
-        ]
+      "type":   "shell",
+      "scripts": [
+        "scripts/serverspec/create-serverspec-temp-dirs.sh"
+      ]
     },
     {
       "type":         "file",
       "source":       "resources/serverspec/configs/",
       "destination":  "/tmp/serverspec/"
     },
-	  {
-      "type":         "file",
-      "source":       "resources/jenkins/configs/",
-      "destination":  "/tmp/jenkins/resources/"
-    },
     {
       "type":         "file",
-      "source":       "resources/jenkins/tests/",
-      "destination":  "/tmp/jenkins/tests/"
-    },
-    {
-      "type":         "file",
-      "source":       "resources/nexus/configs/",
-      "destination":  "/tmp/nexus/resources/"
-    },
-    {
-      "type":         "file",
-      "source":       "resources/nexus/configs/nexus3",
-      "destination":  "/tmp/nexus/resources/nexus3"
-    },
-    {
-      "type":         "file",
-      "source":       "resources/nexus/tests/",
-      "destination":  "/tmp/nexus/tests/"
-    },
-    {
-      "type":         "file",
-      "source":       "resources/sonarqube/configs/",
-      "destination":  "/tmp/sonarqube/resources/"
-    },
-    {
-      "type":         "file",
-      "source":       "resources/sonarqube/tests/",
-      "destination":  "/tmp/sonarqube/tests/"
+      "source":       "resources/nginx",
+      "destination":  "/tmp/resources"
     },
     {
       "type": "shell",
       "scripts": [
         "scripts/java/java-jdk-ubuntu.sh",
         "scripts/graphviz/graphviz-ubuntu.sh",
-        "scripts/git/git-ubuntu.sh",
-        "scripts/jenkins/jenkins-ubuntu.sh",
-        "scripts/nexus/nexus3-ubuntu.sh",
-        "scripts/mysql/mysql-ubuntu.sh",
-        "scripts/sonarqube/sonarqube-ubuntu.sh"
+        "scripts/git/git-ubuntu.sh"
       ]
     },
     {
       "type": "shell",
       "scripts": [
-        "scripts/serverspec/serverspec-core-ubuntu.sh",
-        "scripts/serverspec/serverspec-jenkins.sh",
-        "scripts/serverspec/serverspec-nexus.sh",
-        "scripts/serverspec/serverspec-sonarqube.sh",
-        "scripts/serverspec/serverspec-launch-test.sh"
+        "scripts/serverspec/serverspec-core-ubuntu.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+          "sudo aptitude -y install nginx",
+          "cd /etc/nginx/sites-available",
+          "sudo rm default ../sites-enabled/default"
+      ]
+    },
+    {
+      "type": "shell",
+      "script": "scripts/nginx/nginx.sh",
+      "environment_vars": [
+          "JENKINS_IP={{user `jenkins_ip`}}"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/serverspec/serverspec-core-ubuntu.sh"
       ]
     },
     {
