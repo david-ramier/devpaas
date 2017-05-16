@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+TF_VAR_aws_ssh_key_name=$1                              \
+TF_VAR_aws_deployment_region=$2                         \
+TF_VAR_subnet_public_id=$3                              \
+TF_VAR_subnet_private_id=$4                             \
+TF_VAR_mm_devpaas_eip_id=$5                             \
+TF_VAR_sg_jumpbox_id=$6                                 \
+TF_VAR_sg_frontend_id=$7                                \
+TF_VAR_sg_headend_id=$8                                 \
+TF_VAR_jumpbox_instance_name=$9                         \
+TF_VAR_jumpbox_image_id=${10}                           \
+TF_VAR_jumpbox_flavor_name=${11}                        \
+TF_VAR_revprx_instance_name=${12}                       \
+TF_VAR_revprx_image_id=${13}                            \
+TF_VAR_revprx_flavor_name=${14}                         \
+TF_VAR_jenkins_master_instance_name=${15}               \
+TF_VAR_jenkins_master_image_id=${16}                    \
+TF_VAR_jenkins_master_flavor_name=${17}                 \
+terraform ${18}
