@@ -11,3 +11,4 @@ gcp_accountfile.json
 *.ovf
 .idea/
 devpaas-vm/packer/build/
+*.terraform
