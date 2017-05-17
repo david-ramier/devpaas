@@ -89,7 +89,7 @@ resource "aws_security_group" "mm_devpaas_sg_jb" {
   egress {
     from_port = 0
     to_port   = 65535
-    protocol  = "-1"
+    protocol  = "icmp"
     cidr_blocks = ["${aws_security_group.mm_devpaas_sg_rp}", "${aws_security_group.mm_devpaas_sg_fe}", "${aws_security_group.mm_devpaas_sg_he}", "${aws_security_group.mm_devpaas_sg_db}"]
   }
 
@@ -117,6 +117,13 @@ resource "aws_security_group" "mm_devpaas_sg_rp" {
     from_port       = "22"
     to_port         = "22"
     protocol        = "TCP"
+    security_groups = ["${aws_security_group.mm_devpaas_sg_jb.id}"]
+  }
+
+  ingress {
+    from_port       = "0"
+    to_port         = "65535"
+    protocol        = "ICMP"
     security_groups = ["${aws_security_group.mm_devpaas_sg_jb.id}"]
   }
 
@@ -161,6 +168,13 @@ resource "aws_security_group" "mm_devpaas_sg_fe" {
   }
 
   ingress {
+    from_port       = "0"
+    to_port         = "65535"
+    protocol        = "ICMP"
+    security_groups = ["${aws_security_group.mm_devpaas_sg_jb.id}"]
+  }
+
+  ingress {
     from_port       = "9000"
     to_port         = "9000"
     protocol        = "TCP"
@@ -193,6 +207,13 @@ resource "aws_security_group" "mm_devpaas_sg_he" {
     from_port       = "22"
     to_port         = "22"
     protocol        = "TCP"
+    security_groups = ["${aws_security_group.mm_devpaas_sg_jb.id}"]
+  }
+
+  ingress {
+    from_port       = "0"
+    to_port         = "65535"
+    protocol        = "ICMP"
     security_groups = ["${aws_security_group.mm_devpaas_sg_jb.id}"]
   }
 
@@ -247,6 +268,13 @@ resource "aws_security_group" "mm_devpaas_sg_db" {
     from_port       = "22"
     to_port         = "22"
     protocol        = "TCP"
+    security_groups = ["${aws_security_group.mm_devpaas_sg_jb.id}"]
+  }
+
+  ingress {
+    from_port       = "0"
+    to_port         = "65535"
+    protocol        = "ICMP"
     security_groups = ["${aws_security_group.mm_devpaas_sg_jb.id}"]
   }
 
