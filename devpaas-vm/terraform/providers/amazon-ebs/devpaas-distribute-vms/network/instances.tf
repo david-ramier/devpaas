@@ -15,7 +15,7 @@ resource "aws_instance" "mm_devpaas_dv_jumpbox" {
 
   user_data = <<-EOF
               #!/bin/bash
-              echo "Hello, World" > index.html
+              echo "Hello, World ! This is the DevPaas Jump Box VM" > index.html
               nohup busybox httpd -f -p 80 &
               EOF
 
@@ -45,7 +45,7 @@ resource "aws_instance" "mm_devpaas_dv_reverse_proxy" {
 
   user_data = <<-EOF
               #!/bin/bash
-              echo "Hello, World" > index.html
+              echo "Hello, World ! This is the DevPaas Reverse Proxy VM" > index.html
               nohup busybox httpd -f -p 80 &
               EOF
 
@@ -68,7 +68,7 @@ resource "aws_instance" "mm_devpaas_dv_fe_srv" {
 
   user_data = <<-EOF
               #!/bin/bash
-              echo "Hello, World" > index.html
+              echo "Hello, World  ! This is the DevPaas Front End VM" > index.html
               nohup busybox httpd -f -p 9000 &
               EOF
 
@@ -91,7 +91,7 @@ resource "aws_instance" "mm_devpaas_dv_api_srv" {
 
   user_data = <<-EOF
               #!/bin/bash
-              echo "Hello, World" > index.html
+              echo "Hello, World  ! This is the DevPaas Head End VM" > index.html
               nohup busybox httpd -f -p 8080 &
               EOF
 
