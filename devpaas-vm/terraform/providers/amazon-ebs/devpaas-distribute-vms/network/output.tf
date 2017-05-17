@@ -69,6 +69,10 @@ output "aws_mm_devpaas_dv_i_jumpbox_priv_ip" {
   value = "${aws_instance.mm_devpaas_dv_jumpbox.private_ip}"
 }
 
+output "aws_mm_devpaas_dv_i_jumpbox_pub_dns" {
+  value = "${aws_instance.mm_devpaas_dv_jumpbox.public_dns}"
+}
+
 /* Reverse Proxy VM outputs */
 output "aws_mm_devpaas_dv_i_reverse_proxy_id" {
   value = "${aws_instance.mm_devpaas_dv_reverse_proxy.id}"
@@ -76,6 +80,10 @@ output "aws_mm_devpaas_dv_i_reverse_proxy_id" {
 
 output "aws_mm_devpaas_dv_i_reverse_proxy_pub_ip" {
   value = "${aws_instance.mm_devpaas_dv_reverse_proxy.public_ip}"
+}
+
+output "aws_mm_devpaas_dv_i_reverse_proxy_pub_dns" {
+  value = "${aws_instance.mm_devpaas_dv_reverse_proxy.public_dns}"
 }
 
 output "aws_mm_devpaas_dv_i_reverse_proxy_priv_ip" {

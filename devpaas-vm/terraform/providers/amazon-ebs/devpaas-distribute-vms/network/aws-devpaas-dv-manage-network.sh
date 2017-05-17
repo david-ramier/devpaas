@@ -9,10 +9,11 @@ mkdir -p .terraform
 export TF_LOG_PATH=".terraform/terraform_network.log"
 export TF_LOG=TRACE
 
-echo '****** Create Retrieve the Public ip ******'
+echo '****** Retrieve your Public ip in order to secure the SSH connectivity to AWS to only your IP ******'
 MM_PUBLIC_IP="$(dig @ns1.google.com -t txt o-o.myaddr.1.google.com +short)"
 
 echo "Your Public IP address is: $MM_PUBLIC_IP"
+
 
 export AWS_SSH_KEY=$1
 
@@ -65,6 +66,7 @@ TF_VAR_db_instance_name=$AWS_DB_INSTANCE_NAME                           \
 TF_VAR_db_image_id=$AWS_DB_IMAGE_ID                                     \
 TF_VAR_db_flavor_name=$AWS_DB_FLAVOR_NAME                               \
 terraform $TERRAFORM_CMD
+
 
 duration=$SECONDS
 echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."

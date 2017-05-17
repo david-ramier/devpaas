@@ -1,5 +1,6 @@
 /* This file describe the Elastic Load Balancer ELB */
 
+/*
 resource "aws_elb" "mm_devpaas_elb" {
 
   name                  = "MM-DEVPAAS-ELB"
@@ -28,3 +29,4 @@ resource "aws_elb" "mm_devpaas_elb" {
   }
 
 }
+*/

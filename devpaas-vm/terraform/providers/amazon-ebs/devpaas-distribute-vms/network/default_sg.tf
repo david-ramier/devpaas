@@ -3,7 +3,7 @@
  */
 
 /* ********************************************************************** */
-/* SECURITY GROUP FOR ELASTIC LOAD BALANCER ELB                           */
+/* START SECURITY GROUP FOR ELASTIC LOAD BALANCER ELB                     */
 /* - it allows the following traffic:                                     */
 /* - HTTP   on port  80 from all Internet IPs                             */
 /* - HTTPS  on port 443 from all Internet IPs - NOT YET ENABLED           */
@@ -45,11 +45,18 @@ resource "aws_security_group" "mm_devpaas_sg_elb" {
 }
 
 /* ********************************************************************** */
-/* SECURITY GROUP FOR JUMP BOX VM                                         */
+/* START SECURITY GROUP FOR ELASTIC LOAD BALANCER ELB                     */
+/* ********************************************************************** */
+
+
+/* ********************************************************************** */
+/* START SECURITY GROUP FOR JUMP BOX VM                                   */
 /* - it allows the following traffic:                                     */
-/* - SSH    on port  22 from deployed Internet Public IP                  */
-/* - HTTP   on port  80 from deployed Internet Public IP                  */
-/* - HTTPS  on port 443 from deployed Internet Public IP                  */
+/* - SSH    on port  22 from your Internet Public IP                      */
+/* - HTTP   on port  80 from your Internet Public IP                      */
+/* - HTTPS  on port 443 from your Internet Public IP                      */
+/* - SSH    on port  22 to all other SG inside the VPC                    */
+/* - ICMP   on port  0-65535 to all other SG inside the VPC               */
 /* ********************************************************************** */
 
 resource "aws_security_group" "mm_devpaas_sg_jb" {
@@ -79,28 +86,128 @@ resource "aws_security_group" "mm_devpaas_sg_jb" {
     cidr_blocks = ["${var.mm_public_ip}/32"]
   }
 
-  egress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "TCP"
-    cidr_blocks = ["${aws_security_group.mm_devpaas_sg_rp}", "${aws_security_group.mm_devpaas_sg_fe}", "${aws_security_group.mm_devpaas_sg_he}", "${aws_security_group.mm_devpaas_sg_db}"]
-  }
-
-  egress {
-    from_port = 0
-    to_port   = 65535
-    protocol  = "icmp"
-    cidr_blocks = ["${aws_security_group.mm_devpaas_sg_rp}", "${aws_security_group.mm_devpaas_sg_fe}", "${aws_security_group.mm_devpaas_sg_he}", "${aws_security_group.mm_devpaas_sg_db}"]
-  }
-
   tags {
     Name        = "MM-DEVPAAS-SG-JB"
   }
 
 }
 
+/* - SECURITY GROUP RULE SSH    on port  22 to SG RP  */
+resource "aws_security_group_rule" "mm_devpaas_sg_eg_jb_ssh_to_sg_rp" {
+
+  type              = "egress"
+  from_port         = "22"
+  to_port           = "22"
+  protocol          = "tcp"
+  //cidr_blocks       = ["${aws_security_group.mm_devpaas_sg_jb.id}", "${aws_security_group.mm_devpaas_sg_fe.id}", "${aws_security_group.mm_devpaas_sg_he.id}", "${aws_security_group.mm_devpaas_sg_db.id}"]
+  security_group_id         = "${aws_security_group.mm_devpaas_sg_jb.id}"
+  source_security_group_id  = "${aws_security_group.mm_devpaas_sg_rp.id}"
+
+}
+
+/* - SECURITY GROUP RULE SSH    on port  22 to SG FE  */
+resource "aws_security_group_rule" "mm_devpaas_sg_eg_jb_ssh_to_sg_fe" {
+
+  type              = "egress"
+  from_port         = "22"
+  to_port           = "22"
+  protocol          = "tcp"
+  //cidr_blocks       = ["${aws_security_group.mm_devpaas_sg_jb.id}", "${aws_security_group.mm_devpaas_sg_fe.id}", "${aws_security_group.mm_devpaas_sg_he.id}", "${aws_security_group.mm_devpaas_sg_db.id}"]
+  security_group_id         = "${aws_security_group.mm_devpaas_sg_jb.id}"
+  source_security_group_id  = "${aws_security_group.mm_devpaas_sg_fe.id}"
+
+}
+
+/* - SECURITY GROUP RULE SSH    on port  22 to SG HE  */
+resource "aws_security_group_rule" "mm_devpaas_sg_eg_jb_ssh_to_sg_he" {
+
+  type              = "egress"
+  from_port         = "22"
+  to_port           = "22"
+  protocol          = "tcp"
+  //cidr_blocks       = ["${aws_security_group.mm_devpaas_sg_jb.id}", "${aws_security_group.mm_devpaas_sg_fe.id}", "${aws_security_group.mm_devpaas_sg_he.id}", "${aws_security_group.mm_devpaas_sg_db.id}"]
+  security_group_id         = "${aws_security_group.mm_devpaas_sg_jb.id}"
+  source_security_group_id  = "${aws_security_group.mm_devpaas_sg_he.id}"
+
+}
+
+/* - SECURITY GROUP RULE SSH    on port  22 to SG DB  */
+resource "aws_security_group_rule" "mm_devpaas_sg_eg_jb_ssh_to_sg_db" {
+
+  type              = "egress"
+  from_port         = "22"
+  to_port           = "22"
+  protocol          = "tcp"
+  //cidr_blocks       = ["${aws_security_group.mm_devpaas_sg_jb.id}", "${aws_security_group.mm_devpaas_sg_fe.id}", "${aws_security_group.mm_devpaas_sg_he.id}", "${aws_security_group.mm_devpaas_sg_db.id}"]
+  security_group_id         = "${aws_security_group.mm_devpaas_sg_jb.id}"
+  source_security_group_id  = "${aws_security_group.mm_devpaas_sg_db.id}"
+
+}
+
+/* - SECURITY GROUP RULE ICMP    on all  ports to SG RP  */
+resource "aws_security_group_rule" "mm_devpaas_sg_eg_jb_icmp_to_sg_rp" {
+
+  type              = "egress"
+  from_port         = "-1"
+  to_port           = "-1"
+  protocol          = "icmp"
+  //cidr_blocks       = ["${aws_security_group.mm_devpaas_sg_rp.id}", "${aws_security_group.mm_devpaas_sg_fe.id}", "${aws_security_group.mm_devpaas_sg_he.id}", "${aws_security_group.mm_devpaas_sg_db.id}"]
+
+  security_group_id = "${aws_security_group.mm_devpaas_sg_jb.id}"
+
+  source_security_group_id = "${aws_security_group.mm_devpaas_sg_rp.id}"
+}
+
+/* - SECURITY GROUP RULE ICMP    on all  ports to SG FE  */
+resource "aws_security_group_rule" "mm_devpaas_sg_eg_jb_icmp_to_sg_fe" {
+
+  type              = "egress"
+  from_port         = "-1"
+  to_port           = "-1"
+  protocol          = "icmp"
+  //cidr_blocks       = ["${aws_security_group.mm_devpaas_sg_rp.id}", "${aws_security_group.mm_devpaas_sg_fe.id}", "${aws_security_group.mm_devpaas_sg_he.id}", "${aws_security_group.mm_devpaas_sg_db.id}"]
+
+  security_group_id = "${aws_security_group.mm_devpaas_sg_jb.id}"
+
+  source_security_group_id = "${aws_security_group.mm_devpaas_sg_fe.id}"
+}
+
+/* - SECURITY GROUP RULE ICMP    on all  ports to SG HE  */
+resource "aws_security_group_rule" "mm_devpaas_sg_eg_jb_icmp_to_sg_he" {
+
+  type              = "egress"
+  from_port         = "-1"
+  to_port           = "-1"
+  protocol          = "icmp"
+  //cidr_blocks       = ["${aws_security_group.mm_devpaas_sg_rp.id}", "${aws_security_group.mm_devpaas_sg_fe.id}", "${aws_security_group.mm_devpaas_sg_he.id}", "${aws_security_group.mm_devpaas_sg_db.id}"]
+
+  security_group_id = "${aws_security_group.mm_devpaas_sg_jb.id}"
+
+  source_security_group_id = "${aws_security_group.mm_devpaas_sg_he.id}"
+}
+
+/* - SECURITY GROUP RULE ICMP    on all  ports to SG DB  */
+resource "aws_security_group_rule" "mm_devpaas_sg_eg_jb_icmp_to_sg_db" {
+
+  type              = "egress"
+  from_port         = "-1"
+  to_port           = "-1"
+  protocol          = "icmp"
+  //cidr_blocks       = ["${aws_security_group.mm_devpaas_sg_rp.id}", "${aws_security_group.mm_devpaas_sg_fe.id}", "${aws_security_group.mm_devpaas_sg_he.id}", "${aws_security_group.mm_devpaas_sg_db.id}"]
+
+  security_group_id = "${aws_security_group.mm_devpaas_sg_jb.id}"
+
+  source_security_group_id = "${aws_security_group.mm_devpaas_sg_db.id}"
+}
+
 /* ********************************************************************** */
-/* SECURITY GROUP FOR REVERSE PROXY VMs  (NGINX / APACHE)                 */
+/* END SECURITY GROUP FOR JUMP BOX VM                                     */
+/* ********************************************************************** */
+
+
+
+/* ********************************************************************** */
+/* START SECURITY GROUP FOR REVERSE PROXY VMs  (NGINX / APACHE)           */
 /* - it allows the following traffic:                                     */
 /* - SSH    on port  22 from security group of the Jump Box               */
 /* - HTTP   on port  80 from all Internet IPs                             */
@@ -121,24 +228,24 @@ resource "aws_security_group" "mm_devpaas_sg_rp" {
   }
 
   ingress {
-    from_port       = "0"
-    to_port         = "65535"
+    from_port       = "-1"
+    to_port         = "-1"
     protocol        = "ICMP"
     security_groups = ["${aws_security_group.mm_devpaas_sg_jb.id}"]
   }
 
   ingress {
-    from_port   = "80"
-    to_port     = "80"
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]  //TODO: This should be replaced with a security group that points to the ELB sg
+    from_port       = "80"
+    to_port         = "80"
+    protocol        = "TCP"
+    cidr_blocks     = ["0.0.0.0/0"]  //TODO: This should be replaced with a security group that points to the ELB sg
   }
 
   ingress {
-    from_port   = "443"
-    to_port     = "443"
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]  //TODO: This should be replaced with a security group that points to the ELB sg
+    from_port       = "443"
+    to_port         = "443"
+    protocol        = "TCP"
+    cidr_blocks     = ["0.0.0.0/0"]  //TODO: This should be replaced with a security group that points to the ELB sg
   }
 
   tags {
@@ -148,7 +255,12 @@ resource "aws_security_group" "mm_devpaas_sg_rp" {
 }
 
 /* ********************************************************************** */
-/* SECURITY GROUP FOR FRONT-END (WEB SERVER) VMs                          */
+/* END SECURITY GROUP FOR REVERSE PROXY VMs  (NGINX / APACHE)           */
+/* ********************************************************************** */
+
+
+/* ********************************************************************** */
+/* START SECURITY GROUP FOR FRONT-END (WEB SERVER) VMs                    */
 /* - it allows the following traffic:                                     */
 /* - SSH    on port   22 from Jump Box security group                     */
 /* - HTTP   on port 9000 from Reverse Proxy security group                */
@@ -168,8 +280,8 @@ resource "aws_security_group" "mm_devpaas_sg_fe" {
   }
 
   ingress {
-    from_port       = "0"
-    to_port         = "65535"
+    from_port       = "-1"
+    to_port         = "-1"
     protocol        = "ICMP"
     security_groups = ["${aws_security_group.mm_devpaas_sg_jb.id}"]
   }
@@ -187,9 +299,13 @@ resource "aws_security_group" "mm_devpaas_sg_fe" {
 
 }
 
+/* ********************************************************************** */
+/* END SECURITY GROUP FOR FRONT-END (WEB SERVER) VMs                    */
+/* ********************************************************************** */
+
 
 /* ********************************************************************** */
-/* SECURITY GROUP FOR HEAD-END (API SERVER) VMs                           */
+/* START SECURITY GROUP FOR HEAD-END (API SERVER) VMs                     */
 /* - it allows the following traffic:                                     */
 /* - SSH    on port   22 from Jump Box security group                     */
 /* - HTTP   on port   80 from Reverse Proxy security group                */
@@ -211,8 +327,8 @@ resource "aws_security_group" "mm_devpaas_sg_he" {
   }
 
   ingress {
-    from_port       = "0"
-    to_port         = "65535"
+    from_port       = "-1"
+    to_port         = "-1"
     protocol        = "ICMP"
     security_groups = ["${aws_security_group.mm_devpaas_sg_jb.id}"]
   }
@@ -252,7 +368,12 @@ resource "aws_security_group" "mm_devpaas_sg_he" {
 }
 
 /* ********************************************************************** */
-/* SECURITY GROUP FOR DB VMs                                              */
+/* END SECURITY GROUP FOR HEAD-END (API SERVER) VMs                       */
+/* ********************************************************************** */
+
+
+/* ********************************************************************** */
+/* START SECURITY GROUP FOR DB VMs                                        */
 /* - it allows the following traffic:                                     */
 /* - SSH    on port   22 from Jump Box security group                     */
 /* - HTTP   on port 3306 from Head-End security group                     */
@@ -272,8 +393,8 @@ resource "aws_security_group" "mm_devpaas_sg_db" {
   }
 
   ingress {
-    from_port       = "0"
-    to_port         = "65535"
+    from_port       = "-1"
+    to_port         = "-1"
     protocol        = "ICMP"
     security_groups = ["${aws_security_group.mm_devpaas_sg_jb.id}"]
   }
@@ -290,3 +411,7 @@ resource "aws_security_group" "mm_devpaas_sg_db" {
   }
 
 }
+
+/* ********************************************************************** */
+/* END SECURITY GROUP FOR DB VMs                                          */
+/* ********************************************************************** */
