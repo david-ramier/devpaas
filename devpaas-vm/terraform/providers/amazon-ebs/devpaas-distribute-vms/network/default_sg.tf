@@ -79,6 +79,20 @@ resource "aws_security_group" "mm_devpaas_sg_jb" {
     cidr_blocks = ["${var.mm_public_ip}/32"]
   }
 
+  egress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "TCP"
+    cidr_blocks = ["${aws_security_group.mm_devpaas_sg_rp}", "${aws_security_group.mm_devpaas_sg_fe}", "${aws_security_group.mm_devpaas_sg_he}", "${aws_security_group.mm_devpaas_sg_db}"]
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 65535
+    protocol  = "-1"
+    cidr_blocks = ["${aws_security_group.mm_devpaas_sg_rp}", "${aws_security_group.mm_devpaas_sg_fe}", "${aws_security_group.mm_devpaas_sg_he}", "${aws_security_group.mm_devpaas_sg_db}"]
+  }
+
   tags {
     Name        = "MM-DEVPAAS-SG-JB"
   }
