@@ -118,7 +118,7 @@ resource "aws_route_table" "mm_devpaas_rt_private" {
   vpc_id = "${aws_vpc.mm_devpaas_vpc.id}"
 
   tags {
-    Name = "MM-DEVPAAS-RT"
+    Name = "MM-DEVPAAS-RT-Private"
   }
 }
 

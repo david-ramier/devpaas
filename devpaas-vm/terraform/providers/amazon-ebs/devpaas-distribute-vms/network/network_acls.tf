@@ -150,7 +150,7 @@ resource "aws_network_acl_rule" "mm_devpaas_acl_rule_in_https_443" {
 
 }
 
-// Allow inbound http traffic on 443
+// Allow inbound ssh traffic on 22
 resource "aws_network_acl_rule" "mm_devpaas_acl_rule_in_ssh_22" {
 
   rule_number     = 120
@@ -166,6 +166,7 @@ resource "aws_network_acl_rule" "mm_devpaas_acl_rule_in_ssh_22" {
 }
 
 // Allow return outbound traffic on dynamic ports
+//TODO: Replicate this for a return outbound traffic towards a specific IP that I want to connect to in order to reach 3rd Party Endpoints
 resource "aws_network_acl_rule" "mm_devpaas_acl_rule_in_dyn_ports" {
 
   rule_number     = 140
