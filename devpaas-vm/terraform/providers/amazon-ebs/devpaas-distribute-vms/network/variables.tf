@@ -29,12 +29,15 @@ variable "mm_public_ip"           {
 }
 
 
+
 /* Instances variable */
 variable aws_ssh_key_name               {
   default     = ""
   description = ""
 }
 
+
+/* JUMPBOX VM VARIABLES */
 variable "jumpbox_instance_name"    {
   default     = ""
   description = ""
@@ -50,6 +53,8 @@ variable "jumpbox_flavor_name"   {
   description = ""
 }
 
+
+/* REVERSE-PROXY VM VARIABLES */
 variable "revprx_instance_name"         {
   default     = ""
   description = ""
@@ -65,15 +70,49 @@ variable "revprx_flavor_name"    {
   description = ""
 }
 
-variable "jenkins_master_instance_name" {
+
+/* FRON-END VM VARIABLES */
+variable "fe_srv_instance_name" {
   description = ""
 }
 
-variable "jenkins_master_image_id"  {
+variable "fe_srv_image_id"  {
   default     = "ami-a8d2d7ce"
-  description = "Image id for the Jenkins Master - Default ami-a8d2d7ce (Ubuntu Server 16.04 LTS, SDD Volume Type)"
+  description = "Image id for the API Server - Default ami-a8d2d7ce (Ubuntu Server 16.04 LTS, SDD Volume Type)"
 }
 
-variable "jenkins_master_flavor_name"    {
+variable "fe_srv_flavor_name"    {
+  description = ""
+}
+
+
+/* API VM VARIABLES */
+variable "api_srv_instance_name" {
+  default     = ""
+  description = ""
+}
+
+variable "api_srv_image_id"  {
+  default     = "ami-a8d2d7ce"
+  description = "Image id for the API Server - Default ami-a8d2d7ce (Ubuntu Server 16.04 LTS, SDD Volume Type)"
+}
+
+variable "api_srv_flavor_name"    {
+  description = ""
+}
+
+
+/* DB VM VARIABLES */
+variable "db_instance_name" {
+  description = ""
+}
+
+variable "db_image_id" {
+  default     = ""
+  description = ""
+}
+
+variable "db_flavor_name" {
+  default     = ""
   description = ""
 }
