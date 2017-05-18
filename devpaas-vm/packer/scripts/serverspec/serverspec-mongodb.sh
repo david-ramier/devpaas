@@ -1,6 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash -eux
 
-echo "***** Running Serverspec Tests x mongodb *****"
+echo "***** Copying Serverspec Tests x MongoDB *****"
 
 cp /tmp/mongodb/tests/*.rb   /tmp/serverspec/spec/localhost/
 

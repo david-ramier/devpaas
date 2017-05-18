@@ -40,5 +40,5 @@ echo "VM CREATION PART ..."
 echo "VM CREATION PART ended successfully !"
 
 duration=$SECONDS
-echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
+echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
 echo " End: " `date`
