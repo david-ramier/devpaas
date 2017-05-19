@@ -68,11 +68,16 @@ echo "Testing ssh connectivity to the Jump-Box"
 ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} 'ls -al; exit'
 
 echo "Creating a hidden dir in the Jump-Box to store private key"
-ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} 'mkdir -p .aws'
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} 'mkdir -p /home/ubuntu/.aws; exit'
 
 echo "Copy the private key in the Jump-Box to be used to connect to the other VM internally"
-scp -i "${AWS_KEY_PATH}" ~/.aws/$AWS_SSH_KEY.pem ubuntu@${JB_PUB_IP}:/.aws/
+scp -i "${AWS_KEY_PATH}" ${AWS_KEY_PATH} ubuntu@${JB_PUB_IP}:/home/ubuntu/.aws/
 
+echo "Change permission on the private key"
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} "'chmod 400 /home/ubuntu/.aws/$AWS_KEY_PATH; exit'"
+
+
+echo "************************************************************"
 echo "Testing ICMP Internal traffic from Jump-Box to other VMs ..."
 
 echo "Ping the Reverse Proxy VM at the Private IP: $RP_PRIV_IP"
@@ -87,6 +92,13 @@ ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'ping $HE_PRIV_IP -c 2'"
 echo "Ping the DB End VM at the Private IP: $DB_PRIV_IP"
 ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'ping $DB_PRIV_IP -c 2'"
 
+
+echo "************************************************************"
+echo "Testing SSH Internal connectivity from Jump-Box to other VMs ..."
+#ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'ssh -i \"${AWS_KEY_PATH}\" ubuntu@$RP_PRIV_IP bash -c \"'echo \"Hello from $HOSTNAME \" '\" '"
+
+
+echo "************************************************************"
 echo "Testing the HTTP Endpoints ... "
 
 echo "Testing the end point on the Jump Box"
