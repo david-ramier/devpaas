@@ -71,7 +71,7 @@ echo "Creating a hidden dir in the Jump-Box to store private key"
 ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} 'mkdir -p /home/ubuntu/.aws; exit'
 
 echo "Copy the private key in the Jump-Box to be used to connect to the other VM internally"
-scp -i "${AWS_KEY_PATH}" ${AWS_KEY_PATH} ubuntu@${JB_PUB_IP}:/home/ubuntu/.aws/
+scp -i "${AWS_KEY_PATH}" ${AWS_KEY_PATH} ubuntu@${JB_PUB_IP}:/home/ubuntu/.aws
 
 echo "Change permission on the private key"
 ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} "'chmod 400 /home/ubuntu/.aws/$AWS_SSH_KEY; exit'"
