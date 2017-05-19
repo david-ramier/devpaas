@@ -81,16 +81,16 @@ echo "************************************************************"
 echo "Testing ICMP Internal traffic from Jump-Box to other VMs ..."
 
 echo "Ping the Reverse Proxy VM at the Private IP: $RP_PRIV_IP"
-ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'ping $RP_PRIV_IP -c 2'"
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'ping $RP_PRIV_IP -c 2; exit'"
 
 echo "Ping the Front End VM at the Private IP: $FE_PRIV_IP"
-ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'ping $FE_PRIV_IP -c 2'"
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'ping $FE_PRIV_IP -c 2; exit'"
 
 echo "Ping the Head End VM at the Private IP: $HE_PRIV_IP"
-ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'ping $HE_PRIV_IP -c 2'"
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'ping $HE_PRIV_IP -c 2; exit'"
 
 echo "Ping the DB End VM at the Private IP: $DB_PRIV_IP"
-ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'ping $DB_PRIV_IP -c 2'"
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'ping $DB_PRIV_IP -c 2; exit'"
 
 
 echo "************************************************************"
