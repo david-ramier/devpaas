@@ -74,7 +74,7 @@ echo "Copy the private key in the Jump-Box to be used to connect to the other VM
 scp -i "${AWS_KEY_PATH}" ${AWS_KEY_PATH} ubuntu@${JB_PUB_IP}:/home/ubuntu/.aws
 
 echo "Change permission on the private key"
-ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} "'chmod 400 /home/ubuntu/.aws/$AWS_SSH_KEY.pem; exit'"
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'chmod 400 /home/ubuntu/.aws/$AWS_SSH_KEY.pem; exit'"
 
 
 echo "************************************************************"
