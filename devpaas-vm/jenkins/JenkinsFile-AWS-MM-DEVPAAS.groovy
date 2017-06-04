@@ -37,7 +37,7 @@ node() {
     stage('VPC Network Preparation') {
 
         wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-            dir('terraform/providers/amazon-ebs/devpaas-distribute-vms/network') {
+            dir('devpaas-vm/terraform/providers/amazon-ebs/devpaas-distribute-vms/network') {
                 sh "terraform get  ."
                 sh "terraform plan ."
             }
@@ -53,9 +53,9 @@ node() {
                 echo  'Create NGINX Image'
             },
             'Jenkins Master Image': {
-                echo  'Create Jenkins Master Image'
+                echo  'Create Jenkins Master VM Image'
 
-                dir('packer'){
+                dir('devpaas-vm/packer'){
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
                         sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST $PACKER_DEBUG "    +
                             "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
@@ -72,14 +72,32 @@ node() {
 
             },
             'Artifactory Image': {
+                echo  'Create Artifactory VM Image'
 
+                dir('devpaas-vm/packer') {
+                    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+
+                    }
+                }
             }
             ,
             'SonarQube Image': {
+                echo  'Create Sonarqube VM Image'
 
+                dir('devpaas-vm/packer') {
+                    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+
+                    }
+                }
             },
             'MySQL Server Image' {
+                echo  'Create MySQL VM Image'
 
+                dir('devpaas-vm/packer') {
+                    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+
+                    }
+                }
             }
         )
     } //end of stage: Specialized Image Creation
