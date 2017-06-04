@@ -66,17 +66,26 @@ node() {
                             "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
                             "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
                             "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
-                            "images/jenkins/packer-jenkins-rhel6.json"
+                            "images/jenkins/packer-jenkins-ubuntu.json"
                     }
                 }
 
             },
             'Artifactory Image': {
-                echo  'Create Artifactory VM Image'
+                echo  'Create Nexus VM Image'
 
                 dir('devpaas-vm/packer') {
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-
+                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST $PACKER_DEBUG "    +
+                                "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
+                                "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
+                                "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
+                                "-var 'aws_region=$AWS_REGION' "                                                +
+                                "-var 'aws_vpc_id=$AWS_VPC_ID' "                                                +
+                                "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
+                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
+                                "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
+                                "images/nexus/packer-nexus3-ubuntu.json"
                     }
                 }
             }
@@ -86,7 +95,16 @@ node() {
 
                 dir('devpaas-vm/packer') {
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-
+                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST $PACKER_DEBUG "    +
+                                "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
+                                "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
+                                "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
+                                "-var 'aws_region=$AWS_REGION' "                                                +
+                                "-var 'aws_vpc_id=$AWS_VPC_ID' "                                                +
+                                "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
+                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
+                                "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
+                                "images/sonarqube/packer-sonarqube-ubuntu.json"
                     }
                 }
             },
@@ -96,6 +114,42 @@ node() {
                 dir('devpaas-vm/packer') {
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
 
+                    }
+                }
+            },
+            'NGINX Image': {
+                echo  'Create NGINX VM Image'
+
+                dir('devpaas-vm/packer') {
+                    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST $PACKER_DEBUG "    +
+                                "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
+                                "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
+                                "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
+                                "-var 'aws_region=$AWS_REGION' "                                                +
+                                "-var 'aws_vpc_id=$AWS_VPC_ID' "                                                +
+                                "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
+                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
+                                "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
+                                "images/nginx/packer-nginx-ubuntu.json"
+                    }
+                }
+            },
+            'ELK Image': {
+                echo  'Create ELK VM Image'
+
+                dir('devpaas-vm/packer') {
+                    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST $PACKER_DEBUG "    +
+                                "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
+                                "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
+                                "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
+                                "-var 'aws_region=$AWS_REGION' "                                                +
+                                "-var 'aws_vpc_id=$AWS_VPC_ID' "                                                +
+                                "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
+                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
+                                "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
+                                "images/elk/packer-elk-ubuntu.json"
                     }
                 }
             }
