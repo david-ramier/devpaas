@@ -63,9 +63,23 @@ node() {
 
     stage('Golden Image Creation') {
         parallel(
+            'NGINX Image': {
+                echo  'Create NGINX VM Image'
 
-            'Nginx Image': {
-                echo  'Create NGINX Image'
+                dir('devpaas-vm/packer') {
+                    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST $PACKER_DEBUG "    +
+                                "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
+                                "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
+                                "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
+                                "-var 'aws_region=$AWS_REGION' "                                                +
+                                "-var 'aws_vpc_id=$AWS_VPC_ID' "                                                +
+                                "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
+                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
+                                "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
+                                "images/nginx/packer-nginx-ubuntu.json"
+                    }
+                }
             },
             'Jenkins Master Image': {
                 echo  'Create Jenkins Master VM Image'
@@ -103,8 +117,7 @@ node() {
                                 "images/nexus/packer-nexus3-ubuntu.json"
                     }
                 }
-            }
-            ,
+            },
             'SonarQube Image': {
                 echo  'Create Sonarqube VM Image'
 
@@ -123,30 +136,12 @@ node() {
                     }
                 }
             },
-            'MySQL Server Image' {
+            'MySQL Server Image': {
                 echo  'Create MySQL VM Image'
 
                 dir('devpaas-vm/packer') {
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
 
-                    }
-                }
-            },
-            'NGINX Image': {
-                echo  'Create NGINX VM Image'
-
-                dir('devpaas-vm/packer') {
-                    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST $PACKER_DEBUG "    +
-                                "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
-                                "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
-                                "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
-                                "-var 'aws_region=$AWS_REGION' "                                                +
-                                "-var 'aws_vpc_id=$AWS_VPC_ID' "                                                +
-                                "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
-                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
-                                "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
-                                "images/nginx/packer-nginx-ubuntu.json"
                     }
                 }
             },
