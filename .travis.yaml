@@ -1,7 +1,7 @@
 branches:
   only:
     - master
-    - develop
+    - devpaas-vm-reorg
 
 env:
   matrix:
