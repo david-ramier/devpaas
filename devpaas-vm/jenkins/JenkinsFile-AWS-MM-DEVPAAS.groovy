@@ -38,8 +38,23 @@ node() {
 
         wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
             dir('devpaas-vm/terraform/providers/amazon-ebs/devpaas-distribute-vms/network') {
-                sh "terraform get  ."
-                sh "terraform plan ."
+                sh "terraform plan -var aws_ssh_key_name=$AWS_SSH_KEYPAIR_NAME -var aws_deployment_region=$AWS_REGION "                            +
+                        "-var vpc_cidr=$AWS_VPC_CDIR -var subnet_private_cidr=$AWS_SUBNET_PRIV_CIDR - var subnet_public_cidr=$AWS_SUBNET_PUB_CIDR " +
+                        "-var mm_public_ip=$MM_PUBLIC_IP "                                    +
+                        "-var jumpbox_instance_name=$AWS_JUMPBOX_INSTANCE_NAME -var jumpbox_image_id=$AWS_JUMPBOX_IMAGE_ID -var jumpbox_flavor_name=$AWS_JUMPBOX_FLAVOR_NAME "  +
+                        "-var revprx_instance_name=$AWS_REVPRX_INSTANCE_NAME -var revprx_image_id=$AWS_REVPRX_IMAGE_ID -var revprx_flavor_name=$AWS_REVPRX_FLAVOR_NAME "        +
+                        "-var fe_srv_instance_name=$AWS_FE_SRV_INSTANCE_NAME -var fe_srv_image_id=$AWS_FE_SRV_IMAGE_ID -var fe_srv_flavor_name=$AWS_FE_SRV_FLAVOR_NAME "        +
+                        "-var api_srv_instance_name=$AWS_API_SRV_INSTANCE_NAME -var api_srv_image_id=$AWS_API_SRV_IMAGE_ID -var api_srv_flavor_name=$AWS_API_SRV_FLAVOR_NAME "  +
+                        "-var db_instance_name=$AWS_DB_INSTANCE_NAME -var db_image_id=$AWS_DB_IMAGE_ID -var db_flavor_name=$AWS_DB_FLAVOR_NAME "
+
+                sh "terraform apply -var aws_ssh_key_name=$AWS_SSH_KEYPAIR_NAME -var aws_deployment_region=$AWS_REGION "                            +
+                        "-var vpc_cidr=$AWS_VPC_CDIR -var subnet_private_cidr=$AWS_SUBNET_PRIV_CIDR - var subnet_public_cidr=$AWS_SUBNET_PUB_CIDR " +
+                        "-var mm_public_ip=$MM_PUBLIC_IP "                                    +
+                        "-var jumpbox_instance_name=$AWS_JUMPBOX_INSTANCE_NAME -var jumpbox_image_id=$AWS_JUMPBOX_IMAGE_ID -var jumpbox_flavor_name=$AWS_JUMPBOX_FLAVOR_NAME "  +
+                        "-var revprx_instance_name=$AWS_REVPRX_INSTANCE_NAME -var revprx_image_id=$AWS_REVPRX_IMAGE_ID -var revprx_flavor_name=$AWS_REVPRX_FLAVOR_NAME "        +
+                        "-var fe_srv_instance_name=$AWS_FE_SRV_INSTANCE_NAME -var fe_srv_image_id=$AWS_FE_SRV_IMAGE_ID -var fe_srv_flavor_name=$AWS_FE_SRV_FLAVOR_NAME "        +
+                        "-var api_srv_instance_name=$AWS_API_SRV_INSTANCE_NAME -var api_srv_image_id=$AWS_API_SRV_IMAGE_ID -var api_srv_flavor_name=$AWS_API_SRV_FLAVOR_NAME "  +
+                        "-var db_instance_name=$AWS_DB_INSTANCE_NAME -var db_image_id=$AWS_DB_IMAGE_ID -var db_flavor_name=$AWS_DB_FLAVOR_NAME "
             }
         }
 
