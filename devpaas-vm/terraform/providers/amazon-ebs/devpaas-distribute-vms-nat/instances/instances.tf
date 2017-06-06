@@ -2,6 +2,9 @@
  *  List of instances
  */
 
+/* ********************************************************************** */
+/* JUMP BOX VM DEFINITION                                                 */
+/* ********************************************************************** */
 resource "aws_instance" "mm_devpaas_dv_jumpbox" {
 
   ami                     = "${var.jumpbox_image_id}"
@@ -9,8 +12,6 @@ resource "aws_instance" "mm_devpaas_dv_jumpbox" {
   subnet_id               = "${var.subnet_public_id}"
   key_name                = "${var.aws_ssh_key_name}"
   vpc_security_group_ids  = ["${var.sg_jumpbox_id}"]
-
-  associate_public_ip_address = true
 
   tags {
     Name = "${var.jumpbox_instance_name}"
@@ -25,6 +26,9 @@ resource "aws_eip_association" "mm_devpaas_eip_assoc" {
 
 }
 
+/* ********************************************************************** */
+/* REVERSE PROXY VM DEFINITION                                            */
+/* ********************************************************************** */
 resource "aws_instance" "mm_devpaas_dv_reverse_proxy" {
 
   ami                     = "${var.revprx_image_id}"
