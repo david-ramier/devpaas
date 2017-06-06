@@ -172,7 +172,7 @@ resource "aws_network_acl_rule" "mm_devpaas_acl_rule_in_dyn_ports" {
   rule_number     = 140
   protocol        = "tcp"
   rule_action     = "allow"
-  cidr_block      = "${var.mm_public_ip}/32"
+  cidr_block      = "0.0.0.0/0"
   from_port       = 1024
   to_port         = 65535
 

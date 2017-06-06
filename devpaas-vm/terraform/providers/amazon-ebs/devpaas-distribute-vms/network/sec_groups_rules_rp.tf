@@ -66,7 +66,20 @@ resource "aws_security_group_rule" "mm_devpaas_sg_rp_ig_https_from_all_internet"
 
 /* EGRESS RULES:                                            */
 
-/* - SECURITY GROUP RULE HTTP      on port  9000 to FE SG  */
+/* - EGRESS SECURITY GROUP RULE HTTP      on port  80 to all internet  */
+resource "aws_security_group_rule" "mm_devpaas_sg_rp_eg_http_80_to_all" {
+
+  type                      = "egress"
+  from_port                 = "80"
+  to_port                   = "80"
+  protocol                  = "tcp"
+
+  security_group_id         = "${aws_security_group.mm_devpaas_sg_rp.id}"
+  cidr_blocks               = ["0.0.0.0/0"]
+
+}
+
+/* - EGRESS SECURITY GROUP RULE HTTP      on port  9000 to FE SG  */
 resource "aws_security_group_rule" "mm_devpaas_sg_rp_eg_http_9000_to_sg_fe" {
 
   type                      = "egress"
@@ -79,7 +92,7 @@ resource "aws_security_group_rule" "mm_devpaas_sg_rp_eg_http_9000_to_sg_fe" {
 
 }
 
-/* - SECURITY GROUP RULE HTTP      on port  8080 to HE SG  */
+/* - EGRESS SECURITY GROUP RULE HTTP      on port  8080 to HE SG  */
 resource "aws_security_group_rule" "mm_devpaas_sg_rp_eg_http_8080_to_sg_he" {
 
   type                      = "egress"
@@ -92,7 +105,7 @@ resource "aws_security_group_rule" "mm_devpaas_sg_rp_eg_http_8080_to_sg_he" {
 
 }
 
-/* - SECURITY GROUP RULE HTTP      on port  8081 to HE SG  */
+/* - EGRESS SECURITY GROUP RULE HTTP      on port  8081 to HE SG  */
 resource "aws_security_group_rule" "mm_devpaas_sg_rp_eg_http_8081_to_sg_he" {
 
   type                      = "egress"
@@ -105,7 +118,7 @@ resource "aws_security_group_rule" "mm_devpaas_sg_rp_eg_http_8081_to_sg_he" {
 
 }
 
-/* - SECURITY GROUP RULE HTTP      on port  9000 to HE SG  */
+/* - EGRESS SECURITY GROUP RULE HTTP      on port  9000 to HE SG  */
 resource "aws_security_group_rule" "mm_devpaas_sg_rp_eg_http_9000_to_sg_he" {
 
   type                      = "egress"
