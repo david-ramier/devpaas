@@ -37,7 +37,20 @@ node() {
     stage('VPC Network Preparation') {
 
         wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-            dir('devpaas-vm/terraform/providers/amazon-ebs/devpaas-distribute-vms/network') {
+
+            dir('devpaas-vm/terraform/providers/amazon-ebs/devpaas-distribute-vms-nat/vpc') {
+
+                echo "Setting up the terraform remote state"
+
+                sh "terraform remote config "                                       +
+                        "-backend=s3 "                                              +
+                        "-backend-config=\"bucket=${AWS_S3_BUCKET_TF}\""            +
+                        "-backend-config=\"key=devpaas/distribute-vms-nat/vpc\""    +
+                        "-backend-config=\"region=${AWS_REGION}\""                  +
+                        "-backend-config=\"encrypt=true\""
+
+                echo "Launch terraform plan"
+
                 sh "terraform plan -var 'aws_ssh_key_name=$AWS_SSH_KEYPAIR_NAME' -var 'aws_deployment_region=$AWS_REGION' "                            +
                         "-var 'vpc_cidr=$AWS_VPC_CDIR' -var 'subnet_private_cidr=$AWS_SUBNET_PRIV_CIDR' -var 'subnet_public_cidr=$AWS_SUBNET_PUB_CIDR' " +
                         "-var 'mm_public_ip=$MM_PUBLIC_IP' "                                    +
@@ -46,6 +59,8 @@ node() {
                         "-var 'fe_srv_instance_name=$AWS_FE_SRV_INSTANCE_NAME'   -var 'fe_srv_image_id=$AWS_FE_SRV_IMAGE_ID'   -var 'fe_srv_flavor_name=$AWS_FE_SRV_FLAVOR_NAME' "        +
                         "-var 'api_srv_instance_name=$AWS_API_SRV_INSTANCE_NAME' -var 'api_srv_image_id=$AWS_API_SRV_IMAGE_ID' -var 'api_srv_flavor_name=$AWS_API_SRV_FLAVOR_NAME' "  +
                         "-var 'db_instance_name=$AWS_DB_INSTANCE_NAME'           -var 'db_image_id=$AWS_DB_IMAGE_ID'           -var 'db_flavor_name=$AWS_DB_FLAVOR_NAME' "
+
+                echo "Launch terraform apply"
 
                 sh "terraform apply -var 'aws_ssh_key_name=$AWS_SSH_KEYPAIR_NAME' -var 'aws_deployment_region=$AWS_REGION' "                            +
                         "-var 'vpc_cidr=$AWS_VPC_CDIR' -var 'subnet_private_cidr=$AWS_SUBNET_PRIV_CIDR' -var 'subnet_public_cidr=$AWS_SUBNET_PUB_CIDR' " +
@@ -68,7 +83,7 @@ node() {
 
                 dir('devpaas-vm/packer') {
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST $PACKER_DEBUG "    +
+                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "    +
                                 "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
                                 "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                                 "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
@@ -86,7 +101,7 @@ node() {
 
                 dir('devpaas-vm/packer'){
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST $PACKER_DEBUG "    +
+                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "    +
                             "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
                             "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                             "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
@@ -168,9 +183,25 @@ node() {
 
     stage('VMs Instantiation') {
 
+        wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+
+            dir('devpaas-vm/terraform/providers/amazon-ebs/devpaas-distribute-vms-nat/instances') {
+
+            }
+        }
+
     } //end of stage: VMs Instantiation
 
     stage('Services Test ') {
+
+        dir('devpaas-vm/terraform/providers/amazon-ebs/devpaas-distribute-vms-nat/vpc') {
+
+            echo "Testing VPC Objects"
+
+            echo "Testing VM Instances"
+
+
+        }
 
     } //end of stage: Services Test
 }
