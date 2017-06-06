@@ -1,6 +1,8 @@
 .DS_Store
 *.tar.gz
 devpaas-vm/packer/packer_cache/
+devpaas-vm/packer/packer_logs/
+.terraform
 virtualbox-*.box
 *.vdi
 *.tfstate
