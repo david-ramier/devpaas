@@ -106,7 +106,7 @@ node() {
                                 "-var 'aws_vpc_id=$vpcId' "                                                     +
                                 "-var 'aws_subnet_id=$subnetPublicId' "                                         +
                                 "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
-                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
+                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE' "                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/nginx/packer-nginx-ubuntu.json"
                     }
@@ -126,7 +126,7 @@ node() {
                             "-var 'aws_vpc_id=$vpcId' "                                                     +
                             "-var 'aws_subnet_id=$subnetPublicId' "                                         +
                             "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
-                            "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
+                            "-var 'aws_source_image=$AWS_SOURCE_IMAGE' "                                     +
                             "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                             "images/jenkins/packer-jenkins-ubuntu.json"
                     }
@@ -147,7 +147,7 @@ node() {
                                 "-var 'aws_vpc_id=$vpcId' "                                                     +
                                 "-var 'aws_subnet_id=$subnetPublicId' "                                         +
                                 "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
-                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
+                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE' "                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/nexus/packer-nexus3-ubuntu.json"
                     }
@@ -167,7 +167,7 @@ node() {
                                 "-var 'aws_vpc_id=$vpcId' "                                                     +
                                 "-var 'aws_subnet_id=$subnetPublicId' "                                         +
                                 "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
-                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
+                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE' "                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/sonarqube/packer-sonarqube-ubuntu.json"
                     }
@@ -196,7 +196,7 @@ node() {
                                 "-var 'aws_vpc_id=$vpcId' "                                                     +
                                 "-var 'aws_subnet_id=$subnetPublicId' "                                         +
                                 "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
-                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
+                                "-var 'aws_source_image=$AWS_SOURCE_IMAGE' "                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/elk/packer-elk-ubuntu.json"
                     }
