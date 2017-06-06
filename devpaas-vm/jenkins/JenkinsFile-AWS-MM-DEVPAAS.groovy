@@ -44,6 +44,10 @@ node() {
 
             dir('devpaas-vm/terraform/providers/amazon-ebs/devpaas-distribute-vms-nat/vpc') {
 
+                echo "Launch terraform init"
+
+                sh "terraform init"
+
                 echo "Launch terraform plan"
 
                 sh "terraform plan -var 'aws_ssh_key_name=$AWS_SSH_KEYPAIR_NAME' -var 'aws_deployment_region=$AWS_REGION' "                            +
