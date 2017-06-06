@@ -44,15 +44,6 @@ node() {
 
             dir('devpaas-vm/terraform/providers/amazon-ebs/devpaas-distribute-vms-nat/vpc') {
 
-                echo "Setting up the terraform remote state"
-
-                sh "terraform remote config "                                       +
-                        "-backend=s3 "                                              +
-                        "-backend-config=\"bucket=${AWS_S3_BUCKET_TF}\""            +
-                        "-backend-config=\"key=devpaas/distribute-vms-nat/vpc\""    +
-                        "-backend-config=\"region=${AWS_REGION}\""                  +
-                        "-backend-config=\"encrypt=true\""
-
                 echo "Launch terraform plan"
 
                 sh "terraform plan -var 'aws_ssh_key_name=$AWS_SSH_KEYPAIR_NAME' -var 'aws_deployment_region=$AWS_REGION' "                            +
