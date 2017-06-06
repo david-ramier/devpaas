@@ -2,6 +2,10 @@
 
 node() {
 
+    def vpcId           = null
+    def subnetPublicId  = null
+    def subnetPrivateId = null
+
     stage('Checkout & Environment Prep'){
 
         // TODO: change credentialId
@@ -70,6 +74,21 @@ node() {
                         "-var 'fe_srv_instance_name=$AWS_FE_SRV_INSTANCE_NAME'   -var 'fe_srv_image_id=$AWS_FE_SRV_IMAGE_ID'   -var 'fe_srv_flavor_name=$AWS_FE_SRV_FLAVOR_NAME' "        +
                         "-var 'api_srv_instance_name=$AWS_API_SRV_INSTANCE_NAME' -var 'api_srv_image_id=$AWS_API_SRV_IMAGE_ID' -var 'api_srv_flavor_name=$AWS_API_SRV_FLAVOR_NAME' "  +
                         "-var 'db_instance_name=$AWS_DB_INSTANCE_NAME'           -var 'db_image_id=$AWS_DB_IMAGE_ID'           -var 'db_flavor_name=$AWS_DB_FLAVOR_NAME' "
+
+                vpcId           = sh(script: "terraform output aws_mm_devpaas_dv_vpc_id", returnStdout: true).trim()
+
+                echo "VPC ID: $vpcId"
+
+                subnetPublicId  = sh(script: "terraform output aws_mm_devpaas_dv_sb_public_id",  returnStdout: true).trim()
+
+                echo "Public Subnet ID: $subnetPublicId"
+
+                subnetPrivateId = sh(script: "terraform output aws_mm_devpaas_dv_sb_private_id", returnStdout: true).trim()
+
+                echo "Private Subnet ID: $subnetPrivateId"
+
+                secGroupRevProxyId = sh(script: "terraform output aws_mm_devpaas_dv_sg_revproxy_id", returnStdout: true).trim()
+
             }
         }
 
@@ -88,8 +107,9 @@ node() {
                                 "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                                 "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
                                 "-var 'aws_region=$AWS_REGION' "                                                +
-                                "-var 'aws_vpc_id=$AWS_VPC_ID' "                                                +
-                                "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
+                                "-var 'aws_vpc_id=$vpcId' "                                                     +
+                                "-var 'aws_subnet_id=$subnetPublicId' "                                         +
+                                "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
                                 "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/nginx/packer-nginx-ubuntu.json"
@@ -106,8 +126,9 @@ node() {
                             "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                             "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
                             "-var 'aws_region=$AWS_REGION' "                                                +
-                            "-var 'aws_vpc_id=$AWS_VPC_ID' "                                                +
-                            "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
+                            "-var 'aws_vpc_id=$vpcId' "                                                     +
+                            "-var 'aws_subnet_id=$subnetPublicId' "                                         +
+                            "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
                             "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
                             "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                             "images/jenkins/packer-jenkins-ubuntu.json"
@@ -125,8 +146,9 @@ node() {
                                 "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                                 "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
                                 "-var 'aws_region=$AWS_REGION' "                                                +
-                                "-var 'aws_vpc_id=$AWS_VPC_ID' "                                                +
-                                "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
+                                "-var 'aws_vpc_id=$vpcId' "                                                     +
+                                "-var 'aws_subnet_id=$subnetPublicId' "                                         +
+                                "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
                                 "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/nexus/packer-nexus3-ubuntu.json"
@@ -143,8 +165,9 @@ node() {
                                 "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                                 "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
                                 "-var 'aws_region=$AWS_REGION' "                                                +
-                                "-var 'aws_vpc_id=$AWS_VPC_ID' "                                                +
-                                "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
+                                "-var 'aws_vpc_id=$vpcId' "                                                     +
+                                "-var 'aws_subnet_id=$subnetPublicId' "                                         +
+                                "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
                                 "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/sonarqube/packer-sonarqube-ubuntu.json"
@@ -170,8 +193,9 @@ node() {
                                 "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                                 "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
                                 "-var 'aws_region=$AWS_REGION' "                                                +
-                                "-var 'aws_vpc_id=$AWS_VPC_ID' "                                                +
-                                "-var 'aws_subnet_id=$AWS_SUBNET_ID' "                                          +
+                                "-var 'aws_vpc_id=$vpcId' "                                                     +
+                                "-var 'aws_subnet_id=$subnetPublicId' "                                         +
+                                "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
                                 "-var 'aws_source_image=$AWS_SOURCE_IMAGE'"                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/elk/packer-elk-ubuntu.json"
