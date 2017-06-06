@@ -179,7 +179,7 @@
     {
       "type": "shell",
       "scripts": [
-          "scripts/jenkins/jenkins.sh"
+          "scripts/jenkins/jenkins-ubuntu.sh"
       ]
     },
 	{
