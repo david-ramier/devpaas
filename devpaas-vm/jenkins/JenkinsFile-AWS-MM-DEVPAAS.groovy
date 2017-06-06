@@ -97,7 +97,8 @@ node() {
 
                 dir('devpaas-vm/packer') {
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "    +
+                        sh "export PACKER_LOG=1 && export PACKER_LOG_PATH=\"packer_log/packer-nginx-ubuntu.log \" && " +
+                                "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "                 +
                                 "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
                                 "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                                 "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
@@ -116,7 +117,8 @@ node() {
 
                 dir('devpaas-vm/packer'){
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "    +
+                        sh "export PACKER_LOG=1 && export PACKER_LOG_PATH=\"packer_log/packer-jenkins-ubuntu.log \" && " +
+                            "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "                 +
                             "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
                             "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                             "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
@@ -136,7 +138,8 @@ node() {
 
                 dir('devpaas-vm/packer') {
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "    +
+                        sh "export PACKER_LOG=1 && export PACKER_LOG_PATH=\"packer_log/packer-nexus3-ubuntu.log \" && " +
+                                "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "                 +
                                 "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
                                 "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                                 "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
@@ -155,7 +158,8 @@ node() {
 
                 dir('devpaas-vm/packer') {
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "    +
+                        sh "export PACKER_LOG=1 && export PACKER_LOG_PATH=\"packer_log/packer-sonarqube-ubuntu.log \" && "+
+                                "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "                 +
                                 "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
                                 "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                                 "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
@@ -183,7 +187,8 @@ node() {
 
                 dir('devpaas-vm/packer') {
                     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-                        sh "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "    +
+                        sh "export PACKER_LOG=1 && export PACKER_LOG_PATH=\"packer_log/packer-elk-ubuntu.log \" && "+
+                                "packer build -machine-readable --only=$PACKER_PROVIDERS_LIST "                 +
                                 "-var 'aws_ssh_username=$AWS_SSH_USERNAME' "                                    +
                                 "-var 'aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME' "                            +
                                 "-var 'aws_ssh_private_key_file=$AWS_SSH_PRIVATE_KEY_FILE' "                    +
