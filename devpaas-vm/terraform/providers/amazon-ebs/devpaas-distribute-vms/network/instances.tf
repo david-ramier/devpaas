@@ -25,7 +25,7 @@ resource "aws_instance" "mm_devpaas_dv_jumpbox" {
 
 }
 
-resource "aws_eip_association" "mm_devpaas_eip_assoc" {
+resource "aws_eip_association" "mm_devpaas_eip_jb_assoc" {
 
   instance_id   = "${aws_instance.mm_devpaas_dv_jumpbox.id}"
   allocation_id = "${aws_eip.mm_devpaas_admin_eip.id}"                      //"${var.mm_devpaas_eip_id}"
