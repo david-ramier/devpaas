@@ -2,9 +2,10 @@
 
 node() {
 
-    def vpcId           = null
-    def subnetPublicId  = null
-    def subnetPrivateId = null
+    def vpcId                       = null
+    def subnetPublicId              = null
+    def subnetPrivateId             = null
+    def secGroupPackerBuilderId     = null
 
     stage('Checkout & Environment Prep'){
 
@@ -82,7 +83,7 @@ node() {
 
                 echo "Private Subnet ID: $subnetPrivateId"
 
-                secGroupRevProxyId = sh(script: "terraform output aws_mm_devpaas_dv_sg_revproxy_id", returnStdout: true).trim()
+                secGroupPackerBuilderId = sh(script: "terraform output aws_mm_devpaas_dv_sg_packerbuilder_id", returnStdout: true).trim()
 
             }
         }
@@ -106,7 +107,7 @@ node() {
                                 "-var 'aws_region=$AWS_REGION' "                                                +
                                 "-var 'aws_vpc_id=$vpcId' "                                                     +
                                 "-var 'aws_subnet_id=$subnetPublicId' "                                         +
-                                "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
+                                "-var 'aws_security_groups=$secGroupPackerBuilderId' "                               +
                                 "-var 'aws_source_image=$AWS_SOURCE_IMAGE' "                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/nginx/packer-nginx-ubuntu.json"
@@ -126,7 +127,7 @@ node() {
                             "-var 'aws_region=$AWS_REGION' "                                                +
                             "-var 'aws_vpc_id=$vpcId' "                                                     +
                             "-var 'aws_subnet_id=$subnetPublicId' "                                         +
-                            "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
+                            "-var 'aws_security_groups=$secGroupPackerBuilderId' "                               +
                             "-var 'aws_source_image=$AWS_SOURCE_IMAGE' "                                     +
                             "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                             "images/jenkins/packer-jenkins-ubuntu.json"
@@ -147,7 +148,7 @@ node() {
                                 "-var 'aws_region=$AWS_REGION' "                                                +
                                 "-var 'aws_vpc_id=$vpcId' "                                                     +
                                 "-var 'aws_subnet_id=$subnetPublicId' "                                         +
-                                "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
+                                "-var 'aws_security_groups=$secGroupPackerBuilderId' "                               +
                                 "-var 'aws_source_image=$AWS_SOURCE_IMAGE' "                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/nexus/packer-nexus3-ubuntu.json"
@@ -167,7 +168,7 @@ node() {
                                 "-var 'aws_region=$AWS_REGION' "                                                +
                                 "-var 'aws_vpc_id=$vpcId' "                                                     +
                                 "-var 'aws_subnet_id=$subnetPublicId' "                                         +
-                                "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
+                                "-var 'aws_security_groups=$secGroupPackerBuilderId' "                               +
                                 "-var 'aws_source_image=$AWS_SOURCE_IMAGE' "                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/sonarqube/packer-sonarqube-ubuntu.json"
@@ -196,7 +197,7 @@ node() {
                                 "-var 'aws_region=$AWS_REGION' "                                                +
                                 "-var 'aws_vpc_id=$vpcId' "                                                     +
                                 "-var 'aws_subnet_id=$subnetPublicId' "                                         +
-                                "-var 'aws_security_groups=$secGroupRevProxyId' "                               +
+                                "-var 'aws_security_groups=$secGroupPackerBuilderId' "                               +
                                 "-var 'aws_source_image=$AWS_SOURCE_IMAGE' "                                     +
                                 "-var 'aws_instance_type=$AWS_INSTANCE_TYPE' "                                  +
                                 "images/elk/packer-elk-ubuntu.json"
