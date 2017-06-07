@@ -135,6 +135,18 @@ resource "aws_security_group_rule" "mm_devpaas_sg_pb_eg_http_8080_to_all" {
 
 }
 
+/* - EGRESS SECURITY GROUP RULE HTTPS      on port 443 to all internet */
+resource "aws_security_group_rule" "mm_devpaas_sg_pb_eg_https_443_to_all" {
+
+  type                      = "egress"
+  from_port                 = "443"
+  to_port                   = "443"
+  protocol                  = "tcp"
+
+  security_group_id         = "${aws_security_group.mm_devpaas_sg_pb.id}"
+  cidr_blocks               = ["0.0.0.0/0"]
+
+}
 
 /* ********************************************************************** */
 /* END SECURITY GROUP FOR REVERSE PROXY VMs  (NGINX / APACHE)             */
