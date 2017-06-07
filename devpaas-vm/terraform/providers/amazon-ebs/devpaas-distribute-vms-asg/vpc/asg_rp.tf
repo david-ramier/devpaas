@@ -50,7 +50,7 @@ resource "aws_elb" "mm_devpaas_elb" {
 
   name                = "${var.project_name}-elb"
   security_groups     = ["${aws_security_group.mm_devpaas_sg_elb.id}"]
-  availability_zones  = ["${var.aws_deployment_region}a"]
+  subnets             = ["${aws_subnet.mm_devpaas_sb_public}"]
 
   health_check {
     healthy_threshold   = 2
