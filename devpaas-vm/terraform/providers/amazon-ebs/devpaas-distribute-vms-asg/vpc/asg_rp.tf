@@ -32,7 +32,7 @@ resource "aws_autoscaling_group" "mm_devpaas_asg_rp" {
   min_size          = 2
   max_size          = 10
 
-  load_balancers    = ["${aws_elb.example.name}"]
+  load_balancers    = ["${aws_elb.mm_devpaas_elb.name}"]
   health_check_type = "ELB"
 
   tag {
