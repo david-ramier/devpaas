@@ -28,6 +28,7 @@ resource "aws_autoscaling_group" "mm_devpaas_asg_rp" {
 
   launch_configuration  = "${aws_launch_configuration.mm_devpaas_lc_rp.id}"
   availability_zones    = ["${var.aws_deployment_region}a"]
+  vpc_zone_identifier   = ["${aws_subnet.mm_devpaas_sb_public.id}"]
 
   min_size          = 2
   max_size          = 10
