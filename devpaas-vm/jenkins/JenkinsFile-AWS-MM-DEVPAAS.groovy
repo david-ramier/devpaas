@@ -85,10 +85,10 @@ node() {
 
                 secGroupPackerBuilderId = sh(script: "terraform output aws_mm_devpaas_dv_sg_packerbuilder_id", returnStdout: true).trim()
 
+                echo "Security Group for Packer builder VMs: $secGroupPackerBuilderId"
+
             }
         }
-
-
     } //end of stage: VPC Network Preparation
 
     stage('Golden Image Creation') {
@@ -114,7 +114,7 @@ node() {
                     }
                 }
             }, */
-            'Jenkins Master Image': {
+            "Jenkins Master Image": {
                 echo  'Create Jenkins Master VM Image'
 
                 dir('devpaas-vm/packer'){
