@@ -38,7 +38,7 @@ resource "aws_security_group_rule" "mm_devpaas_sg_rp_ig_ssh_from_sg_jb" {
 
 }
 
-# - SECURITY GROUP RULE HTTP      on port   80 from all internet ip
+# - SECURITY GROUP RULE HTTP      on port   80 from from ELB SG
 resource "aws_security_group_rule" "mm_devpaas_sg_rp_ig_http_from_all_internet" {
 
   type                      = "ingress"
@@ -47,11 +47,11 @@ resource "aws_security_group_rule" "mm_devpaas_sg_rp_ig_http_from_all_internet" 
   protocol                  = "tcp"
 
   security_group_id         = "${aws_security_group.mm_devpaas_sg_rp.id}"
-  cidr_blocks               = ["0.0.0.0/0"]
+  source_security_group_id  = "${aws_security_group.mm_devpaas_sg_elb.id}"
 
 }
 
-# - SECURITY GROUP RULE HTTPS      on port   443 from all internet ip
+# - SECURITY GROUP RULE HTTPS      on port   443 from ELB SG
 resource "aws_security_group_rule" "mm_devpaas_sg_rp_ig_https_from_all_internet" {
 
   type                      = "ingress"
@@ -60,7 +60,7 @@ resource "aws_security_group_rule" "mm_devpaas_sg_rp_ig_https_from_all_internet"
   protocol                  = "tcp"
 
   security_group_id         = "${aws_security_group.mm_devpaas_sg_rp.id}"
-  cidr_blocks               = ["0.0.0.0/0"]
+  source_security_group_id  = "${aws_security_group.mm_devpaas_sg_elb.id}"
 
 }
 
