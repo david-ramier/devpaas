@@ -1,10 +1,12 @@
-/*
-    List of Input variables
- */
-variable aws_ssh_key_name               {
-  default     = ""
-  description = ""
+# --------------------------------------------------------------------------------------
+#    List of Input variables
+# --------------------------------------------------------------------------------------
+
+variable "project_name"           {
+  default     = "mm-devpaas-dv-nat"
+  description = "Name of the project for this infrastructure"
 }
+
 
 variable aws_deployment_region      {
   default     = "us-east-1"
