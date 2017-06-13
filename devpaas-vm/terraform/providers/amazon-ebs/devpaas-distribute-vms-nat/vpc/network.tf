@@ -1,6 +1,7 @@
-/* ************************************************************************************ */
-/*              EIP Definition                                                          */
-/* ************************************************************************************ */
+# --------------------------------------------------------------------------------------
+#              EIP Definition
+# --------------------------------------------------------------------------------------
+
 resource "aws_eip" "mm_devpaas_nat_eip" {
   vpc = true
 }
@@ -9,9 +10,9 @@ resource "aws_eip" "mm_devpaas_admin_eip" {
   vpc = true
 }
 
-/* ************************************************************************************ */
-/*              VPC Definition                                                          */
-/* ************************************************************************************ */
+# --------------------------------------------------------------------------------------
+#              VPC Definition
+# --------------------------------------------------------------------------------------
 
 resource "aws_vpc" "mm_devpaas_vpc" {
 
@@ -25,9 +26,9 @@ resource "aws_vpc" "mm_devpaas_vpc" {
   }
 }
 
-/* ************************************************************************************ */
-/*              INTERNET GATEWAY (IGW) Definition                                       */
-/* ************************************************************************************ */
+# --------------------------------------------------------------------------------------
+#              INTERNET GATEWAY (IGW) Definition
+# --------------------------------------------------------------------------------------
 
 resource "aws_internet_gateway" "mm_devpaas_igw" {
 
@@ -38,17 +39,16 @@ resource "aws_internet_gateway" "mm_devpaas_igw" {
   }
 }
 
-/* ************************************************************************************ */
-/*              SUBNETs                                                                 */
-/* ************************************************************************************ */
+# --------------------------------------------------------------------------------------
+#              SUBNETs
+# --------------------------------------------------------------------------------------
 
-/* SUBNET Definition for Public addresses */
+# SUBNET Definition for Public addresses
 resource "aws_subnet" "mm_devpaas_sb_public" {
 
   vpc_id                  = "${aws_vpc.mm_devpaas_vpc.id}"
   cidr_block              = "${var.subnet_public_cidr}"
   availability_zone       = "${var.aws_deployment_region}a"
-
   map_public_ip_on_launch = true
 
   tags {
@@ -56,7 +56,7 @@ resource "aws_subnet" "mm_devpaas_sb_public" {
   }
 }
 
-/* SUBNET Definition for Private addresses */
+# SUBNET Definition for Private addresses
 resource "aws_subnet" "mm_devpaas_sb_private" {
   vpc_id            = "${aws_vpc.mm_devpaas_vpc.id}"
   cidr_block        = "${var.subnet_private_cidr}"
@@ -68,11 +68,11 @@ resource "aws_subnet" "mm_devpaas_sb_private" {
 }
 
 
-/* ************************************************************************************ */
-/*              NAT GATEWAY                                                             */
-/* ************************************************************************************ */
+# --------------------------------------------------------------------------------------
+#              NAT GATEWAY
+# --------------------------------------------------------------------------------------
 
-/* NAT Gateway */
+# NAT Gateway
 resource "aws_nat_gateway" "mm_devpaas_natgw" {
   allocation_id = "${aws_eip.mm_devpaas_nat_eip.id}"
   subnet_id     = "${aws_subnet.mm_devpaas_sb_public.id}"
@@ -80,11 +80,11 @@ resource "aws_nat_gateway" "mm_devpaas_natgw" {
   depends_on = ["aws_internet_gateway.mm_devpaas_igw"]
 }
 
-/* ************************************************************************************ */
-/*              ROUTING TABLES & ROUTES                                                 */
-/* ************************************************************************************ */
+# --------------------------------------------------------------------------------------
+#              ROUTING TABLES & ROUTES
+# --------------------------------------------------------------------------------------
 
-// RouteTable Public
+# RouteTable Public
 resource "aws_route_table" "mm_devpaas_rt_public" {
 
   vpc_id = "${aws_vpc.mm_devpaas_vpc.id}"
@@ -94,7 +94,7 @@ resource "aws_route_table" "mm_devpaas_rt_public" {
   }
 }
 
-// Route to IGW Gateway
+# Route to IGW Gateway
 resource "aws_route" "mm_devpaas_route_public" {
 
   route_table_id          = "${aws_route_table.mm_devpaas_rt_public.id}"
@@ -103,7 +103,7 @@ resource "aws_route" "mm_devpaas_route_public" {
 
 }
 
-// Route Table association: Route Table Public <--> Public Subnet
+# Route Table association: Route Table Public <--> Public Subnet
 resource "aws_route_table_association" "mm_devpaas_rta_sbpublic" {
 
   route_table_id  = "${aws_route_table.mm_devpaas_rt_public.id}"
@@ -112,7 +112,7 @@ resource "aws_route_table_association" "mm_devpaas_rta_sbpublic" {
 }
 
 
-// RouteTable Private
+# RouteTable Private
 resource "aws_route_table" "mm_devpaas_rt_private" {
 
   vpc_id = "${aws_vpc.mm_devpaas_vpc.id}"
@@ -122,14 +122,14 @@ resource "aws_route_table" "mm_devpaas_rt_private" {
   }
 }
 
-// Route to the NAT Gateway
+# Route to the NAT Gateway
 resource "aws_route" "mm_devpaas_route_private" {
   route_table_id          = "${aws_route_table.mm_devpaas_rt_private.id}"
   gateway_id              = "${aws_nat_gateway.mm_devpaas_natgw.id}"
   destination_cidr_block  = "0.0.0.0/0"
 }
 
-// Route Table association: Route Table Private <--> Private Subnet
+# Route Table association: Route Table Private <--> Private Subnet
 resource "aws_route_table_association" "mm_devpaas_rta_sbprivate" {
 
   route_table_id  = "${aws_route_table.mm_devpaas_rt_private.id}"
