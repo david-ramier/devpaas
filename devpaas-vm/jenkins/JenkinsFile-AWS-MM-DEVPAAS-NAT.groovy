@@ -32,7 +32,7 @@ node() {
 
         echo "Setting up Terraform"
 
-        def terraformfHome = tool name: 'terraform-0.9.6', type: 'org.jenkinsci.plugins.terraform.TerraformInstallation'
+        def terraformfHome = tool name: 'terraform-0.9.8', type: 'org.jenkinsci.plugins.terraform.TerraformInstallation'
         env.PATH = "${terraformfHome}:${env.PATH}"
 
 
@@ -91,9 +91,10 @@ node() {
         }
     } //end of stage: VPC Network Preparation
 
+
     stage('Golden Image Creation') {
+        /*
         parallel(
-            /*
             'NGINX Image': {
                 echo  'Create NGINX VM Image'
 
@@ -113,7 +114,7 @@ node() {
                                 "images/nginx/packer-nginx-ubuntu.json"
                     }
                 }
-            }, */
+            },
             "Jenkins Master Image": {
                 echo  'Create Jenkins Master VM Image'
 
@@ -134,7 +135,7 @@ node() {
                     }
                 }
 
-            } /*,
+            },
             'Artifactory Image': {
                 echo  'Create Nexus VM Image'
 
@@ -203,8 +204,9 @@ node() {
                                 "images/elk/packer-elk-ubuntu.json"
                     }
                 }
-            }*/
+            }
         )
+        */
     } //end of stage: Specialized Image Creation
 
     stage('VMs Instantiation') {
