@@ -1,10 +1,10 @@
-/*
-    List of Input variables
- */
+# --------------------------------------------------------------------------------------
+#    List of Input variables
+# --------------------------------------------------------------------------------------
 
 variable "aws_deployment_region"  {
-  default = "us-east-1"
-  description = ""
+  default = "eu-west-1"
+  description = "AWS Region in which this infrastructure will be deployed"
 }
 
 variable "vpc_cidr"               {
@@ -29,17 +29,19 @@ variable "mm_public_ip"           {
 }
 
 
-
-/* Instances variable */
+# --------------------------------------------------------------------------------------
+# Instances variable
+# --------------------------------------------------------------------------------------
 variable aws_ssh_key_name               {
   default     = ""
   description = ""
 }
 
-
-/* JUMPBOX VM VARIABLES */
+# --------------------------------------------------------------------------------------
+# JUMPBOX VM VARIABLES
+# --------------------------------------------------------------------------------------
 variable "jumpbox_instance_name"    {
-  default     = ""
+  default     = "mm-devpaas-jb"
   description = ""
 }
 
@@ -53,10 +55,11 @@ variable "jumpbox_flavor_name"   {
   description = ""
 }
 
-
-/* REVERSE-PROXY VM VARIABLES */
+# --------------------------------------------------------------------------------------
+# REVERSE-PROXY VM VARIABLES
+# --------------------------------------------------------------------------------------
 variable "revprx_instance_name"         {
-  default     = ""
+  default     = "mm-devpaas-rp"
   description = ""
 }
 
@@ -70,9 +73,11 @@ variable "revprx_flavor_name"    {
   description = ""
 }
 
-
-/* FRON-END VM VARIABLES */
+# --------------------------------------------------------------------------------------
+# FRON-END VM VARIABLES
+# --------------------------------------------------------------------------------------
 variable "fe_srv_instance_name" {
+  default     = "mm-devpaas-fe"
   description = ""
 }
 
@@ -85,10 +90,11 @@ variable "fe_srv_flavor_name"    {
   description = ""
 }
 
-
-/* API VM VARIABLES */
+# --------------------------------------------------------------------------------------
+# API VM VARIABLES
+# --------------------------------------------------------------------------------------
 variable "api_srv_instance_name" {
-  default     = ""
+  default     = "mm-devpaas-he"
   description = ""
 }
 
@@ -101,9 +107,11 @@ variable "api_srv_flavor_name"    {
   description = ""
 }
 
-
-/* DB VM VARIABLES */
+# --------------------------------------------------------------------------------------
+# DB VM VARIABLES
+# --------------------------------------------------------------------------------------
 variable "db_instance_name" {
+  default     = "mm-devpaas-db"
   description = ""
 }
 
