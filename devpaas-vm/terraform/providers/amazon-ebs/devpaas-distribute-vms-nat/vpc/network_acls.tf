@@ -1,15 +1,15 @@
-/*  This file describe the Network ACLs  */
-
-
 # --------------------------------------------------------------------------------------
 #              NETWORK ACL Definition
 # --------------------------------------------------------------------------------------
+
 resource "aws_default_network_acl" "mm_devpaas_nacl_default" {
   default_network_acl_id = "${aws_vpc.mm_devpaas_vpc.default_network_acl_id}"
 
 }
 
-#  NETWORK ACL RULES
+# --------------------------------------------------------------------------------------
+#              NETWORK ACL RULES Definition
+# --------------------------------------------------------------------------------------
 
 # INGRESS RULES
 # Allow inbound http traffic on 80
@@ -60,7 +60,7 @@ resource "aws_network_acl_rule" "mm_devpaas_acl_rule_in_ssh_22" {
 }
 
 # Allow return outbound traffic on dynamic ports
-# TODO: Replicate this for a return outbound traffic towards a specific IP that I want to connect to in order to reach 3rd Party Endpoints
+# TODO: Replicate this rules for a return outbound traffic towards a specific IP that I want to connect to in order to reach 3rd Party Endpoints
 resource "aws_network_acl_rule" "mm_devpaas_acl_rule_in_dyn_ports" {
 
   rule_number     = 140
