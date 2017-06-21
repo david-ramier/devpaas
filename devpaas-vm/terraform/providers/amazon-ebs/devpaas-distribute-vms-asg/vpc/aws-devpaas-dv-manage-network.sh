@@ -11,9 +11,11 @@ export TF_LOG=TRACE
 
 echo '****** Retrieve your Public ip in order to secure the SSH connectivity to AWS to only your IP ******'
 MM_PUBLIC_IP="$(dig @ns1.google.com -t txt o-o.myaddr.1.google.com +short)"
+MM_PUBLIC_IP=80.4.184.143
 
 echo "Your Public IP address is: $MM_PUBLIC_IP"
 
+terraform init
 
 export AWS_SSH_KEY=$1
 

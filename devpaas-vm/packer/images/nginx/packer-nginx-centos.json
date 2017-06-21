@@ -5,9 +5,9 @@
 
     "home":                     "{{env `HOME`}}",
 
-    "instance_name":            "mm-devpaas-base-ubuntu-v{{isotime \"20060102-0101\"}}",
-    "image_name":               "mm-devpaas-base-ubuntu-v{{isotime \"20060102-0101\"}}",
-    "image_description":        "MM DevPaas Jenkins Ubuntu 16.04 VM Image",
+    "instance_name":            "mm-devpaas-nginx-centos7-v{{isotime \"20060102-0101\"}}",
+    "image_name":               "mm-devpaas-nginx-centos7-v{{isotime \"20060102-0101\"}}",
+    "image_description":        "MM DevPaas NGINX Centos 7 VM Image",
     "image_version":            "0.1",
 
     "aws_ssh_username":         "",
@@ -76,7 +76,7 @@
     },
     {
       "type": "virtualbox-iso",
-      "guest_os_type":      "Ubuntu_64",
+      "guest_os_type":      "RedHat_64",
       "format":             "ova",
       "headless":           true,
       "http_directory":     "http",
@@ -88,34 +88,19 @@
       "ssh_wait_timeout":   "10000s",
       "ssh_pty" :           true,
 
-      "iso_checksum_type":  "md5",
-      "iso_checksum":       "23e97cd5d4145d4105fbf29878534049",
-      "iso_url":            "http://releases.ubuntu.com/16.04/ubuntu-16.04-server-amd64.iso",
+      "iso_checksum_type":  "sha256",
+      "iso_checksum":       "27bd866242ee058b7a5754e83d8ee8403e216b93d130d800852a96f41c34d86a",
+      "iso_urls": [
+        "CentOS-7-x86_64-Minimal-1511.iso",
+        "http://mirror.switch.ch/ftp/mirror/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1611.iso"
+      ],
 
       "boot_wait": "10s",
       "boot_command": [
-        "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "/install/vmlinuz<wait>",
-        " auto<wait>",
-        " console-setup/ask_detect=false<wait>",
-        " console-setup/layoutcode=us<wait>",
-        " console-setup/modelcode=pc105<wait>",
-        " debian-installer=en_US<wait>",
-        " fb=false<wait>",
-        " initrd=/install/initrd.gz<wait>",
-        " kbd-chooser/method=us<wait>",
-        " keyboard-configuration/layout=USA<wait>",
-        " keyboard-configuration/variant=USA<wait>",
-        " locale=en_US<wait>",
-        " netcfg/get_hostname=mm-devpaas-jenkins-ubuntu<wait>",
-        " netcfg/get_domain=marmac.labs<wait>",
-        " noapic<wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
-        " -- <wait>",
-        "<enter><wait>"
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
       ],
 
-      "shutdown_command":   "echo 'packer' | sudo -S shutdown -P now",
+      "shutdown_command":   "echo 'packer'|sudo -S /sbin/halt -h -p",
       "virtualbox_version_file":  ".vbox_version",
       "guest_additions_path":     "VBoxGuestAdditions_{{.Version}}.iso",
       "vm_name":                  "{{user `instance_name`}}",
@@ -130,7 +115,7 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/virtualbox/virtualbox-ubuntu.sh",
+        "scripts/virtualbox/virtualbox-centos.sh",
         "scripts/vagrant.sh"
       ],
       "execute_command": "{{.Vars}} sudo -S -E bash '{{.Path}}'",
@@ -138,19 +123,9 @@
     },
     {
       "type":   "shell",
-      "inline": [
-        "echo '****** Preparing /tmp directories'",
-        "mkdir /tmp/jenkins",
-        "mkdir /tmp/jenkins/scripts",
-        "mkdir /tmp/jenkins/resources",
-        "mkdir /tmp/jenkins/jobs",
-        "mkdir /tmp/jenkins/tests"
-      ]
-    },
-    {
-      "type":   "shell",
       "scripts": [
-        "scripts/serverspec/create-serverspec-temp-dirs.sh"
+        "scripts/serverspec/create-serverspec-temp-dirs.sh",
+        "scripts/nginx/create-nginx-temp-dirs.sh"
       ]
     },
     {
@@ -158,67 +133,36 @@
       "source":       "resources/serverspec/configs/",
       "destination":  "/tmp/serverspec/"
     },
-	{
+    {
       "type":         "file",
-      "source":       "resources/jenkins/configs/",
-      "destination":  "/tmp/jenkins/resources/"
+      "source":       "resources/nginx/configs/",
+      "destination":  "/tmp/nginx/configs/"
     },
     {
       "type":         "file",
-      "source":       "resources/jenkins/jobs/",
-      "destination":  "/tmp/jenkins/jobs/"
-    },
-    {
-      "type":         "file",
-      "source":       "resources/jenkins/tests/",
-      "destination":  "/tmp/jenkins/tests/"
+      "source":       "resources/nginx/tests/",
+      "destination":  "/tmp/nginx/tests/"
     },
     {
       "type": "shell",
-      "scripts": [
-        "scripts/java/java-jdk-ubuntu.sh",
-        "scripts/graphviz/graphviz-ubuntu.sh",
-        "scripts/git/git-ubuntu.sh"
+      "script": "scripts/nginx/nginx-centos.sh",
+      "environment_vars": [
+          "JENKINS_IP={{user `jenkins_ip`}}"
       ]
     },
     {
       "type": "shell",
       "scripts": [
-          "scripts/jenkins/jenkins-ubuntu.sh"
-      ]
-    },
-	{
-      "type":   "shell",
-      "inline": [
-        "echo '****** Stop Jenkins Service'",
-        "sudo service jenkins stop",
-
-        "echo '****** Moving Jenkins Configuration files '",
-        "sudo cp /tmp/jenkins/resources/etc-default-jenkins.conf        /etc/default/jenkins",
-        "sudo cp /tmp/jenkins/resources/config.xml                      /var/lib/jenkins/",
-		"sudo cp /tmp/jenkins/resources/hudson.tools.JDKInstaller.xml   /var/lib/jenkins/",
-        "sudo cp /tmp/jenkins/resources/hudson.tasks.Ant.xml            /var/lib/jenkins/",
-        "sudo cp /tmp/jenkins/resources/hudson.tasks.Maven.xml          /var/lib/jenkins/",
-
-		"echo '****** Setting up Jenkins admin users'",
-        "cd /var/lib/jenkins",
-        "sudo mkdir -p users/admin",
-        "sudo cp /tmp/jenkins/resources/admin-config.xml /var/lib/jenkins/users/admin/config.xml",
-		"echo '****** Start Jenkins Service'",
-        "sudo service jenkins start"
-		]
-	},
-    {
-      "type": "shell",
-      "scripts": [
-        "scripts/serverspec/serverspec-core-ubuntu.sh"
+        "scripts/serverspec/serverspec-core-centos7.sh",
+        "scripts/serverspec/serverspec-nginx.sh",
+        "scripts/serverspec/serverspec-launch-test.sh"
       ]
     },
     {
       "type": "shell",
       "execute_command": "echo 'packer'|sudo -S bash '{{.Path}}'",
       "scripts": [
-        "scripts/cleanup-ubuntu.sh"
+        "scripts/cleanup-centos.sh"
       ]
     }
   ],

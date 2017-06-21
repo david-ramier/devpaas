@@ -1,26 +1,34 @@
 branches:
   only:
     - master
-    - develop
+    - devpaas-vm-reorg
 
 env:
   matrix:
-   - PACKER_VERSION="0.7.1"
-   - PACKER_VERSION="0.7.1"
+   - PACKER_VERSION="1.0.0"
+   - TERRAFORM_VERSION="0.9.6"
 
 before_script:
- # Install Packer, what we're using to create our Graphite server
- - curl -o /tmp/packer.zip -L "https://dl.bintray.com/mitchellh/packer/packer_${PACKER_VERSION}_linux_amd64.zip"
+ # Install Packer
+ - curl -o /tmp/packer.zip -L "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
  - sudo unzip -d /usr/local/bin /tmp/packer.zip
+
+# Install Terraform
+ - curl -o /tmp/terraform.zip -L "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+ - sudo unzip -d /usr/local/bin /tmp/terraform.zip
+
 # Install OS updates
  - sudo apt-get update -y
 
 
 script:
- # Run the packer build script to create an AMI with Graphite
- - ./devpaas-vm/package-all.sh
+ # Deploy on AWS:
+ # Run the Terraform script to create the AWS network
+ #- ./devpaas-vm/package-all.sh
  # Make sure build script completed successfully
- - if grep -q 'Builds finished but no artifacts were created' packer.log; then exit 1; fi
+ #- if grep -q 'Builds finished but no artifacts were created' packer.log; then exit 1; fi
+
+ # Deploy on Google Compute Engine
 
 notifications:
   email:

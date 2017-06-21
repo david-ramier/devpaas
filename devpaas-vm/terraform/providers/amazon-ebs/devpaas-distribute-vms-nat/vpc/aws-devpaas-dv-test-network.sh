@@ -74,8 +74,13 @@ echo "Copy the private key in the Jump-Box to be used to connect to the other VM
 scp -i "${AWS_KEY_PATH}" ${AWS_KEY_PATH} ubuntu@${JB_PUB_IP}:/home/ubuntu/.aws
 
 echo "Change permission on the private key"
-ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} "'chmod 400 /home/ubuntu/.aws/$AWS_SSH_KEY.pem; exit'"
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "'chmod 400 /home/ubuntu/.aws/$AWS_SSH_KEY.pem; exit'"
 
+echo "Adding entry to the JB VM /etc/hosts"
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "echo \"${RP_PRIV_IP} mm-devpaas-dv-rp-01\" | sudo tee -a /etc/hosts"
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "echo '${FE_PRIV_IP} mm-devpaas-dv-fe-01' | sudo tee -a /etc/hosts"
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "echo '${HE_PRIV_IP} mm-devpaas-dv-he-01' | sudo tee -a /etc/hosts"
+ssh -i "${AWS_KEY_PATH}" ubuntu@${JB_PUB_IP} bash -c "echo '${DB_PRIV_IP} mm-devpaas-dv-db-01' | sudo tee -a /etc/hosts"
 
 echo "************************************************************"
 echo "Testing ICMP Internal traffic from Jump-Box to other VMs ..."
