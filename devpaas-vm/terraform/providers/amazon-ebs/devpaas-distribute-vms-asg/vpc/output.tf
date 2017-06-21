@@ -49,6 +49,15 @@ output "aws_mm_devpaas_dv_sg_packerbuilder_id" {
   value = "${aws_security_group.mm_devpaas_sg_pb.id}"
 }
 
+output "aws_mm_devpaas_dv_elb_id" {
+  value = "${aws_elb.mm_devpaas_elb.id}"
+}
+
+output "aws_mm_devpaas_dv_elb_dns_name" {
+  value = "${aws_elb.mm_devpaas_elb.dns_name}"
+}
+
+
 /* Instances output variable
 
 # JumpBox VM outputs
