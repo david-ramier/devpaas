@@ -125,7 +125,7 @@ resource "aws_route_table" "mm_devpaas_rt_private" {
 # Route to the NAT Gateway
 resource "aws_route" "mm_devpaas_route_private" {
   route_table_id          = "${aws_route_table.mm_devpaas_rt_private.id}"
-  gateway_id              = "${aws_nat_gateway.mm_devpaas_natgw.id}"
+  nat_gateway_id          = "${aws_nat_gateway.mm_devpaas_natgw.id}"
   destination_cidr_block  = "0.0.0.0/0"
 }
 
