@@ -19,7 +19,7 @@ resource "aws_security_group_rule" "mm_devpaas_sg_elb_ig_http_80_from_all_intern
   to_port                   = "80"
   protocol                  = "tcp"
 
-  security_group_id         = "${aws_security_group.mm_devpaas_sg_elb.id}"
+  security_group_id         = "${aws_security_group.mm_devpaas_sg_elb_ext.id}"
   cidr_blocks               = ["0.0.0.0/0"]
 
 }
@@ -32,7 +32,7 @@ resource "aws_security_group_rule" "mm_devpaas_sg_elb_ig_https_443_from_all_inte
   to_port                   = "443"
   protocol                  = "tcp"
 
-  security_group_id         = "${aws_security_group.mm_devpaas_sg_elb.id}"
+  security_group_id         = "${aws_security_group.mm_devpaas_sg_elb_ext.id}"
   cidr_blocks               = ["0.0.0.0/0"]
 
 }
@@ -48,7 +48,7 @@ resource "aws_security_group_rule" "mm_devpaas_sg_elb_eg_http_80_to_sg_rp" {
   to_port                   = "80"
   protocol                  = "tcp"
 
-  security_group_id         = "${aws_security_group.mm_devpaas_sg_elb.id}"
+  security_group_id         = "${aws_security_group.mm_devpaas_sg_elb_ext.id}"
   source_security_group_id  = "${aws_security_group.mm_devpaas_sg_rp.id}"
 
 }
@@ -62,12 +62,11 @@ resource "aws_security_group_rule" "mm_devpaas_sg_elb_eg_all_to_all" {
   to_port                   = "0"
   protocol                  = "-1"
 
-  security_group_id         = "${aws_security_group.mm_devpaas_sg_elb.id}"
+  security_group_id         = "${aws_security_group.mm_devpaas_sg_elb_ext.id}"
   cidr_blocks               = ["0.0.0.0/0"]
 
 }
 
-
-/* ********************************************************************** */
-/* END SECURITY GROUP FOR ELASTIC LOAD BALANCER ELB                     */
-/* ********************************************************************** */
+# --------------------------------------------------------------------------------------
+# END SECURITY GROUP FOR ELASTIC LOAD BALANCER ELB - EXTERNAL
+# --------------------------------------------------------------------------------------
