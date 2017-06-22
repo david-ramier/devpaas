@@ -2,12 +2,12 @@
 
 ########################################################################
 #
-# title:          Build Ubuntu Image for DevPaas (Single Instance)
+# title:          Build Ubuntu Image for Jenkins (Single Instance)
 # author:         Marco Maccio (http://marmac.name)
 # url:            https://github.com/marcomaccio/devpaas
-# description:    Create image for DEVPAAS (Instance) server based on image
+# description:    Create image for DEVPAAS Jenkins (Instance) server based on Ubuntu 16.04 image
 #
-# to run:         sh GCP-build-image-devpaas-singleinstance-ubuntu.sh virtualbox-iso
+# to run:         sh AWS-build-image-devpaas-nginx-ubuntu.sh amazon-ebs ...
 #
 ########################################################################
 
