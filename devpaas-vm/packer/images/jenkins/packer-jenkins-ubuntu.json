@@ -5,8 +5,8 @@
 
     "home":                     "{{env `HOME`}}",
 
-    "instance_name":            "mm-devpaas-base-ubuntu-v{{isotime \"20060102-0101\"}}",
-    "image_name":               "mm-devpaas-base-ubuntu-v{{isotime \"20060102-0101\"}}",
+    "instance_name":            "mm-devpaas-jenkins-ubuntu-v{{isotime \"20060102-0101\"}}",
+    "image_name":               "mm-devpaas-jenkins-ubuntu-v{{isotime \"20060102-0101\"}}",
     "image_description":        "MM DevPaas Jenkins Ubuntu 16.04 VM Image",
     "image_version":            "0.1",
 
