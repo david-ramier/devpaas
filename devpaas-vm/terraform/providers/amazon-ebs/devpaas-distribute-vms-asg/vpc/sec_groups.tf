@@ -57,22 +57,61 @@ resource "aws_security_group" "mm_devpaas_sg_jb" {
 # END SECURITY GROUP FOR JUMP BOX VM
 # --------------------------------------------------------------------------------------
 
-
 # --------------------------------------------------------------------------------------
-# START SECURITY GROUP FOR ELASTIC LOAD BALANCER
+# START SECURITY GROUP FOR ELASTIC LOAD BALANCER EXTERNAL
 # - it allows the following traffic:
-# - HTTP   on port  80 from all Internet IPs
-# - HTTPS  on port 443 from all Internet IPs
+# - HTTP   on port   80 from all internet ips
+# - HTTPS  on port  443 to   all internet ips
+# - HTTP   on port   80 to   security group reverse proxy
+# - HTTPS  on port  443 to   security group reverse proxy
 # --------------------------------------------------------------------------------------
 
-resource "aws_security_group" "mm_devpaas_sg_elb" {
+resource "aws_security_group" "mm_devpaas_sg_elb_ext" {
 
-  name          = "${var.project_name}-SG-ELB-${aws_vpc.mm_devpaas_vpc.id}"
-  description   = "Security Group for Elastic Load Balancer"
+  name          = "${var.project_name}-SG-ELB-EXT-${aws_vpc.mm_devpaas_vpc.id}"
+  description   = "Security Group for Elastic Load Balancer - External"
   vpc_id        = "${aws_vpc.mm_devpaas_vpc.id}"
 
   tags {
-    Name        = "${var.project_name}-SG-ELB"
+    Name        = "${var.project_name}-SG-ELB-EXT"
+  }
+
+}
+
+# --------------------------------------------------------------------------------------
+# START SECURITY GROUP FOR ELASTIC LOAD BALANCER INTERNAL FE
+# - it allows the following traffic:
+# - HTTP   on port 9000 from security group reverse proxy
+# - HTTP   on port 9000 to   security group front end
+# --------------------------------------------------------------------------------------
+
+resource "aws_security_group" "mm_devpaas_sg_elb_int_fe" {
+
+  name          = "${var.project_name}-SG-ELB-INT-FE-${aws_vpc.mm_devpaas_vpc.id}"
+  description   = "Security Group for Elastic Load Balancer - Internal FE"
+  vpc_id        = "${aws_vpc.mm_devpaas_vpc.id}"
+
+  tags {
+    Name        = "${var.project_name}-SG-ELB-INT-FE"
+  }
+
+}
+
+# --------------------------------------------------------------------------------------
+# START SECURITY GROUP FOR ELASTIC LOAD BALANCER INTERNAL HE
+# - it allows the following traffic:
+# - HTTP   on port 8080 from security group reverse proxy
+# - HTTP   on port 8080 from security group front end
+# - HTTP   on port 8080 to   security group head end
+# --------------------------------------------------------------------------------------
+resource "aws_security_group" "mm_devpaas_sg_elb_int_he" {
+
+  name          = "${var.project_name}-SG-ELB-INT-HE-${aws_vpc.mm_devpaas_vpc.id}"
+  description   = "Security Group for Elastic Load Balancer - Internal HE"
+  vpc_id        = "${aws_vpc.mm_devpaas_vpc.id}"
+
+  tags {
+    Name        = "${var.project_name}-SG-ELB-INT-HE"
   }
 
 }
