@@ -76,7 +76,7 @@ variable "revprx_flavor_name"     {
 
 variable "revprx_server_port"     {
   default     = "80"
-  description = ""
+  description = "Port of the Reverse Proxy"
 }
 
 
@@ -96,6 +96,10 @@ variable "fe_srv_flavor_name"    {
   description = ""
 }
 
+variable "fe_server_port"     {
+  default     = "9000"
+  description = "Port of the Front End VMs"
+}
 
 # API VM VARIABLES
 variable "api_srv_instance_name" {
@@ -113,6 +117,10 @@ variable "api_srv_flavor_name"    {
   description = ""
 }
 
+variable "api_server_port"     {
+  default     = "9000"
+  description = "Port of the Front End VMs"
+}
 
 # DB VM VARIABLES
 variable "db_instance_name" {

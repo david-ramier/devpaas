@@ -47,7 +47,7 @@ resource "aws_security_group_rule" "mm_devpaas_sg_rp_ig_http_from_all_internet" 
   protocol                  = "tcp"
 
   security_group_id         = "${aws_security_group.mm_devpaas_sg_rp.id}"
-  source_security_group_id  = "${aws_security_group.mm_devpaas_sg_elb.id}"
+  source_security_group_id  = "${aws_security_group.mm_devpaas_sg_elb_ext.id}"
 
 }
 
@@ -60,7 +60,7 @@ resource "aws_security_group_rule" "mm_devpaas_sg_rp_ig_https_from_all_internet"
   protocol                  = "tcp"
 
   security_group_id         = "${aws_security_group.mm_devpaas_sg_rp.id}"
-  source_security_group_id  = "${aws_security_group.mm_devpaas_sg_elb.id}"
+  source_security_group_id  = "${aws_security_group.mm_devpaas_sg_elb_ext.id}"
 
 }
 

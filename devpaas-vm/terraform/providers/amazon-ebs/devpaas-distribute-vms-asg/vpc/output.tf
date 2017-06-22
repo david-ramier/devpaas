@@ -50,11 +50,11 @@ output "aws_mm_devpaas_dv_sg_packerbuilder_id" {
 }
 
 output "aws_mm_devpaas_dv_elb_id" {
-  value = "${aws_elb.mm_devpaas_elb.id}"
+  value = "${aws_elb.mm_devpaas_elb_external.id}"
 }
 
 output "aws_mm_devpaas_dv_elb_dns_name" {
-  value = "${aws_elb.mm_devpaas_elb.dns_name}"
+  value = "${aws_elb.mm_devpaas_elb_external.dns_name}"
 }
 
 
