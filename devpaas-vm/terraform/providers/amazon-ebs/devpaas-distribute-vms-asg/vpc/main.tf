@@ -6,7 +6,7 @@ terraform {
   backend "s3" {
     region  = "eu-west-1"
     bucket  = "mm-devpaas"
-    key     = "devpaas-distribute-vms-ags/vpc"
+    key     = "devpaas-distribute-vms-elb-ags/vpc/terraform.tfstate"
   }
 }
 
