@@ -138,19 +138,9 @@
     },
     {
       "type":   "shell",
-      "inline": [
-        "echo '****** Preparing /tmp directories'",
-        "mkdir /tmp/jenkins",
-        "mkdir /tmp/jenkins/scripts",
-        "mkdir /tmp/jenkins/resources",
-        "mkdir /tmp/jenkins/jobs",
-        "mkdir /tmp/jenkins/tests"
-      ]
-    },
-    {
-      "type":   "shell",
       "scripts": [
-        "scripts/serverspec/create-serverspec-temp-dirs.sh"
+        "scripts/serverspec/create-serverspec-temp-dirs.sh",
+        "scripts/jenkins/create-jenkins-temp-dirs.sh"
       ]
     },
     {
@@ -171,6 +161,7 @@
     {
       "type": "shell",
       "scripts": [
+        "scripts/os_update-ubuntu.sh",
         "scripts/java/java-jdk-ubuntu.sh",
         "scripts/graphviz/graphviz-ubuntu.sh",
         "scripts/git/git-ubuntu.sh"
