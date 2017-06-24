@@ -5,8 +5,8 @@
 
     "home":                     "{{env `HOME`}}",
 
-    "instance_name":            "mm-devpaas-base-ubuntu-v{{isotime \"20060102-0101\"}}",
-    "image_name":               "mm-devpaas-base-ubuntu-v{{isotime \"20060102-0101\"}}",
+    "instance_name":            "mm-devpaas-nginx-ubuntu-16.04-v{{isotime \"20060102-0101\"}}",
+    "image_name":               "mm-devpaas-nginx-ubuntu-16.04-v{{isotime \"20060102-0101\"}}",
     "image_description":        "MM DevPaas NGINX Ubuntu 16.04 VM Image",
     "image_version":            "0.1",
 
@@ -139,7 +139,8 @@
     {
       "type":   "shell",
       "scripts": [
-        "scripts/serverspec/create-serverspec-temp-dirs.sh"
+        "scripts/serverspec/create-serverspec-temp-dirs.sh",
+        "scripts/nginx/create-nginx-temp-dirs.sh"
       ]
     },
     {
@@ -149,49 +150,31 @@
     },
     {
       "type":         "file",
-      "source":       "resources/nginx",
-      "destination":  "/tmp/resources"
+      "source":       "resources/nginx/configs/",
+      "destination":  "/tmp/nginx/configs"
+    },
+    {
+      "type":         "file",
+      "source":       "resources/nginx/tests/",
+      "destination":  "/tmp/nginx/tests"
     },
     {
       "type": "shell",
       "scripts": [
-        "scripts/java/java-jdk-ubuntu.sh",
-        "scripts/graphviz/graphviz-ubuntu.sh",
-        "scripts/git/git-ubuntu.sh"
+        "scripts/os_update-ubuntu.sh",
+        "scripts/serverspec/serverspec-core-ubuntu.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/nginx/nginx-ubuntu.sh"
       ]
     },
     {
       "type": "shell",
       "scripts": [
         "scripts/serverspec/serverspec-core-ubuntu.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "inline": [
-          "sudo aptitude -y install nginx",
-          "cd /etc/nginx/sites-available",
-          "sudo rm default ../sites-enabled/default"
-      ]
-    },
-    {
-      "type": "shell",
-      "script": "scripts/nginx/nginx-ubuntu.sh",
-      "environment_vars": [
-          "JENKINS_IP={{user `jenkins_ip`}}"
-      ]
-    },
-    {
-      "type": "shell",
-      "scripts": [
-        "scripts/serverspec/serverspec-core-ubuntu.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'packer'|sudo -S bash '{{.Path}}'",
-      "scripts": [
-        "scripts/cleanup-ubuntu.sh"
       ]
     }
   ],
