@@ -145,6 +145,11 @@
     },
     {
       "type":         "file",
+      "source":       "scripts/jenkins/",
+      "destination":  "/tmp/jenkins/scripts/"
+    },
+    {
+      "type":         "file",
       "source":       "resources/serverspec/configs/",
       "destination":  "/tmp/serverspec/"
     },
