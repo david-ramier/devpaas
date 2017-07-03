@@ -174,7 +174,8 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/serverspec/serverspec-core-ubuntu.sh"
+        "scripts/serverspec/serverspec-nginx.sh",
+        "scripts/serverspec/serverspec-launch-test.sh"
       ]
     }
   ],
