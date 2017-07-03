@@ -9,11 +9,13 @@ resource "aws_launch_configuration" "mm_devpaas_lc_rp" {
   instance_type   = "${var.revprx_flavor_name}"
   security_groups = ["${aws_security_group.mm_devpaas_sg_rp.id}"]
 
+  /*
   user_data = <<-EOF
               #!/bin/bash
               echo "Hello, World" > index.html
               nohup busybox httpd -f -p "${var.revprx_server_port}" &
               EOF
+  */
 
   lifecycle {
     create_before_destroy = true
