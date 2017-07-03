@@ -11,7 +11,7 @@ export TF_LOG=TRACE
 
 echo '****** Retrieve your Public ip in order to secure the SSH connectivity to AWS to only your IP ******'
 MM_PUBLIC_IP="$(dig @ns1.google.com -t txt o-o.myaddr.1.google.com +short)"
-MM_PUBLIC_IP=80.4.184.143
+#MM_PUBLIC_IP=198.58.39.252
 
 echo "Your Public IP address is: $MM_PUBLIC_IP"
 
@@ -67,7 +67,7 @@ TF_VAR_api_srv_flavor_name=$AWS_api_srv_flavor_name                     \
 TF_VAR_db_instance_name=$AWS_DB_INSTANCE_NAME                           \
 TF_VAR_db_image_id=$AWS_DB_IMAGE_ID                                     \
 TF_VAR_db_flavor_name=$AWS_DB_FLAVOR_NAME                               \
-terraform $TERRAFORM_CMD
+terraform $TERRAFORM_CMD .
 
 
 duration=$SECONDS
