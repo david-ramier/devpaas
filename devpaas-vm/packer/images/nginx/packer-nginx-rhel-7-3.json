@@ -145,10 +145,7 @@
     },
     {
       "type": "shell",
-      "script": "scripts/nginx/nginx-centos.sh",
-      "environment_vars": [
-          "JENKINS_IP={{user `jenkins_ip`}}"
-      ]
+      "script": "scripts/nginx/nginx-centos.sh"
     },
     {
       "type": "shell",
