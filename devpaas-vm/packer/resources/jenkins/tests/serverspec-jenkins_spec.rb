@@ -1,11 +1,19 @@
 require 'spec_helper'
 
+describe package('jenkins'), :if => os[:family] == 'centos' do
+  it { should be_installed }
+end
 
 describe package('jenkins'), :if => os[:family] == 'ubuntu' do
   it { should be_installed }
 end
 
 describe service('jenkins'), :if => os[:family] == 'ubuntu' do
+  it { should be_enabled }
+  it { should be_running }
+end
+
+describe service('jenkins'), :if => os[:family] == 'centos' do
   it { should be_enabled }
   it { should be_running }
 end
