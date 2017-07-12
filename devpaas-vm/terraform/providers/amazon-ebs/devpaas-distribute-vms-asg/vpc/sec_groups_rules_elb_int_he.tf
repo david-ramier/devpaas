@@ -10,6 +10,7 @@
 # - HTTP   on port 8080 to   security group head end
 # --------------------------------------------------------------------------------------
 
+/*
 # IGRESS RULES:
 
 # - SECURITY GROUP RULE HTTP   on port 8080 from security group reverse proxy
@@ -53,6 +54,8 @@ resource "aws_security_group_rule" "mm_devpaas_sg_elb_int_he_eg_http_80_to_sg_he
 
 }
 
-/* ********************************************************************** */
-/* END SECURITY GROUP FOR ELASTIC LOAD BALANCER ELB                     */
-/* ********************************************************************** */
+*/
+
+# --------------------------------------------------------------------------------------
+# END SECURITY GROUP FOR ELASTIC LOAD BALANCER ELB
+# --------------------------------------------------------------------------------------

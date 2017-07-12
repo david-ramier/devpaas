@@ -2,6 +2,7 @@
 #   SECURITY GROUP RULES DEFINITIONS
 # --------------------------------------------------------------------------------------
 
+/*
 # --------------------------------------------------------------------------------------
 # START SECURITY GROUP FOR ELASTIC LOAD BALANCER INTERNAL FE
 # - it allows the following traffic:
@@ -39,6 +40,9 @@ resource "aws_security_group_rule" "mm_devpaas_sg_elb_int_fe_eg_http_80_to_sg_rp
 
 }
 
-/* ********************************************************************** */
-/* END SECURITY GROUP FOR ELASTIC LOAD BALANCER ELB                     */
-/* ********************************************************************** */
+*/
+
+# --------------------------------------------------------------------------------------
+# END SECURITY GROUP FOR ELASTIC LOAD BALANCER ELB
+# --------------------------------------------------------------------------------------
+

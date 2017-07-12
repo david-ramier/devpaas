@@ -29,6 +29,7 @@ resource "aws_elb" "mm_devpaas_elb_external" {
   }
 }
 
+/*
 # ---------------------------------------------------------------------------------------------------------------------
 # INTERNAL ELASTIC LOAD BALANCER TO ROUTE TRAFFIC FROM REVERSE PROXY TO THE FE AUTO SCALING GROUP
 # ---------------------------------------------------------------------------------------------------------------------
@@ -94,3 +95,4 @@ resource "aws_elb" "mm_devpaas_elb_internal_he" {
     Name = "${var.project_name}-ELB-INT-HE"
   }
 }
+*/
