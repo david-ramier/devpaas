@@ -78,6 +78,7 @@ resource "aws_security_group" "mm_devpaas_sg_elb_ext" {
 
 }
 
+/*
 # --------------------------------------------------------------------------------------
 # START SECURITY GROUP FOR ELASTIC LOAD BALANCER INTERNAL FE
 # - it allows the following traffic:
@@ -117,9 +118,9 @@ resource "aws_security_group" "mm_devpaas_sg_elb_int_he" {
 }
 
 # --------------------------------------------------------------------------------------
-# END SECURITY GROUP FOR ELASTIC LOAD BALANCER
+# END SECURITY GROUP FOR ELASTIC LOAD BALANCER - HE
 # --------------------------------------------------------------------------------------
-
+*/
 
 
 # --------------------------------------------------------------------------------------
@@ -228,3 +229,9 @@ resource "aws_security_group" "mm_devpaas_sg_db" {
 # --------------------------------------------------------------------------------------
 # END SECURITY GROUP FOR DB VMs
 # --------------------------------------------------------------------------------------
+
+
+#  RULES TO ADD
+# - SG AS - OUTBOUND
+#   - HTTP on port 8731 to IPs in 10.0.0.0/8
+#   - SSH on port    22 to IPs in 10.0.0.0/8
