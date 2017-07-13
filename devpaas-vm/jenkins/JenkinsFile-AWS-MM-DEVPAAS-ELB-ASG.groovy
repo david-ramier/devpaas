@@ -27,7 +27,7 @@ node() {
 
         echo "Setting up Packer"
 
-        def packerHome = tool name: 'packer-1.0.0', type: 'biz.neustar.jenkins.plugins.packer.PackerInstallation'
+        def packerHome = tool name: 'packer-1.0.2', type: 'biz.neustar.jenkins.plugins.packer.PackerInstallation'
         env.PATH = "${packerHome}:${env.PATH}"
 
         echo "Setting up Terraform"
