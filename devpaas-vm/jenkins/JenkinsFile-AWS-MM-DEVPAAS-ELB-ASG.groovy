@@ -32,7 +32,7 @@ node() {
 
         echo "Setting up Terraform"
 
-        def terraformfHome = tool name: 'terraform-0.9.8', type: 'org.jenkinsci.plugins.terraform.TerraformInstallation'
+        def terraformfHome = tool name: 'terraform-0.9.11', type: 'org.jenkinsci.plugins.terraform.TerraformInstallation'
         env.PATH = "${terraformfHome}:${env.PATH}"
 
 
