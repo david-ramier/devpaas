@@ -3,7 +3,7 @@
 # --------------------------------------------------------------------------------------
 
 # --------------------------------------------------------------------------------------
-# RouteTable Public
+# RouteTable PUBLIC for Subnet PUBLIC
 # --------------------------------------------------------------------------------------
 resource "aws_route_table" "mm_devpaas_rt_public" {
 
@@ -14,9 +14,8 @@ resource "aws_route_table" "mm_devpaas_rt_public" {
   }
 }
 
-# --------------------------------------------------------------------------------------
-# Route to IGW Gateway
-# --------------------------------------------------------------------------------------
+# Route to IGW Gateway for Subnet Public
+
 resource "aws_route" "mm_devpaas_route_public" {
 
   route_table_id          = "${aws_route_table.mm_devpaas_rt_public.id}"
@@ -25,9 +24,8 @@ resource "aws_route" "mm_devpaas_route_public" {
 
 }
 
-# --------------------------------------------------------------------------------------
 # Route Table association: Route Table Public <--> Public Subnet
-# --------------------------------------------------------------------------------------
+
 resource "aws_route_table_association" "mm_devpaas_rta_sbpublic" {
 
   route_table_id  = "${aws_route_table.mm_devpaas_rt_public.id}"
@@ -35,19 +33,10 @@ resource "aws_route_table_association" "mm_devpaas_rta_sbpublic" {
 
 }
 
-# --------------------------------------------------------------------------------------
-#              ROUTES for Private Subnet via NAT Gateway
-# --------------------------------------------------------------------------------------
 
-# Route to the NAT Gateway
-resource "aws_route" "mm_devpaas_route_private" {
-  route_table_id          = "${aws_route_table.mm_devpaas_rt_private.id}"
-  nat_gateway_id          = "${aws_nat_gateway.mm_devpaas_natgw.id}"
-  destination_cidr_block  = "0.0.0.0/0"
-}
 
 # --------------------------------------------------------------------------------------
-# RouteTable Private
+# RouteTable PRIVATE for Subnet PRIVATE
 # --------------------------------------------------------------------------------------
 resource "aws_route_table" "mm_devpaas_rt_private" {
 
@@ -58,9 +47,17 @@ resource "aws_route_table" "mm_devpaas_rt_private" {
   }
 }
 
-# --------------------------------------------------------------------------------------
+# Route to the NAT Gateway for Subnet Private
+
+resource "aws_route" "mm_devpaas_route_private" {
+  route_table_id          = "${aws_route_table.mm_devpaas_rt_private.id}"
+  nat_gateway_id          = "${aws_nat_gateway.mm_devpaas_natgw.id}"
+  destination_cidr_block  = "0.0.0.0/0"
+}
+
+
 # Route Table association: Route Table Private <--> Private Subnet
-# --------------------------------------------------------------------------------------
+
 resource "aws_route_table_association" "mm_devpaas_rta_sbprivate" {
 
   route_table_id  = "${aws_route_table.mm_devpaas_rt_private.id}"
