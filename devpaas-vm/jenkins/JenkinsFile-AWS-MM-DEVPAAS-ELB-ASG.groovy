@@ -51,7 +51,7 @@ node() {
 
                 echo "Launch terraform plan"
 
-                sh "terraform plan -var 'project_name=mm-devpaas-asg' -var 'aws_ssh_key_name=$AWS_SSH_KEYPAIR_NAME' -var 'aws_deployment_region=$AWS_REGION' "                            +
+                sh "terraform plan -var 'project_name=mm-devpaas-asg' -var 'profile=$AWS_PROFILE' -var 'aws_ssh_key_name=$AWS_SSH_KEYPAIR_NAME' -var 'aws_deployment_region=$AWS_REGION' "                            +
                         "-var 'vpc_cidr=$AWS_VPC_CDIR' -var 'subnet_private_cidr=$AWS_SUBNET_PRIV_CIDR' -var 'subnet_public_cidr=$AWS_SUBNET_PUB_CIDR' " +
                         "-var 'mm_public_ip=$MM_PUBLIC_IP' "                                    +
                         "-var 'jumpbox_instance_name=$AWS_JUMPBOX_INSTANCE_NAME' -var 'jumpbox_image_id=$AWS_JUMPBOX_IMAGE_ID' -var 'jumpbox_flavor_name=$AWS_JUMPBOX_FLAVOR_NAME' "  +
@@ -62,7 +62,7 @@ node() {
 
                 echo "Launch terraform apply"
 
-                sh "terraform apply -var 'project_name=mm-devpaas-asg' -var 'aws_ssh_key_name=$AWS_SSH_KEYPAIR_NAME' -var 'aws_deployment_region=$AWS_REGION' "                            +
+                sh "terraform apply -var 'project_name=mm-devpaas-asg' -var 'profile=$AWS_PROFILE' -var 'aws_ssh_key_name=$AWS_SSH_KEYPAIR_NAME' -var 'aws_deployment_region=$AWS_REGION' "                            +
                         "-var 'vpc_cidr=$AWS_VPC_CDIR' -var 'subnet_private_cidr=$AWS_SUBNET_PRIV_CIDR' -var 'subnet_public_cidr=$AWS_SUBNET_PUB_CIDR' " +
                         "-var 'mm_public_ip=$MM_PUBLIC_IP' "                                    +
                         "-var 'jumpbox_instance_name=$AWS_JUMPBOX_INSTANCE_NAME' -var 'jumpbox_image_id=$AWS_JUMPBOX_IMAGE_ID' -var 'jumpbox_flavor_name=$AWS_JUMPBOX_FLAVOR_NAME' "  +
