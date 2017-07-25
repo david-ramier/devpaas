@@ -6,7 +6,7 @@ terraform {
   backend "s3" {
     region  = "eu-west-1"
     bucket  = "mm-devpaas"
-    key     = "devpaas-distribute-vms-nat/services"
+    key     = "devpaas-distribute-vms-nat/services/terraform.tfstate"
   }
 }
 
