@@ -54,7 +54,7 @@
       "run_tags":         { "ami-create": "{{ user `image_name`}}" },
       "tags":             { "ami": "{{ user `image_name`}}"},
 
-      "associate_public_ip_address": true
+      "associate_public_ip_address": "true"
 
     },
     {
