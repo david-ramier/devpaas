@@ -4,10 +4,17 @@
 # --------------------------------------------------------------------------------------
 #              NETWORK ACL Definition
 # --------------------------------------------------------------------------------------
-resource "aws_default_network_acl" "mm_devpaas_nacl_default" {
-  default_network_acl_id = "${aws_vpc.mm_devpaas_vpc.default_network_acl_id}"
 
+resource "aws_network_acl" "mm_devpaas_nacl_main" {
+  vpc_id = "${aws_vpc.mm_devpaas_vpc.id}"
+
+  subnet_ids = ["${aws_subnet.mm_devpaas_sb_public.id}","${aws_subnet.mm_devpaas_sb_private.id}"]
+
+  tags {
+    Name = "${var.project_name}-NACL-Main"
+  }
 }
+
 
 #  NETWORK ACL RULES
 
@@ -24,7 +31,7 @@ resource "aws_network_acl_rule" "mm_devpaas_acl_rule_in_http_80" {
 
   egress      = false
 
-  network_acl_id = "${aws_default_network_acl.mm_devpaas_nacl_default.id}"
+  network_acl_id = "${aws_network_acl.mm_devpaas_nacl_main.id}"
 
 }
 
@@ -40,7 +47,7 @@ resource "aws_network_acl_rule" "mm_devpaas_acl_rule_in_https_443" {
 
   egress          = false
 
-  network_acl_id = "${aws_default_network_acl.mm_devpaas_nacl_default.id}"
+  network_acl_id = "${aws_network_acl.mm_devpaas_nacl_main.id}"
 
 }
 
@@ -56,7 +63,8 @@ resource "aws_network_acl_rule" "mm_devpaas_acl_rule_in_ssh_22" {
 
   egress          = false
 
-  network_acl_id = "${aws_default_network_acl.mm_devpaas_nacl_default.id}"
+  network_acl_id = "${aws_network_acl.mm_devpaas_nacl_main.id}"
+
 }
 
 # Allow return outbound traffic on dynamic ports
@@ -72,7 +80,8 @@ resource "aws_network_acl_rule" "mm_devpaas_acl_rule_in_dyn_ports" {
 
   egress          = false
 
-  network_acl_id = "${aws_default_network_acl.mm_devpaas_nacl_default.id}"
+  network_acl_id = "${aws_network_acl.mm_devpaas_nacl_main.id}"
+
 }
 
 # EGRESS RULES
@@ -88,7 +97,8 @@ resource "aws_network_acl_rule" "mm_devpaas_acl_rule_e_http_80" {
 
   egress          = true
 
-  network_acl_id = "${aws_default_network_acl.mm_devpaas_nacl_default.id}"
+  network_acl_id = "${aws_network_acl.mm_devpaas_nacl_main.id}"
+
 }
 
 # Allow outbound http traffic on 443
@@ -103,7 +113,8 @@ resource "aws_network_acl_rule" "mm_devpaas_acl_rule_e_https_443" {
 
   egress          = true
 
-  network_acl_id = "${aws_default_network_acl.mm_devpaas_nacl_default.id}"
+  network_acl_id = "${aws_network_acl.mm_devpaas_nacl_main.id}"
+
 }
 
 # Allow return inbound traffic on dynamic ports
@@ -118,5 +129,6 @@ resource "aws_network_acl_rule" "mm_devpaas_acl_rule_e_dynports" {
 
   egress          = true
 
-  network_acl_id = "${aws_default_network_acl.mm_devpaas_nacl_default.id}"
+  network_acl_id = "${aws_network_acl.mm_devpaas_nacl_main.id}"
+
 }
