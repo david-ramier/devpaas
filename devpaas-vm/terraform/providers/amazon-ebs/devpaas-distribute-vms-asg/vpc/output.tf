@@ -3,6 +3,14 @@
  */
 
 
+output "aws_mm_devpaas_dv_eip_natgw_id" {
+  value="${aws_eip.mm_devpaas_nat_eip.id}"
+}
+
+output "aws_mm_devpaas_dv_eip_natgw_ip" {
+  value="${aws_eip.mm_devpaas_nat_eip.public_ip}"
+}
+
 output "aws_mm_devpaas_dv_eip_admin_id" {
   value="${aws_eip.mm_devpaas_admin_eip.id}"
 }
