@@ -64,7 +64,7 @@ else
 fi
 
 if   [ "$TERRAFORM_CMD" = "plan" ] ; then
-    export TF_PLAN="-out=\"terraform.plan\""
+    export TF_PLAN="-out=terraform.plan"
 else
     export TF_PLAN=""
 fi
