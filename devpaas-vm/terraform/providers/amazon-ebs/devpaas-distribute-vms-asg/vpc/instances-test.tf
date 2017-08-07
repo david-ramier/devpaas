@@ -48,7 +48,9 @@ resource "aws_route53_record" "mm_devpaas_dns_r_jb_reverse" {
 
   zone_id = "${aws_route53_zone.mm_devpaas_dns_primary_rv.id}"
   type    = "PTR"
-  name    = "${format("%s.%s.0.10.in-addr.arpa", element(split(".",aws_instance.mm_devpaas_dv_jumpbox.private_ip),3))}"
+  name    = "${format("%s.%s.0.10.in-addr.arpa",
+                  element(split(".",aws_instance.mm_devpaas_dv_jumpbox.private_ip),3),
+                  element(split(".",aws_instance.mm_devpaas_dv_jumpbox.private_ip),2))}"
   records = ["${format("mm-devpaas-jb.marmac-labs.name")}"]
 
   ttl     = "300"
