@@ -35,10 +35,23 @@ resource "aws_eip_association" "mm_devpaas_eip_jb_assoc" {
 }
 
 resource "aws_route53_record" "mm_devpaas_dns_r_jb" {
-  name    = "${var.jumpbox_instance_name}"
+
+  zone_id = "${aws_route53_zone.mm_devpaas_dns_primary_fw.id}"
   type    = "A"
-  zone_id = "${aws_route53_zone.mm_devpaas_dns_primary.id}"
+  name    = "${var.jumpbox_instance_name}"
+  records = ["${aws_instance.mm_devpaas_dv_jumpbox.private_ip}"]
   ttl     = "300"
 
-  records = ["${aws_instance.mm_devpaas_dv_jumpbox.private_ip}"]
+}
+
+resource "aws_route53_record" "mm_devpaas_dns_r_jb_reverse" {
+
+  zone_id = "${aws_route53_zone.mm_devpaas_dns_primary_rv.id}"
+  type    = "PTR"
+  name    = "${format("%s.%s.0.10.in-addr.arpa", element(split(".",aws_instance.mm_devpaas_dv_jumpbox.private_ip),3))}"
+  records = ["${format("mm-devpaas-jb.marmac-labs.name")}"]
+
+  ttl     = "300"
+
+
 }
