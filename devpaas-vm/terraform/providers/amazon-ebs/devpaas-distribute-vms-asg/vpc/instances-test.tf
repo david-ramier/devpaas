@@ -33,3 +33,12 @@ resource "aws_eip_association" "mm_devpaas_eip_jb_assoc" {
   allocation_id = "${aws_eip.mm_devpaas_admin_eip.id}"                      //"${var.mm_devpaas_eip_id}"
 
 }
+
+resource "aws_route53_record" "mm_devpaas_dns_r_jb" {
+  name    = "${var.jumpbox_instance_name}"
+  type    = "A"
+  zone_id = "${aws_route53_zone.mm_devpaas_dns_primary.id}"
+  ttl     = "300"
+
+  records = ["${aws_instance.mm_devpaas_dv_jumpbox.private_ip}"]
+}
