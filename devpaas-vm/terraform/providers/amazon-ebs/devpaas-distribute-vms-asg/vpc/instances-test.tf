@@ -23,21 +23,22 @@ resource "aws_instance" "mm_devpaas_dv_jumpbox" {
 
   user_data = <<-EOF
             #!/bin/bash
-            declare domain=${var.primary_zone_domain_name} vm_name=${var.jumpbox_instance_name}
+            export domain=${var.primary_zone_domain_name}
+            export vm_name=${var.jumpbox_instance_name}
 
             echo "Changing the search domain in /etc/resolv.conf file"
             sed -i "s/search.*/search $domain/g" /etc/resolv.conf
 
             echo "Changing the hostname in /etc/hosts file ..."
-            sudo sed -i "s/localhost/$vm_name/g" /etc/hosts
+            sed -i "s/localhost/$vm_name/g" /etc/hosts
 
             echo "Retrieving the current hostname ..."
             export aws_hostname=`hostname`
 
             echo "Changing the aws hostname ($aws_hostname) with target hostname ($vm_name) in /etc/hostname file ..."
-            sudo sed -i "s/$aws_hostname/$vm_name/g" /etc/hostname
+            sed -i "s/$aws_hostname/$vm_name/g" /etc/hostname
 
-            sudo hostname $vm_name
+            hostname $vm_name
             EOF
 
   tags {
