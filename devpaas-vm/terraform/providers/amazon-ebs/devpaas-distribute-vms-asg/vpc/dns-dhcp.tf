@@ -1,5 +1,6 @@
 resource "aws_route53_zone" "mm_devpaas_dns_primary_fw" {
-  name = "marmac-labs.name"
+
+  name = "${var.primary_zone_domain_name}"
 
   vpc_id = "${aws_vpc.mm_devpaas_vpc.id}"
 
