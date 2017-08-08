@@ -5,6 +5,15 @@
 /* ********************************************************************** */
 /* JUMP BOX VM DEFINITION                                                 */
 /* ********************************************************************** */
+data "template_file" "mm_devpaas_dv_jb_user_data" {
+  template = "change_hostname.sh.tpl"
+
+  vars {
+    domain_name = "${var.primary_zone_domain_name}"
+    vm_name     = "${var.jumpbox_instance_name}"
+  }
+}
+
 resource "aws_instance" "mm_devpaas_dv_jumpbox" {
 
   ami                     = "${var.jumpbox_image_id}"
@@ -13,33 +22,7 @@ resource "aws_instance" "mm_devpaas_dv_jumpbox" {
   key_name                = "${var.aws_ssh_key_name}"
   vpc_security_group_ids  = ["${aws_security_group.mm_devpaas_sg_jb.id}"]  // ["${var.sg_jumpbox_id}"]
 
-  /*
-  user_data = <<-EOF
-              #!/bin/bash
-              echo "Hello, World ! This is the DevPaas Jump Box VM" > index.html
-              nohup busybox httpd -f -p 80 &
-              EOF
-  */
-
-  user_data = <<-EOF
-            #!/bin/bash
-            export domain=${var.primary_zone_domain_name}
-            export vm_name=${var.jumpbox_instance_name}
-
-            echo "Changing the search domain in /etc/resolv.conf file"
-            /bin/sed -i "s/search.*/search $domain/g" /etc/resolv.conf
-
-            echo "Changing the hostname in /etc/hosts file ..."
-            /bin/sed -i "s/localhost/$vm_name/g" /etc/hosts
-
-            echo "Retrieving the current hostname ..."
-            export aws_hostname=`/bin/hostname`
-
-            echo "Changing the aws hostname ($aws_hostname) with target hostname ($vm_name) in /etc/hostname file ..."
-            /bin/sed -i "s/$aws_hostname/$vm_name/g" /etc/hostname
-
-            /bin/hostname $vm_name
-            EOF
+  user_data               = "${data.template_file.mm_devpaas_dv_jb_user_data.rendered}"
 
   tags {
     Name = "${var.jumpbox_instance_name}"
