@@ -13,7 +13,6 @@ data "template_file" "mm_devpaas_dv_jb_user_data" {
     vm_name     = "${var.jumpbox_instance_name}"
   }
 
-  lifecycle { create_before_destroy = true }
 }
 
 resource "aws_instance" "mm_devpaas_dv_jumpbox" {
@@ -25,8 +24,6 @@ resource "aws_instance" "mm_devpaas_dv_jumpbox" {
   vpc_security_group_ids  = ["${aws_security_group.mm_devpaas_sg_jb.id}"]  // ["${var.sg_jumpbox_id}"]
 
   user_data               = "${data.template_file.mm_devpaas_dv_jb_user_data.rendered}"
-
-  lifecycle { create_before_destroy = true }
 
   tags {
     Name = "${var.jumpbox_instance_name}"
