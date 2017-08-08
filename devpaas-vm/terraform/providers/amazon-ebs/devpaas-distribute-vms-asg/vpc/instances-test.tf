@@ -23,7 +23,7 @@ resource "aws_instance" "mm_devpaas_dv_jumpbox" {
 
   user_data = <<-EOF
             #!/bin/bash
-            typeset domain=${var.primary_zone_domain_name} vm_name=${var.jumpbox_instance_name}
+            declare domain=${var.primary_zone_domain_name} vm_name=${var.jumpbox_instance_name}
 
             echo "Changing the search domain in /etc/resolv.conf file"
             sed -i "s/search.*/search $domain/g" /etc/resolv.conf
