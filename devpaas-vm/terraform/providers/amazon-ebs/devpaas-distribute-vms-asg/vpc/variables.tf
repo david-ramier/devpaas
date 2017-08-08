@@ -37,7 +37,10 @@ variable "mm_public_ip"           {
   description = "This is the public ip of my personal connection from which only enable the ssh traffic"
 }
 
-
+variable "primary_zone_domain_name" {
+  default     = "marmac-labs.name"
+  description = "DNS Zone Name"
+}
 
 # Instances variables
 variable "aws_ssh_key_name"       {
