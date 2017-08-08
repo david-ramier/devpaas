@@ -38,8 +38,8 @@ variable "mm_public_ip"           {
 }
 
 variable "primary_zone_domain_name" {
-  default     = "marmac-labs.name"
-  description = "DNS Zone Name"
+  default     = "marmac-labs.internal"
+  description = "Primary DNS Zone Name"
 }
 
 # Instances variables
