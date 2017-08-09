@@ -15,7 +15,6 @@ data "template_file" "mm_devpaas_dv_tf_user_data_rp" {
 
 
 resource "aws_launch_configuration" "mm_devpaas_lc_rp" {
-  name            = "mm-devpaas-rp"
   name_prefix     = "${var.revprx_instance_name}"
   image_id        = "${var.revprx_image_id}"
   instance_type   = "${var.revprx_flavor_name}"
