@@ -21,11 +21,14 @@ resource "aws_launch_configuration" "mm_devpaas_lc_rp" {
   instance_type   = "${var.revprx_flavor_name}"
   security_groups = ["${aws_security_group.mm_devpaas_sg_rp.id}"]
 
+  key_name        = "${var.aws_ssh_key_name}"
+
   user_data = <<-EOF
               #!/bin/bash -v
               apt-get update -y
               apt-get install -y nginx > /tmp/nginx.log
               EOF
+
 
   lifecycle {
     create_before_destroy = true
