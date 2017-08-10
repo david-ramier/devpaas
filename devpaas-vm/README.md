@@ -28,7 +28,10 @@ The flavors considered here are:
 ### Distributed VMs
 
 
-![Alt text](http://g.gravizo.com/g?
+![Alt text](https://g.gravizo.com/source/custom_mark13?https%3A%2F%2Fraw.githubusercontent.com%2Fmarcomaccio%2Fdevpaas%2Fmaster%2Fdevpaas-vm%2FREADME.md)
+<details> 
+<summary></summary>
+custom_mark13
 @startuml;
 title Dev PAAS vm architecture;
 node nginx <<vm>> as nginx;
@@ -67,9 +70,12 @@ mariadb_sonarqube --> logspout;
 mariadb_agilefant --> logspout;
 logspout -right-> elastic;
 @enduml
-)
+custom_mark13
+</details>
 
-![Alt text](http://g.gravizo.com/g?
+#Test
+
+![Alt text](https://g.gravizo.com/svg?
 @startuml;
 title Dev PAAS Users;
 actor :Customer:      as customer;
@@ -139,7 +145,10 @@ Tests
 
 ### Distributed VMs
 
-![Alt text](http://g.gravizo.com/g?
+![Alt text](https://g.gravizo.com/source/custom_mark13?https%3A%2F%2Fraw.githubusercontent.com%2Fmarcomaccio%2Fdevpaas%2Fmaster%2Fdevpaas-vm%2FREADME.md)
+<details> 
+<summary></summary>
+custom_mark13
 @startuml;
 title Dev PAAS Single VM architecture;
 node nginx <<vm>> as nginx;
@@ -148,8 +157,8 @@ node sonarqube <<vm>> as qms;
 node nexus <<vm>> as rms;
 node elk <<vm>> as elk;
 database mariadb_sonarqube <<vm>>;
-nginx -down-> cis : "/jenkins http 8080" ;
-nginx -down-> qms : "/sonarqube http 9000" ;
+nginx -down-> cis : "/jenkins http 8080";
+nginx -down-> qms : "/sonarqube http 9000";
 nginx -down-> rms: "/nexus http 8081";
 nginx -down-> elk: "/kibana http 5601";
 qms -down-> mariadb_sonarqube;
@@ -159,7 +168,9 @@ cis -up-> elk;
 qms --> elk;
 rms --> elk;
 mariadb_sonarqube --> elk;
-@enduml)
+@enduml
+custom_mark13
+</details>
 
 #### Amazon
 
