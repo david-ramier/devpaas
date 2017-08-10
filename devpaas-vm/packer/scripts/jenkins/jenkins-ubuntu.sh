@@ -5,6 +5,12 @@ sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sour
 sudo apt-get -y update
 sudo apt-get install -y jenkins
 
+echo '****** Installing Jenkins Plugins'
+cd /tmp/jenkins/scripts
+sudo chmod +x install-jenkins-plugins.sh
+sudo ./install-jenkins-plugins.sh plugins.txt
+echo 'Installing Jenkins Plugins --> SUCCESS'
+
 echo '****** Stop Jenkins Service ******'
 sudo service jenkins stop
 

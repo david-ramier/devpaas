@@ -2,6 +2,9 @@
 
 echo "***** Starting NGINX installation"
 
+echo "      Adding the EPEL Release repository"
+sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
 echo "      Adding NGINX repository "
 sudo yum -y install epel-release
 

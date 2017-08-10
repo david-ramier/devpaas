@@ -2,6 +2,11 @@
 #    List of Input variables
 # --------------------------------------------------------------------------------------
 
+variable "profile" {
+  default     = "marmac-marcomaccio"
+  description = ""
+}
+
 variable "project_name"           {
   default     = "mm-devpaas-dv-asg"
   description = "Name of the project for this infrastructure"
@@ -18,12 +23,12 @@ variable "vpc_cidr"               {
 }
 
 variable "subnet_public_cidr"     {
-  default     = "10.0.0.0/24"
+  default     = "10.0.1.0/24"
   description = "Subnet CIDR for Public IP addresses"
 }
 
 variable "subnet_private_cidr"    {
-  default     = "10.0.1.0/24"
+  default     = "10.0.2.0/24"
   description = "Subnet CIDR for Private IP addresses"
 }
 
@@ -32,11 +37,14 @@ variable "mm_public_ip"           {
   description = "This is the public ip of my personal connection from which only enable the ssh traffic"
 }
 
-
+variable "primary_zone_domain_name" {
+  default     = "marmac-labs.internal"
+  description = "Primary DNS Zone Name"
+}
 
 # Instances variables
 variable "aws_ssh_key_name"       {
-  default     = ""
+  default     = "marmac_marcomaccio_rsa"
   description = "ssh key name used to connect to the vms"
 }
 
@@ -76,7 +84,7 @@ variable "revprx_flavor_name"     {
 
 variable "revprx_server_port"     {
   default     = "80"
-  description = ""
+  description = "Port of the Reverse Proxy"
 }
 
 
@@ -96,6 +104,10 @@ variable "fe_srv_flavor_name"    {
   description = ""
 }
 
+variable "fe_server_port"     {
+  default     = "9000"
+  description = "Port of the Front End VMs"
+}
 
 # API VM VARIABLES
 variable "api_srv_instance_name" {
@@ -113,6 +125,10 @@ variable "api_srv_flavor_name"    {
   description = ""
 }
 
+variable "api_server_port"     {
+  default     = "9000"
+  description = "Port of the Front End VMs"
+}
 
 # DB VM VARIABLES
 variable "db_instance_name" {

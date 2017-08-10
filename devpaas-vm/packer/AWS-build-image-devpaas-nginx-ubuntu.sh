@@ -2,10 +2,10 @@
 
 ########################################################################
 #
-# title:          Build Ubuntu Image for Jenkins (Single Instance)
+# title:          Build Ubuntu Image for NGINX (Single Instance)
 # author:         Marco Maccio (http://marmac.name)
 # url:            https://github.com/marcomaccio/devpaas
-# description:    Create image for DEVPAAS Jenkins (Instance) server based on Ubuntu 16.04 image
+# description:    Create image for DEVPAAS NGINX (Instance) server based on Ubuntu 16.04 image
 #
 # to run:         sh AWS-build-image-devpaas-nginx-ubuntu.sh amazon-ebs ...
 #
@@ -16,7 +16,7 @@ echo " Start: " `date`
 mkdir -p packer_logs
 
 export PACKER_LOG=1
-export PACKER_LOG_PATH="./packer_logs/AWS-packer-jenkins-ubuntu.log"
+export PACKER_LOG_PATH="./packer_logs/AWS-packer-nginx-ubuntu.log"
 
 export PACKER_PROVIDERS_LIST=$1
 
@@ -41,7 +41,7 @@ packer build -force -only=$PACKER_PROVIDERS_LIST                    \
         -var "aws_source_image=$AWS_SOURCE_IMAGE"                   \
         -var "aws_instance_type=$AWS_INSTANCE_TYPE"                 \
         -var "aws_security_groups=$AWS_SECURITY_GROUPS"             \
-        images/jenkins/packer-jenkins-ubuntu.json
+        images/nginx/packer-nginx-ubuntu.json
 
 duration=$SECONDS
 echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."

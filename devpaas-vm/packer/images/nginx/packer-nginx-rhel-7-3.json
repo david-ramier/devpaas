@@ -5,9 +5,9 @@
 
     "home":                     "{{env `HOME`}}",
 
-    "instance_name":            "mm-devpaas-nginx-centos7-v{{isotime \"20060102-0101\"}}",
-    "image_name":               "mm-devpaas-nginx-centos7-v{{isotime \"20060102-0101\"}}",
-    "image_description":        "MM DevPaas NGINX Centos 7 VM Image",
+    "instance_name":            "mm-devpaas-nginx-rhel-7.3-v{{isotime \"20060102-0101\"}}",
+    "image_name":               "mm-devpaas-nginx-rhel-7.3-v{{isotime \"20060102-0101\"}}",
+    "image_description":        "MM DevPaas NGINX RHEL 7.3 VM Image",
     "image_version":            "0.1",
 
     "aws_ssh_username":         "",
@@ -145,10 +145,7 @@
     },
     {
       "type": "shell",
-      "script": "scripts/nginx/nginx-centos.sh",
-      "environment_vars": [
-          "JENKINS_IP={{user `jenkins_ip`}}"
-      ]
+      "script": "scripts/nginx/nginx-centos.sh"
     },
     {
       "type": "shell",
@@ -156,13 +153,6 @@
         "scripts/serverspec/serverspec-core-centos7.sh",
         "scripts/serverspec/serverspec-nginx.sh",
         "scripts/serverspec/serverspec-launch-test.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'packer'|sudo -S bash '{{.Path}}'",
-      "scripts": [
-        "scripts/cleanup-centos.sh"
       ]
     }
   ],

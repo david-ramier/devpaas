@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -eux
 
 echo '****** Preparing /tmp directories for NGINX ******'
 

@@ -9,3 +9,4 @@ sleep 60s
 echo "***** Running Serverspec Tests *****"
 cd /tmp/serverspec
 rake spec --trace
+

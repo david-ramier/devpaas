@@ -1,12 +1,12 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
-echo "***** Starting NGINX installation"
+echo "Starting NGINX installation ..."
 
+echo "***** NGINX installation from apt-get"
 sudo apt-get -y install nginx
 
-sudo cp /tmp/nginx/configs/default.conf /etc/nginx/sites-available/default
-
+echo "***** Verify NGINX configuration "
 sudo nginx -t
 
+echo "***** Restart NGINX service to verify that restart works"
 sudo systemctl restart nginx
-

@@ -3,6 +3,14 @@
  */
 
 
+output "aws_mm_devpaas_dv_eip_natgw_id" {
+  value="${aws_eip.mm_devpaas_nat_eip.id}"
+}
+
+output "aws_mm_devpaas_dv_eip_natgw_ip" {
+  value="${aws_eip.mm_devpaas_nat_eip.public_ip}"
+}
+
 output "aws_mm_devpaas_dv_eip_admin_id" {
   value="${aws_eip.mm_devpaas_admin_eip.id}"
 }
@@ -49,13 +57,32 @@ output "aws_mm_devpaas_dv_sg_packerbuilder_id" {
   value = "${aws_security_group.mm_devpaas_sg_pb.id}"
 }
 
-output "aws_mm_devpaas_dv_elb_id" {
-  value = "${aws_elb.mm_devpaas_elb.id}"
+# ELASTIC LOAD BALANCER OUTPUT VARIABLES
+output "aws_mm_devpaas_dv_elb_ext_id" {
+  value = "${aws_elb.mm_devpaas_elb_external.id}"
 }
 
-output "aws_mm_devpaas_dv_elb_dns_name" {
-  value = "${aws_elb.mm_devpaas_elb.dns_name}"
+output "aws_mm_devpaas_dv_elb_ext_dns_name" {
+  value = "${aws_elb.mm_devpaas_elb_external.dns_name}"
 }
+
+/*
+output "aws_mm_devpaas_dv_elb_int_fe_id" {
+  value = "${aws_elb.mm_devpaas_elb_internal_fe.id}"
+}
+
+output "aws_mm_devpaas_dv_elb_int_fe_dns_name" {
+  value = "${aws_elb.mm_devpaas_elb_internal_fe.dns_name}"
+}
+
+output "aws_mm_devpaas_dv_elb_int_he_id" {
+  value = "${aws_elb.mm_devpaas_elb_internal_he.id}"
+}
+
+output "aws_mm_devpaas_dv_elb_int_he_dns_name" {
+  value = "${aws_elb.mm_devpaas_elb_internal_he.dns_name}"
+}
+*/
 
 
 /* Instances output variable
