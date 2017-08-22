@@ -2,12 +2,17 @@
 
 ########################################################################
 #
-# title:          Build Ubuntu Image for DevPaas (Single Instance)
+# title:          Build Ubuntu 16.04 Image for Base Image
 # author:         Marco Maccio (http://marmac.name)
 # url:            https://github.com/marcomaccio/devpaas
-# description:    Create image for DEVPAAS (Instance) server based on image
+# description:    Create image for Base Image server based on image
 #
-# to run:         sh VBOX-build-image-devpaas-baseimage-ubuntu.sh virtualbox-iso
+# to run:         sh VBOX-build-image-devpaas-baseimage-ubuntu.sh virtualbox-iso      \
+#                                                               -debug              \
+#                                                               ATLAS_USERNAME      \
+#                                                               ATLAS_TOKEN         \
+#                                                               VBOX_SSH_USERNAME   \
+#                                                               VBOX_SSH_PASSWORD   \
 #
 ########################################################################
 
@@ -22,11 +27,11 @@ export PACKER_PROVIDERS_LIST=$1
 
 export DEBUG=$2
 
-export ATLAS_USERNAME=$2
-export ATLAS_TOKEN=$3
+export ATLAS_USERNAME=$3
+export ATLAS_TOKEN=$4
 
-export VBOX_SSH_USERNAME=$4
-export VBOX_SSH_PASSWORD=$5
+export VBOX_SSH_USERNAME=$5
+export VBOX_SSH_PASSWORD=$6
 
 
 echo '****** Build marmac devpaas single instance x ubuntu-1604 image ******'
