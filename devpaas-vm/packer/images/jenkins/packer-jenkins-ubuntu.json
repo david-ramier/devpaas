@@ -145,13 +145,13 @@
     },
     {
       "type":         "file",
-      "source":       "scripts/jenkins/",
-      "destination":  "/tmp/jenkins/scripts/"
+      "source":       "resources/serverspec/configs/",
+      "destination":  "/tmp/serverspec/"
     },
     {
       "type":         "file",
-      "source":       "resources/serverspec/configs/",
-      "destination":  "/tmp/serverspec/"
+      "source":       "scripts/jenkins/",
+      "destination":  "/tmp/jenkins/scripts/"
     },
 	{
       "type":         "file",
@@ -167,9 +167,18 @@
       "type": "shell",
       "scripts": [
         "scripts/os_update-ubuntu.sh",
+        "scripts/serverspec/serverspec-core-ubuntu.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
         "scripts/java/java-jdk-ubuntu.sh",
         "scripts/graphviz/graphviz-ubuntu.sh",
-        "scripts/git/git-ubuntu.sh"
+        "scripts/git/git-ubuntu.sh",
+        "scripts/pip/pip-ubuntu.sh",
+        "scripts/awscli/awscli.sh",
+        "scripts/openstackcli/openstackcli.sh"
       ]
     },
     {
@@ -202,7 +211,8 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/serverspec/serverspec-core-ubuntu.sh"
+        "scripts/serverspec/serverspec-jenkins.sh",
+        "scripts/serverspec/serverspec-launch-test.sh"
       ]
     },
     {
