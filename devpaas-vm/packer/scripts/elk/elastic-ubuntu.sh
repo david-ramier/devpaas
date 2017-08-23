@@ -5,7 +5,7 @@ echo "******* ElasticSearch Installation *******"
 sudo apt-get update && sudo apt-get install elasticsearch
 
 echo "Copy Elasticsearch config file ..."
-sudo cp /tmp/elk/elasticsearch.yml /etc/elasticsearch/
+sudo cp /tmp/elk/resources/elasticsearch.yml /etc/elasticsearch/
 sudo chown root:root /etc/elasticsearch/elasticsearch.yml
 
 sudo systemctl daemon-reload
