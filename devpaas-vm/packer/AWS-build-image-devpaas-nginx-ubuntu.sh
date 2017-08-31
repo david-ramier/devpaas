@@ -30,7 +30,7 @@ export AWS_SOURCE_IMAGE=$8
 export AWS_INSTANCE_TYPE=$9
 export AWS_SECURITY_GROUPS=${10}
 
-echo '****** Build marmac devpaas single instance x ubuntu-1604 image ******'
+echo '****** Build marmac devpaas NGINX x ubuntu-1604 image ******'
 packer build -force -only=$PACKER_PROVIDERS_LIST                    \
         -var "aws_ssh_username=$AWS_SSH_USERNAME"                   \
         -var "aws_ssh_keypair_name=$AWS_SSH_KEYPAIR_NAME"           \

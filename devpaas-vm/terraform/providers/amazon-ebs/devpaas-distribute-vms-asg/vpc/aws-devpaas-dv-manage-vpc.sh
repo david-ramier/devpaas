@@ -64,13 +64,17 @@ else
 fi
 
 if   [ "$TERRAFORM_CMD" = "plan" ] ; then
+    rm -f terraform.plan
     export TF_PLAN="-out=terraform.plan"
 else
     export TF_PLAN=""
 fi
 
 echo "Launching Terraform init ... "
-terraform init
+terraform init                              \
+    -backend-config="region=$AWS_REGION"    \
+    -backend-config="bucket=mm-devpaas"     \
+    -backend-config="key=devpaas-distribute-vms-elb-ags/vpc/terraform.tfstate"     \
 
 echo "Launching Terraform command: $TERRAFORM_CMD"
 

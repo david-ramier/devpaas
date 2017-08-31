@@ -29,6 +29,31 @@ resource "aws_instance" "mm_devpaas_dv_jumpbox" {
     Name = "${var.jumpbox_instance_name}"
   }
 
+  /*
+  connection {
+    type  = "ssh"
+    agent = "false"
+
+    user        = "ubuntu" //to be replaced with a variable
+    private_key = "${file("marmac_marcomaccio_rsa.pem")}"
+
+    timeout = "5m"
+
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'Create directory for private key'",
+      "mkdir -p ~/.aws"
+    ]
+  }
+
+  provisioner "file" {
+    source      = "$HOME/.aws/${var.aws_ssh_key_name}.pem"
+    destination = "/home/ubuntu/.aws/"
+  }
+  */
+
 }
 
 resource "aws_eip_association" "mm_devpaas_eip_jb_assoc" {

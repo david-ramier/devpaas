@@ -17,6 +17,11 @@ variable "aws_deployment_region"  {
   description = "AWS region in which this infrastructure will be deployed"
 }
 
+variable "sns_email"              {
+  default     = "marcus.maccio@gmail.com"
+  description = ""
+}
+
 variable "vpc_cidr"               {
   default     = "10.0.0.0/16"
   description = "Default CIDR for the DevPaas project"
