@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+
+  config.vm.box         = "../../../packer/build/virtualbox-mm-base-ubuntu-v20170822-0808.box"
+
+  config.ssh.username   = 'packer'
+  config.ssh.password   = 'packer'
+  config.ssh.insert_key = 'true'
+
+  config.vm.provider "virtualbox" do |vb|
+
+    vb.name = "mm-base-ubuntu-16.04"
+
+    # Display the VirtualBox GUI when booting the machine
+    vb.gui = true
+
+    # Customize the amount of memory on the VM:
+    vb.memory = "1024"
+    #vb.cpus = 2
+  end
+
+end
