@@ -2,7 +2,7 @@
 
 ########################################################################
 #
-# title:          Build Ubuntu Image for DevPaas (Single Instance)
+# title:          Build Ubuntu Image for Nexus 3 (Single Instance)
 # author:         Marco Maccio (http://marmac.name)
 # url:            https://github.com/marcomaccio/devpaas
 # description:    Create image for DEVPAAS (Instance) server based on image
