@@ -78,7 +78,7 @@
       "type": "virtualbox-iso",
       "guest_os_type":      "Ubuntu_64",
       "format":             "ova",
-      "headless":           false,
+      "headless":           true,
       "http_directory":     "http",
 
       "disk_size":          81920,
@@ -88,9 +88,9 @@
       "ssh_wait_timeout":   "10000s",
       "ssh_pty" :           true,
 
-      "iso_checksum_type":  "md5",
-      "iso_checksum":       "23e97cd5d4145d4105fbf29878534049",
-      "iso_url":            "http://releases.ubuntu.com/16.04/ubuntu-16.04-server-amd64.iso",
+      "iso_checksum_type":  "sha256",
+      "iso_checksum":       "a06cd926f5855d4f21fb4bc9978a35312f815fbda0d0ef7fdc846861f4fc4600",
+      "iso_url":            "http://releases.ubuntu.com/16.04/ubuntu-16.04.3-server-amd64.iso",
 
       "boot_wait": "10s",
       "boot_command": [
@@ -122,7 +122,10 @@
       "vboxmanage": [
         [ "modifyvm", "{{.Name}}", "--memory", "3072" ],
         [ "modifyvm", "{{.Name}}", "--cpus"  ,    "2" ],
-        [ "modifyvm", "{{.Name}}", "--vram"  ,   "32" ]
+        [ "modifyvm", "{{.Name}}", "--vram"  ,   "32" ],
+        [ "modifyvm", "{{.Name}}", "--natpf1",   "jenkins  ,tcp,,8090,,8080" ],
+        [ "modifyvm", "{{.Name}}", "--natpf1",   "nexus    ,tcp,,8081,,8081" ],
+        [ "modifyvm", "{{.Name}}", "--natpf1",   "sonarqube,tcp,,9000,,9000" ]
       ]
     }
   ],
@@ -150,7 +153,12 @@
       "source":       "resources/serverspec/configs/",
       "destination":  "/tmp/serverspec/"
     },
-	  {
+    {
+      "type":         "file",
+      "source":       "scripts/jenkins/",
+      "destination":  "/tmp/jenkins/scripts/"
+    },
+    {
       "type":         "file",
       "source":       "resources/jenkins/configs/",
       "destination":  "/tmp/jenkins/resources/"
@@ -188,19 +196,54 @@
     {
       "type": "shell",
       "scripts": [
+        "scripts/os_update-ubuntu.sh",
+        "scripts/serverspec/serverspec-core-ubuntu.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
         "scripts/java/java-jdk-ubuntu.sh",
         "scripts/graphviz/graphviz-ubuntu.sh",
         "scripts/git/git-ubuntu.sh",
+        "scripts/pip/pip-ubuntu.sh",
+        "scripts/awscli/awscli.sh",
+        "scripts/openstackcli/openstackcli.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
         "scripts/jenkins/jenkins-ubuntu.sh",
         "scripts/nexus/nexus3-ubuntu.sh",
         "scripts/mysql/mysql-ubuntu.sh",
         "scripts/sonarqube/sonarqube-ubuntu.sh"
       ]
     },
+	{
+      "type":   "shell",
+      "inline": [
+        "echo '****** Stop Jenkins Service'",
+        "sudo service jenkins stop",
+
+        "echo '****** Moving Jenkins Configuration files '",
+        "sudo cp /tmp/jenkins/resources/etc-default-jenkins.conf        /etc/default/jenkins",
+        "sudo cp /tmp/jenkins/resources/config.xml                      /var/lib/jenkins/",
+		"sudo cp /tmp/jenkins/resources/hudson.tools.JDKInstaller.xml   /var/lib/jenkins/",
+        "sudo cp /tmp/jenkins/resources/hudson.tasks.Ant.xml            /var/lib/jenkins/",
+        "sudo cp /tmp/jenkins/resources/hudson.tasks.Maven.xml          /var/lib/jenkins/",
+
+		"echo '****** Setting up Jenkins admin users'",
+        "cd /var/lib/jenkins",
+        "sudo mkdir -p users/admin",
+        "sudo cp /tmp/jenkins/resources/admin-config.xml /var/lib/jenkins/users/admin/config.xml",
+		"echo '****** Start Jenkins Service'",
+        "sudo service jenkins start"
+		]
+	},
     {
       "type": "shell",
       "scripts": [
-        "scripts/serverspec/serverspec-core-ubuntu.sh",
         "scripts/serverspec/serverspec-jenkins.sh",
         "scripts/serverspec/serverspec-nexus.sh",
         "scripts/serverspec/serverspec-sonarqube.sh",
