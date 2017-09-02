@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 
 echo "***** Nexus user creation *****"
-sudo adduser --no-create-home --disabled-login --disabled-password nexus
+sudo adduser --no-create-home --disabled-login --disabled-password --gecos "" nexus
 
 echo "***** Download Nexus 2 *****"
 mkdir -p $HOME/nexus/
