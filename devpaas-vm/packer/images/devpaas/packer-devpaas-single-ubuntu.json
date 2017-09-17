@@ -8,7 +8,7 @@
     "instance_name":            "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
     "image_name":               "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
     "image_description":        "MM DevPaas Single Instance with Jenkins, Nexus3, SonarQube, MySql Ubuntu 16.04 VM Image",
-    "image_version":            "0.1",
+    "image_version":            "0.0",
 
     "aws_ssh_username":         "",
     "aws_ssh_keypair_name":     "",
@@ -249,13 +249,6 @@
         "scripts/serverspec/serverspec-sonarqube.sh",
         "scripts/serverspec/serverspec-launch-test.sh"
       ]
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'packer'|sudo -S bash '{{.Path}}'",
-      "scripts": [
-        "scripts/cleanup-ubuntu.sh"
-      ]
     }
   ],
   "post-processors": [
@@ -264,19 +257,19 @@
       "output": "build/{{user `image_name`}}.tar.gz",
       "only":   ["virtualbox-iso"]
     },
-    {
-      "type":   "vagrant",
-      "output": "build/{{.Provider}}-{{ user `image_name` }}.box",
-      "only":   ["virtualbox-iso"]
-    },
-    {
-      "type":           "atlas",
-      "artifact":       "marcomaccio/{{ user `image_name` }}",
-      "artifact_type":  "vagrant.box",
-      "metadata": {
-          "provider":   "virtualbox"
+    [
+      {
+        "type":   "vagrant",
+        "output": "build/{{.Provider}}-{{ user `image_name` }}.box",
+        "only":   ["virtualbox-iso"]
       },
-      "only":           ["virtualbox-iso"]
-    }
+      {
+        "type":         "vagrant-cloud",
+        "box_tag":      "marcomaccio/{{ user `image_name` }}",
+        "access_token": "{{user `atlas_token`}}",
+        "version":      "{{user `image_version`}}",
+        "only":         ["virtualbox-iso"]
+      }
+    ]
   ]
 }
