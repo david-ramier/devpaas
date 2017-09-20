@@ -61,8 +61,8 @@ variable "jumpbox_instance_name"  {
 }
 
 variable "jumpbox_image_id"       {
-  default     = "ami-a8d2d7ce"
-  description = "Image id for the JumpBox - Default ami-a8d2d7ce (Ubuntu Server 16.04 LTS, SDD Volume Type)"
+  default     = "ami-11be7268"
+  description = "Image id for the JumpBox - Default ami-11be7268 (Ubuntu Server 16.04 LTS, SDD Volume Type)"
 }
 
 variable "jumpbox_flavor_name"    {
@@ -78,8 +78,8 @@ variable "revprx_instance_name"   {
 }
 
 variable "revprx_image_id"        {
-  default     = "ami-a8d2d7ce"
-  description = "Image id for the Reverse Proxy (NGINX) - Default ami-a8d2d7ce (Ubuntu Server 16.04 LTS, SDD Volume Type)"
+  default     = "ami-5e884527"
+  description = "Image id for the Reverse Proxy (NGINX) - Default ami-5e884527 (Ubuntu Server 16.04 LTS, SDD Volume Type)"
 }
 
 variable "revprx_flavor_name"     {
@@ -92,7 +92,7 @@ variable "revprx_server_port"     {
   description = "Port of the Reverse Proxy"
 }
 
-
+/*
 # FRON-END VM VARIABLES
 variable "fe_srv_instance_name"   {
   default     = "mm-devpaas-fe"
@@ -113,26 +113,69 @@ variable "fe_server_port"     {
   default     = "9000"
   description = "Port of the Front End VMs"
 }
+*/
 
-# API VM VARIABLES
-variable "api_srv_instance_name" {
-  default     = "mm-devpaas-he"
+# JENKINS VM VARIABLES
+variable "jenkins_srv_instance_name" {
+  default     = "mm-devpaas-jenkins"
   description = ""
 }
 
-variable "api_srv_image_id"  {
-  default     = "ami-a8d2d7ce"
+variable "jenkins_srv_image_id"  {
+  default     = "ami-4422e03d"
   description = "Image id for the API Server - Default ami-a8d2d7ce (Ubuntu Server 16.04 LTS, SDD Volume Type)"
 }
 
-variable "api_srv_flavor_name"    {
+variable "jenkins_srv_flavor_name"    {
   default     = "t2.micro"
   description = ""
 }
 
-variable "api_server_port"     {
+variable "jenkins_server_port"     {
+  default     = "8080"
+  description = "Jenkins Master Port"
+}
+
+# NEXUS VM VARIABLES
+variable "nexus_srv_instance_name" {
+  default     = "mm-devpaas-nexus"
+  description = ""
+}
+
+variable "nexus_srv_image_id"  {
+  default     = "ami-89814cf0"
+  description = "Image id for the Nexus VM - Default ami-a8d2d7ce (Ubuntu Server 16.04 LTS, SDD Volume Type)"
+}
+
+variable "nexus_srv_flavor_name"    {
+  default     = "t2.micro"
+  description = ""
+}
+
+variable "nexus_server_port"     {
+  default     = "8081"
+  description = "Nexus Port"
+}
+
+# SONARQUBE VM VARIABLES
+variable "sonarqube_srv_instance_name" {
+  default     = "mm-devpaas-sonarqube"
+  description = ""
+}
+
+variable "sonarqube_srv_image_id"  {
+  default     = "ami-68884511"
+  description = "Image id for the Sonarqube VM - Default ami-68884511 (Ubuntu Server 16.04 LTS, SDD Volume Type)"
+}
+
+variable "sonarqube_srv_flavor_name"    {
+  default     = "t2.micro"
+  description = ""
+}
+
+variable "sonarqube_server_port"     {
   default     = "9000"
-  description = "Port of the Front End VMs"
+  description = "Sonarqube Port"
 }
 
 # DB VM VARIABLES
