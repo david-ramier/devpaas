@@ -5,8 +5,8 @@
 
     "home":                     "{{env `HOME`}}",
 
-    "instance_name":            "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
-    "image_name":               "mm-devpaas-single-v{{isotime \"20060102-0101\"}}",
+    "instance_name":            "mm-devpaas-singleinstance-ubuntu-v{{isotime \"20060102-0101\"}}",
+    "image_name":               "mm-devpaas-singleinstance-ubuntu",
     "image_description":        "MM DevPaas Single Instance with Jenkins, Nexus3, SonarQube, MySql Ubuntu 16.04 VM Image",
     "image_version":            "0.0",
 
