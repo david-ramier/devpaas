@@ -35,7 +35,7 @@ resource "aws_launch_configuration" "mm_devpaas_lc_rp" {
   connection {
     type                = "ssh"
     bastion_host        = "${aws_instance.mm_devpaas_dv_jumpbox.public_ip}"
-    bastion_private_key = "${file("marmac_maccio_rsa.pem")}"
+    bastion_private_key = "${file("marmac_marcomaccio_rsa.pem")}"
     bastion_user        = "ubuntu"
     user                = "ubuntu"
     private_key         = "${file("marmac_marcomaccio_rsa.pem")}"
