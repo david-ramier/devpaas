@@ -60,7 +60,7 @@ pipeline {
                 def terraformfHome = tool name: 'terraform-0.9.11', type: 'org.jenkinsci.plugins.terraform.TerraformInstallation'
                 env.PATH = "${terraformfHome}:${env.PATH}"
 
-                def awsICPublicIP = sh(script: "$(dig @ns1.google.com -t txt o-o.myaddr.1.google.com +short)",  returnStdout: true).trim()
+                def awsICPublicIP = sh(script: "dig @ns1.google.com -t txt o-o.myaddr.1.google.com +short",  returnStdout: true).trim()
             }
         }
         stage('EC2 Deployment') {
