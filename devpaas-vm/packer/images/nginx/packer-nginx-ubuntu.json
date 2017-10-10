@@ -151,12 +151,12 @@
     {
       "type":         "file",
       "source":       "resources/nginx/configs/",
-      "destination":  "/tmp/nginx/configs"
+      "destination":  "/tmp/nginx/configs/"
     },
     {
       "type":         "file",
       "source":       "resources/nginx/tests/",
-      "destination":  "/tmp/nginx/tests"
+      "destination":  "/tmp/nginx/tests/"
     },
     {
       "type": "shell",
@@ -185,19 +185,19 @@
       "output": "build/{{user `image_name`}}.tar.gz",
       "only":   ["virtualbox-iso"]
     },
-    {
-      "type":   "vagrant",
-      "output": "build/{{.Provider}}-{{ user `image_name` }}.box",
-      "only":   ["virtualbox-iso"]
-    },
-    {
-      "type":           "atlas",
-      "artifact":       "marcomaccio/{{ user `image_name` }}",
-      "artifact_type":  "vagrant.box",
-      "metadata": {
-          "provider":   "virtualbox"
+    [
+      {
+        "type":   "vagrant",
+        "output": "build/{{.Provider}}-{{ user `image_name` }}.box",
+        "only":   ["virtualbox-iso"]
       },
-      "only":           ["virtualbox-iso"]
-    }
+      {
+        "type":         "vagrant-cloud",
+        "box_tag":      "marcomaccio/{{ user `image_name` }}",
+        "access_token": "{{user `atlas_token`}}",
+        "version":      "{{user `image_version`}}.{{timestamp}}",
+        "only":         ["virtualbox-iso"]
+      }
+    ]
   ]
 }

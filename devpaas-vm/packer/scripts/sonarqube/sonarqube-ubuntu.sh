@@ -2,7 +2,7 @@
 export SONARQUBE_HOME=/var/lib/sonarqube
 
 echo "***** Sonar user creation *****"
-sudo adduser --no-create-home --disabled-login --disabled-password sonar
+sudo adduser --no-create-home --disabled-login --disabled-password --gecos "" sonar
 
 sudo apt-get -y install unzip
 

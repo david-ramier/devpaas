@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+
+  config.vm.box         = "../../../packer/build/virtualbox-mm-jenkins.box"
+
+  config.ssh.username   = 'packer'
+  config.ssh.password   = 'packer'
+  config.ssh.insert_key = 'true'
+
+  config.vm.network "forwarded_port", guest: 8080, host: 8090
+
+  config.vm.provider "virtualbox" do |vb|
+
+     vb.name = "mm-jenkins-ubuntu-16.04"
+     # Display the VirtualBox GUI when booting the machine
+     vb.gui = true
+
+     # Customize the amount of memory on the VM:
+     vb.memory = "1024"
+  end
+
+end

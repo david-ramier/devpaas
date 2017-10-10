@@ -88,9 +88,9 @@
       "ssh_wait_timeout":   "10000s",
       "ssh_pty" :           true,
 
-      "iso_checksum_type":  "md5",
-      "iso_checksum":       "23e97cd5d4145d4105fbf29878534049",
-      "iso_url":            "http://releases.ubuntu.com/16.04/ubuntu-16.04-server-amd64.iso",
+      "iso_checksum_type":  "sha256",
+      "iso_checksum":       "a06cd926f5855d4f21fb4bc9978a35312f815fbda0d0ef7fdc846861f4fc4600",
+      "iso_url":            "http://releases.ubuntu.com/16.04/ubuntu-16.04.3-server-amd64.iso",
 
       "boot_wait": "10s",
       "boot_command": [
@@ -122,7 +122,10 @@
       "vboxmanage": [
         [ "modifyvm", "{{.Name}}", "--memory", "3072" ],
         [ "modifyvm", "{{.Name}}", "--cpus"  ,    "2" ],
-        [ "modifyvm", "{{.Name}}", "--vram"  ,   "32" ]
+        [ "modifyvm", "{{.Name}}", "--vram"  ,   "32" ],
+        [ "modifyvm", "{{.Name}}", "--natpf1",   "jenkins  ,tcp,,8090,,8080" ],
+        [ "modifyvm", "{{.Name}}", "--natpf1",   "nexus    ,tcp,,8081,,8081" ],
+        [ "modifyvm", "{{.Name}}", "--natpf1",   "sonarqube,tcp,,9000,,9000" ]
       ]
     }
   ],
@@ -136,7 +139,7 @@
       "execute_command": "{{.Vars}} sudo -S -E bash '{{.Path}}'",
       "only": ["virtualbox-iso"]
     },
-  	{
+    {
         "type":   "shell",
         "scripts": [
           "scripts/serverspec/create-serverspec-temp-dirs.sh",
@@ -161,7 +164,14 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/java-jdk-ubuntu.sh",
+        "scripts/os_update-ubuntu.sh",
+        "scripts/serverspec/serverspec-core-ubuntu.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/java/java-jdk-ubuntu.sh",
         "scripts/graphviz/graphviz-ubuntu.sh",
         "scripts/git/git-ubuntu.sh",
         "scripts/mysql/mysql-ubuntu.sh",
@@ -175,13 +185,6 @@
         "scripts/serverspec/serverspec-sonarqube.sh",
         "scripts/serverspec/serverspec-launch-test.sh"
       ]
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'packer'|sudo -S bash '{{.Path}}'",
-      "scripts": [
-        "scripts/cleanup-ubuntu.sh"
-      ]
     }
   ],
   "post-processors": [
@@ -190,19 +193,19 @@
       "output": "build/{{user `image_name`}}.tar.gz",
       "only":   ["virtualbox-iso"]
     },
-    {
-      "type":   "vagrant",
-      "output": "build/{{.Provider}}-{{ user `image_name` }}.box",
-      "only":   ["virtualbox-iso"]
-    },
-    {
-      "type":           "atlas",
-      "artifact":       "marcomaccio/{{ user `image_name` }}",
-      "artifact_type":  "vagrant.box",
-      "metadata": {
-          "provider":   "virtualbox"
+    [
+      {
+        "type":   "vagrant",
+        "output": "build/{{.Provider}}-{{ user `image_name` }}.box",
+        "only":   ["virtualbox-iso"]
       },
-      "only":           ["virtualbox-iso"]
-    }
+      {
+        "type":         "vagrant-cloud",
+        "box_tag":      "marcomaccio/{{ user `image_name` }}",
+        "access_token": "{{user `atlas_token`}}",
+        "version":      "{{user `image_version`}}.{{timestamp}}",
+        "only":         ["virtualbox-iso"]
+      }
+    ]
   ]
 }

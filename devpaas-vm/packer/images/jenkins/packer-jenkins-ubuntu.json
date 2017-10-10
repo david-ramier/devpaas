@@ -6,7 +6,7 @@
     "home":                     "{{env `HOME`}}",
 
     "instance_name":            "mm-devpaas-jenkins-ubuntu-v{{isotime \"20060102-0101\"}}",
-    "image_name":               "mm-devpaas-jenkins-ubuntu-v{{isotime \"20060102-0101\"}}",
+    "image_name":               "mm-devpaas-jenkins-ubuntu",
     "image_description":        "MM DevPaas Jenkins Ubuntu 16.04 VM Image",
     "image_version":            "0.1",
 
@@ -214,13 +214,6 @@
         "scripts/serverspec/serverspec-jenkins.sh",
         "scripts/serverspec/serverspec-launch-test.sh"
       ]
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'packer'|sudo -S bash '{{.Path}}'",
-      "scripts": [
-        "scripts/cleanup-ubuntu.sh"
-      ]
     }
   ],
   "post-processors": [
@@ -229,19 +222,19 @@
       "output": "build/{{user `image_name`}}.tar.gz",
       "only":   ["virtualbox-iso"]
     },
-    {
-      "type":   "vagrant",
-      "output": "build/{{.Provider}}-{{ user `image_name` }}.box",
-      "only":   ["virtualbox-iso"]
-    },
-    {
-      "type":           "atlas",
-      "artifact":       "marcomaccio/{{ user `image_name` }}",
-      "artifact_type":  "vagrant.box",
-      "metadata": {
-          "provider":   "virtualbox"
+    [
+      {
+        "type":   "vagrant",
+        "output": "build/{{.Provider}}-{{ user `image_name` }}.box",
+        "only":   ["virtualbox-iso"]
       },
-      "only":           ["virtualbox-iso"]
-    }
+      {
+        "type":         "vagrant-cloud",
+        "box_tag":      "marcomaccio/{{ user `image_name` }}",
+        "access_token": "{{user `atlas_token`}}",
+        "version":      "{{user `image_version`}}",
+        "only":         ["virtualbox-iso"]
+      }
+    ]
   ]
 }

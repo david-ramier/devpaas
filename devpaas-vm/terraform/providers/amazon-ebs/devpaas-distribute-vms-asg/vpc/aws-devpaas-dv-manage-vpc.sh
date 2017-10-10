@@ -32,17 +32,17 @@ export AWS_revprx_instance_name=${10}
 export AWS_revprx_image_id=${11}
 export AWS_revprx_flavor_name=${12}
 
-export AWS_fe_srv_instance_name=${13}
-export AWS_fe_srv_image_id=${14}
-export AWS_fe_srv_flavor_name=${15}
+export AWS_jenkins_srv_instance_name=${13}
+export AWS_jenkins_srv_image_id=${14}
+export AWS_jenkins_srv_flavor_name=${15}
 
-export AWS_api_srv_instance_name=${16}
-export AWS_api_srv_image_id=${17}
-export AWS_api_srv_flavor_name=${18}
+export AWS_nexus_srv_instance_name=${16}
+export AWS_nexus_srv_image_id=${17}
+export AWS_nexus_srv_flavor_name=${18}
 
-export AWS_DB_INSTANCE_NAME=${19}
-export AWS_DB_IMAGE_ID=${20}
-export AWS_DB_FLAVOR_NAME=${21}
+export AWS_SONARQUBE_INSTANCE_NAME=${19}
+export AWS_SONARQUBE_IMAGE_ID=${20}
+export AWS_SONARQUBE_FLAVOR_NAME=${21}
 export OBJECT_TO_DELETE_ARRAY=${22}
 
 export TARGET_STRING=""
@@ -79,7 +79,7 @@ terraform init                              \
 echo "Launching Terraform command: $TERRAFORM_CMD"
 
 terraform $TERRAFORM_CMD                                                        \
-        -var "profile=$AWS_PROFILE"                                    \
+        -var "profile=$AWS_PROFILE"                                             \
         -var "aws_ssh_key_name=$AWS_SSH_KEY"                                    \
         -var "aws_deployment_region=$AWS_REGION"                                \
         -var "vpc_cidr=$AWS_VPC_CDIR"                                           \
@@ -92,15 +92,15 @@ terraform $TERRAFORM_CMD                                                        
         -var "revprx_instance_name=$AWS_revprx_instance_name"                   \
         -var "revprx_image_id=$AWS_revprx_image_id"                             \
         -var "revprx_flavor_name=$AWS_revprx_flavor_name"                       \
-        -var "fe_srv_instance_name=$AWS_fe_srv_instance_name"                   \
-        -var "fe_srv_image_id=$AWS_fe_srv_image_id"                             \
-        -var "fe_srv_flavor_name=$AWS_fe_srv_flavor_name"                       \
-        -var "api_srv_instance_name=$AWS_api_srv_instance_name"                 \
-        -var "api_srv_image_id=$AWS_api_srv_image_id"                           \
-        -var "api_srv_flavor_name=$AWS_api_srv_flavor_name"                     \
-        -var "db_instance_name=$AWS_DB_INSTANCE_NAME"                           \
-        -var "db_image_id=$AWS_DB_IMAGE_ID"                                     \
-        -var "db_flavor_name=$AWS_DB_FLAVOR_NAME"                               \
+        -var "jenkins_srv_instance_name=$AWS_jenkins_srv_instance_name"         \
+        -var "jenkins_srv_image_id=$AWS_jenkins_srv_image_id"                   \
+        -var "jenkins_srv_flavor_name=$AWS_jenkins_srv_flavor_name"             \
+        -var "nexus_srv_instance_name=$AWS_nexus_srv_instance_name"             \
+        -var "nexus_srv_image_id=$AWS_nexus_srv_image_id"                       \
+        -var "nexus_srv_flavor_name=$AWS_nexus_srv_flavor_name"                 \
+        -var "sonarqube_instance_name=$AWS_SONARQUBE_INSTANCE_NAME"             \
+        -var "sonarqube_image_id=$AWS_SONARQUBE_IMAGE_ID"                       \
+        -var "sonarqube_flavor_name=$AWS_SONARQUBE_FLAVOR_NAME"                 \
         $TARGET_STRING $TF_PLAN
 
 

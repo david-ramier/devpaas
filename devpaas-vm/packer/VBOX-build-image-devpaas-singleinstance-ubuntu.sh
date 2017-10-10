@@ -7,13 +7,24 @@
 # url:            https://github.com/marcomaccio/devpaas
 # description:    Create image for DEVPAAS (Instance) server based on image
 #
-# to run:         sh VBOX-build-image-devpaas-singleinstance-ubuntu.sh virtualbox-iso
+# to run:         sh VBOX-build-image-devpaas-singleinstance-ubuntu.sh virtualbox-iso   \
+#                                                               -debug              \
+#                                                               ATLAS_USERNAME      \
+#                                                               ATLAS_TOKEN         \
+#                                                               VBOX_SSH_USERNAME   \
+#                                                               VBOX_SSH_PASSWORD   \
+#                                                               VBOX_IMAGE_VERSION
 #
 ########################################################################
 
 SECONDS=0
 echo " Start: " `date`
 mkdir -p packer_logs
+if [ -e ./packer_logs/VBOX-packer-devpass-single-instance-ubuntu.log ]
+then
+    echo "Delete the log file of a previous run ..."
+    rm -f ./packer_logs/VBOX-packer-devpass-single-instance-ubuntu.log
+fi
 
 export PACKER_LOG=1
 export PACKER_LOG_PATH="./packer_logs/VBOX-packer-devpass-single-instance-ubuntu.log"
@@ -27,6 +38,7 @@ export ATLAS_TOKEN=$4
 
 export VBOX_SSH_USERNAME=$5
 export VBOX_SSH_PASSWORD=$6
+export VBOX_IMAGE_VERSION=$7
 
 
 echo '****** Build marmac devpaas single instance x ubuntu-1604 image ******'
@@ -35,6 +47,7 @@ packer build -force -only=$PACKER_PROVIDERS_LIST  $DEBUG            \
         -var "atlas_token=$ATLAS_TOKEN"                             \
         -var "vbox_ssh_username=$VBOX_SSH_USERNAME"                 \
         -var "vbox_ssh_password=$VBOX_SSH_PASSWORD"                 \
+        -var "image_version=$VBOX_IMAGE_VERSION"                    \
         images/devpaas/packer-devpaas-single-ubuntu.json
 
 duration=$SECONDS

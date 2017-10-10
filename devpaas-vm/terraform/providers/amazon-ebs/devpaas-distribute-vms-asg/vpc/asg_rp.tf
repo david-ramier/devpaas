@@ -3,7 +3,7 @@
 #   LAUNCH CONFIGURATION FOR REVERSE PROXY
 # --------------------------------------------------------------------------------------
 
-/*
+
 data "template_file" "mm_devpaas_dv_tf_user_data_rp" {
   template = "${file("change_hostname.sh.tpl")}"
 
@@ -13,7 +13,7 @@ data "template_file" "mm_devpaas_dv_tf_user_data_rp" {
   }
 
 }
-*/
+
 
 resource "aws_launch_configuration" "mm_devpaas_lc_rp" {
   name_prefix     = "${var.revprx_instance_name}"
@@ -23,12 +23,38 @@ resource "aws_launch_configuration" "mm_devpaas_lc_rp" {
 
   key_name        = "${var.aws_ssh_key_name}"
 
+  /*
   user_data = <<-EOF
               #!/bin/bash -v
               apt-get update -y
               apt-get install -y nginx > /tmp/nginx.log
               EOF
+  */
+  user_data = "${data.template_file.mm_devpaas_dv_tf_user_data_rp.rendered}"
 
+  connection {
+    type                = "ssh"
+    agent               = true
+    bastion_host        = "${aws_eip.mm_devpaas_admin_eip.public_ip}"
+    bastion_private_key = "${file("marmac_marcomaccio_rsa.pem")}"
+    bastion_user        = "ubuntu"
+    user                = "ubuntu"
+    private_key         = "${file("marmac_marcomaccio_rsa.pem")}"
+    timeout             = "10m"
+
+  }
+
+  provisioner "file" {
+    source      = "../../../../resources/nginx/default.conf"
+    destination = "/tmp/"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'Change NGINX Configuration'",
+      "sudo cp /tmp/default.conf /etc/nginx/sites-available/default"
+    ]
+  }
 
   lifecycle {
     create_before_destroy = true
