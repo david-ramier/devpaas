@@ -28,8 +28,9 @@
     "gcp_ssh_username":         "",
     "gcp_source_image":         "",
 
-    "vbox_ssh_username":          "",
-    "vbox_ssh_password":          ""
+    "vbox_ssh_username":        "",
+    "vbox_ssh_password":        "",
+    "vbox_guest_additions_path": ""
   },
   "builders": [
     {
@@ -77,7 +78,12 @@
     {
       "type": "virtualbox-iso",
       "guest_os_type":      "Ubuntu_64",
-      "format":             "ova",
+
+      "export_opts": [
+        "--vsys", "0", "--manifest", "--description", "{{user `image_description`}}", "--version", "{{user `image_version`}}", "--ovf20"
+      ],
+      "format":             "ovf",
+
       "headless":           true,
       "http_directory":     "http",
 
@@ -110,14 +116,16 @@
         " netcfg/get_hostname=mm-devpaas-base-ubuntu<wait>",
         " netcfg/get_domain=marmac.labs<wait>",
         " noapic<wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+        " preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
 
       "shutdown_command":         "echo 'packer' | sudo -S shutdown -P now",
       "virtualbox_version_file":  ".vbox_version",
+      "guest_additions_mode":     "upload",
       "guest_additions_path":     "VBoxGuestAdditions_{{.Version}}.iso",
+      "guest_additions_url":     "{{user `vbox_guest_additions_path`}}/VBoxGuestAdditions.iso",
       "vm_name":                  "{{user `instance_name`}}",
       "vboxmanage": [
         [ "modifyvm", "{{.Name}}", "--memory", "3072" ],

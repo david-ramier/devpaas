@@ -13,7 +13,8 @@
 #                                                               ATLAS_TOKEN         \
 #                                                               VBOX_SSH_USERNAME   \
 #                                                               VBOX_SSH_PASSWORD   \
-#                                                               VBOX_IMAGE_VERSION
+#                                                               VBOX_IMAGE_VERSION  \
+#                                                               VBOX_GUEST_ADDITIONS_PATH
 #
 ########################################################################
 
@@ -39,7 +40,19 @@ export ATLAS_TOKEN=$4
 export VBOX_SSH_USERNAME=$5
 export VBOX_SSH_PASSWORD=$6
 export VBOX_IMAGE_VERSION=$7
+export VBOX_GUEST_ADDITIONS_PATH=$8
+export VBOX_OVA_SOURCE_PATH=$9
 
+if [ $PACKER_PROVIDERS_LIST = "virtualbox-iso" ]
+then
+    export PACKER_TEMPLATE=packer-devpaas-base-ubuntu.json
+
+elif [ $PACKER_PROVIDERS_LIST = "virtualbox-ovf" ]
+then
+    export PACKER_TEMPLATE=packer-devpaas-base-ubuntu-ova.json
+fi
+
+echo "Build the packer template: $PACKER_TEMPLATE ..."
 
 echo '****** Build marmac devpaas single instance x ubuntu-1604 image ******'
 packer build -force -only=$PACKER_PROVIDERS_LIST  $DEBUG            \
@@ -48,7 +61,9 @@ packer build -force -only=$PACKER_PROVIDERS_LIST  $DEBUG            \
         -var "vbox_ssh_username=$VBOX_SSH_USERNAME"                 \
         -var "vbox_ssh_password=$VBOX_SSH_PASSWORD"                 \
         -var "image_version=$VBOX_IMAGE_VERSION"                    \
-        images/packer-devpaas-base-ubuntu.json
+        -var "vbox_guest_additions_path=$VBOX_GUEST_ADDITIONS_PATH" \
+        -var "vbox_ova_source_path=$VBOX_OVA_SOURCE_PATH"           \
+        images/$PACKER_TEMPLATE
 
 duration=$SECONDS
 echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
