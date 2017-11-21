@@ -1,13 +1,16 @@
 #!/bin/bash -e
-apt-get install -y linux-headers-$(uname -r) build-essential dkms
+
+export VBOX_VERSION="5.1.28"
+
+sudo apt-get install -y linux-headers-$(uname -r) build-essential dkms
 
 cd /tmp
 mkdir /tmp/isomount
-mount -t iso9660 -o loop $HOME/VBoxGuestAdditions.iso /tmp/isomount
+sudo mount -t iso9660 -o loop $HOME/VBoxGuestAdditions_$VBOX_VERSION.iso /tmp/isomount
 
 # Install the drivers
-/tmp/isomount/VBoxLinuxAdditions.run
+sudo /tmp/isomount/VBoxLinuxAdditions.run
 
 # Cleanup
-umount isomount
-rm -rf isomount $HOME/VBoxGuestAdditions.iso
+sudo umount isomount
+sudo rm -rf isomount $HOME/VBoxGuestAdditions_$VBOX_VERSION.iso
