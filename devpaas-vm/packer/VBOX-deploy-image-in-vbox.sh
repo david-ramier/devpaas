@@ -16,6 +16,7 @@ echo " Start: " `date`
 
 MM_DEVPAAS_DEPLOYMENT_HOME_DIR=$1       #ex. $1=~/Development/deployment/vms/mm/devpaas
 MM_DEVPAAS_IMAGE_NAME=$2                #ex. $2=mm-devpaas-single-ubuntu  - omit extension .tar.gz
+MM_DEVPAAS_IMAGE_VERSION=$3
 
 echo "Deployment dir: $MM_DEVPAAS_DEPLOYMENT_HOME_DIR"
 
@@ -32,13 +33,13 @@ cd $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/
 tar -xvf $MM_DEVPAAS_IMAGE_NAME.tar.gz -C $MM_DEVPAAS_IMAGE_NAME/
 
 echo "****** Import .ovf file in Virtual Box ******"
-vboxmanage import $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/$MM_DEVPAAS_IMAGE_NAME/$MM_DEVPAAS_IMAGE_NAME.ova
+vboxmanage import $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/$MM_DEVPAAS_IMAGE_NAME/$MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION.ova
 
 echo "****** Start the VM in Virtual Box ******"
-vboxmanage startvm --type gui $MM_DEVPAAS_IMAGE_NAME
+vboxmanage startvm --type gui $MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION
 
 echo "**************************************************************************"
-echo "TO POWER OFF: vboxmanage controlvm $MM_DEVPAAS_UBUNTU_IMAGE_NAME poweroff"
+echo "TO POWER OFF: vboxmanage controlvm $MM_DEVPAAS_UBUNTU_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION poweroff"
 echo "**************************************************************************"
 
 duration=$SECONDS
