@@ -123,6 +123,7 @@ pipeline-build-step
 pipeline-github
 pipeline-npm
 pipeline-aws
+pipeline-utility-steps
 blueocean
 blueocean-commons
 blueocean-jwt
