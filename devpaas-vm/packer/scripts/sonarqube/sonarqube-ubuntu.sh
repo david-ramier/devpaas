@@ -13,17 +13,17 @@ mysql -h "localhost" < /tmp/sonarqube/resources/sonarqube.sql
 
 echo "***** Download sonarqube *****"
 mkdir $HOME/sonarqube/
-wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-6.3.zip \
-  -O $HOME/sonarqube/sonarqube-6.3.zip
+wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-6.5.zip \
+  -O $HOME/sonarqube/sonarqube-6.5.zip
 
 sudo mkdir $SONARQUBE_HOME
-sudo cp $HOME/sonarqube/sonarqube-6.3.zip /var/lib/sonarqube
+sudo cp $HOME/sonarqube/sonarqube-6.5.zip /var/lib/sonarqube
 cd $SONARQUBE_HOME
 
 echo "***** Extract Sonarqube *****"
-sudo unzip sonarqube-6.3.zip
+sudo unzip sonarqube-6.5.zip
 
-sudo ln -s sonarqube-6.3 sonar
+sudo ln -s sonarqube-6.5 sonar
 
 sudo cp /tmp/sonarqube/resources/sonar.properties $SONARQUBE_HOME/sonar/conf
 
