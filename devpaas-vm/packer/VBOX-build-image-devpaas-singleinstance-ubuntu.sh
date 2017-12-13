@@ -13,7 +13,8 @@
 #                                                               ATLAS_TOKEN         \
 #                                                               VBOX_SSH_USERNAME   \
 #                                                               VBOX_SSH_PASSWORD   \
-#                                                               VBOX_IMAGE_VERSION
+#                                                               VBOX_IMAGE_VERSION  \
+#                                                               VBOX_GUEST_ADDITIONS_PATH
 #
 ########################################################################
 
@@ -39,6 +40,7 @@ export ATLAS_TOKEN=$4
 export VBOX_SSH_USERNAME=$5
 export VBOX_SSH_PASSWORD=$6
 export VBOX_IMAGE_VERSION=$7
+export VBOX_GUEST_ADDITIONS_PATH=$8
 
 
 echo '****** Build marmac devpaas single instance x ubuntu-1604 image ******'
@@ -48,6 +50,7 @@ packer build -force -only=$PACKER_PROVIDERS_LIST  $DEBUG            \
         -var "vbox_ssh_username=$VBOX_SSH_USERNAME"                 \
         -var "vbox_ssh_password=$VBOX_SSH_PASSWORD"                 \
         -var "image_version=$VBOX_IMAGE_VERSION"                    \
+        -var "vbox_guest_additions_path=$VBOX_GUEST_ADDITIONS_PATH" \
         images/devpaas/packer-devpaas-single-ubuntu.json
 
 duration=$SECONDS
