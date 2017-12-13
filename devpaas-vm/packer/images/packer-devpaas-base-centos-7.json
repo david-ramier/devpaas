@@ -105,6 +105,9 @@
         [ "modifyvm", "{{.Name}}", "--memory", "3072" ],
         [ "modifyvm", "{{.Name}}", "--cpus"  ,    "2" ],
         [ "modifyvm", "{{.Name}}", "--vram"  ,   "32" ]
+      ],
+      "export_opts": [
+        "--vsys", "0", "--manifest", "--description", "{{user `image_description`}}", "--version", "{{user `image_version`}}"
       ]
     }
   ],
