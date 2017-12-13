@@ -153,6 +153,8 @@ aws-lambda
 awseb-deployment-plugin
 snsnotify
 slack
+sonar
+sonar-quality-gates
 cloud-stats
 resource-disposer
 display-url-api
@@ -177,5 +179,11 @@ durable-task
 run-condition
 docker-commons
 docker-workflow
+docker-build-publish
+docker-custom-build-environment
+dockerhub-notification
+docker-traceability
+google-cloudbuild
+google-container-registry-auth
 authentication-tokens
 node-iterator-api
