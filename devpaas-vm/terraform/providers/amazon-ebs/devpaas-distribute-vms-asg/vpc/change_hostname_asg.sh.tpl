@@ -18,6 +18,6 @@ echo "Changing the aws hostname ($AWS_HOSTNAME) with target hostname ($VM_NAME) 
 
 /bin/hostname $VM_NAME
 
-echo "Install NGINX ..."
-apt-get update -y
-apt-get install -y nginx > /tmp/nginx.log
+echo "Change default NGINX configuration to specific conf for RevProxy in ASG..."
+## apply the revproxy configuration for DevPaas
+sudo cp /home/ubuntu/nginx/default_revproxy_devpaas.conf
