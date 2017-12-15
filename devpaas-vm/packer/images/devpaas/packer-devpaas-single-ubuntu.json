@@ -5,10 +5,10 @@
 
     "home":                     "{{env `HOME`}}",
 
-    "instance_name":            "mm-devpaas-singleinstance-ubuntu-v{{isotime \"20060102-0101\"}}",
+    "instance_name":            "mm-devpaas-singleinstance-ubuntu-v{{isotime \"2006-01-02-030405\"}}",
     "image_name":               "mm-devpaas-singleinstance-ubuntu",
     "image_description":        "MM DevPaas Single Instance with Jenkins, Nexus3, SonarQube, MySql Ubuntu 16.04 VM Image",
-    "image_version":            "0.0",
+    "image_version":            "0.1",
 
     "aws_ssh_username":         "",
     "aws_ssh_keypair_name":     "",
@@ -29,7 +29,8 @@
     "gcp_source_image":         "",
 
     "vbox_ssh_username":          "",
-    "vbox_ssh_password":          ""
+    "vbox_ssh_password":          "",
+    "vbox_guest_additions_path":  ""
   },
   "builders": [
     {
@@ -54,7 +55,7 @@
       "run_tags":         { "ami-create": "{{ user `image_name`}}" },
       "tags":             { "ami": "{{ user `image_name`}}"},
 
-      "associate_public_ip_address": true
+      "associate_public_ip_address": "true"
 
     },
     {
@@ -117,15 +118,21 @@
 
       "shutdown_command":   "echo 'packer' | sudo -S shutdown -P now",
       "virtualbox_version_file":  ".vbox_version",
+      "guest_additions_mode":     "attach",
       "guest_additions_path":     "VBoxGuestAdditions_{{.Version}}.iso",
+      "guest_additions_url":     "{{user `vbox_guest_additions_path`}}/VBoxGuestAdditions.iso",
       "vm_name":                  "{{user `instance_name`}}",
       "vboxmanage": [
         [ "modifyvm", "{{.Name}}", "--memory", "3072" ],
         [ "modifyvm", "{{.Name}}", "--cpus"  ,    "2" ],
         [ "modifyvm", "{{.Name}}", "--vram"  ,   "32" ],
+        [ "modifyvm", "{{.Name}}", "--natpf1",   "nginx    ,tcp,,  81,,  80" ],
         [ "modifyvm", "{{.Name}}", "--natpf1",   "jenkins  ,tcp,,8090,,8080" ],
         [ "modifyvm", "{{.Name}}", "--natpf1",   "nexus    ,tcp,,8081,,8081" ],
         [ "modifyvm", "{{.Name}}", "--natpf1",   "sonarqube,tcp,,9000,,9000" ]
+      ],
+      "export_opts": [
+        "--vsys", "0", "--manifest", "--description", "{{user `image_description`}}", "--version", "{{user `image_version`}}"
       ]
     }
   ],

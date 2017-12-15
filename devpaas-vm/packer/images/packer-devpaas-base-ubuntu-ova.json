@@ -5,9 +5,9 @@
 
     "home":                     "{{env `HOME`}}",
 
-    "instance_name":            "mm-devpaas-nginx-ubuntu-16.04-v{{isotime \"20060102-0101\"}}",
-    "image_name":               "mm-devpaas-nginx-ubuntu-16.04",
-    "image_description":        "MM DevPaas NGINX Ubuntu 16.04 VM Image",
+    "instance_name":            "mm-devpaas-base-ubuntu-v{{isotime \"20060102-0101\"}}",
+    "image_name":               "mm-devpaas-base-ubuntu",
+    "image_description":        "MM DevPaas Base Ubuntu 16.04 VM Image",
     "image_version":            "0.1",
 
     "aws_ssh_username":         "",
@@ -28,8 +28,10 @@
     "gcp_ssh_username":         "",
     "gcp_source_image":         "",
 
-    "vbox_ssh_username":          "",
-    "vbox_ssh_password":          ""
+    "vbox_ssh_username":        "",
+    "vbox_ssh_password":        "",
+    "vbox_guest_additions_path": "",
+    "vbox_ova_source_path":     ""
   },
   "builders": [
     {
@@ -54,7 +56,7 @@
       "run_tags":         { "ami-create": "{{ user `image_name`}}" },
       "tags":             { "ami": "{{ user `image_name`}}"},
 
-      "associate_public_ip_address": "true"
+      "associate_public_ip_address": true
 
     },
     {
@@ -75,7 +77,7 @@
       "communicator":             "ssh"
     },
     {
-      "type": "virtualbox-iso",
+      "type":               "virtualbox-iso",
       "guest_os_type":      "Ubuntu_64",
       "format":             "ova",
       "headless":           true,
@@ -107,7 +109,7 @@
         " keyboard-configuration/layout=USA<wait>",
         " keyboard-configuration/variant=USA<wait>",
         " locale=en_US<wait>",
-        " netcfg/get_hostname=mm-devpaas-nginx-ubuntu<wait>",
+        " netcfg/get_hostname=mm-devpaas-base-ubuntu<wait>",
         " netcfg/get_domain=marmac.labs<wait>",
         " noapic<wait>",
         " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
@@ -115,26 +117,49 @@
         "<enter><wait>"
       ],
 
-      "shutdown_command":   "echo 'packer' | sudo -S shutdown -P now",
+      "shutdown_command":         "echo 'packer' | sudo -S shutdown -P now",
       "virtualbox_version_file":  ".vbox_version",
+      "guest_additions_mode":     "upload",
       "guest_additions_path":     "VBoxGuestAdditions_{{.Version}}.iso",
+      "guest_additions_url":     "{{user `vbox_guest_additions_path`}}/VBoxGuestAdditions.iso",
       "vm_name":                  "{{user `instance_name`}}",
       "vboxmanage": [
         [ "modifyvm", "{{.Name}}", "--memory", "3072" ],
         [ "modifyvm", "{{.Name}}", "--cpus"  ,    "2" ],
         [ "modifyvm", "{{.Name}}", "--vram"  ,   "32" ],
-        [ "modifyvm", "{{.Name}}", "--natpf1",   "nginx    ,tcp,,  81,,  80" ],
-        [ "modifyvm", "{{.Name}}", "--natpf1",   "jenkins  ,tcp,,8090,,8080" ],
-        [ "modifyvm", "{{.Name}}", "--natpf1",   "nexus    ,tcp,,8081,,8081" ],
-        [ "modifyvm", "{{.Name}}", "--natpf1",   "sonarqube,tcp,,9000,,9000" ]
+        [ "modifyvm", "{{.Name}}", "--vram"  ,   "32" ]
+      ],
+      "export_opts": [
+        "--vsys", "0", "--manifest", "--description", "{{user `image_description`}}", "--version", "{{user `image_version`}}"
       ]
+    },
+    {
+      "type":                     "virtualbox-ovf",
+      "format":                   "ova",
+      "headless":                 "true",
+
+      "ssh_username":             "{{ user `vbox_ssh_username` }}",
+      "ssh_password":             "{{ user `vbox_ssh_password` }}",
+      "ssh_wait_timeout":         "10000s",
+      "ssh_pty" :                 "true",
+
+      "source_path":              "{{user `vbox_ova_source_path`}}/{{user `instance_name`}}.ova",
+
+      "boot_wait":                "10s",
+
+      "shutdown_command":         "echo 'packer' | sudo -S shutdown -P now",
+      "virtualbox_version_file":  ".vbox_version",
+      "guest_additions_mode":     "upload",
+      "guest_additions_path":     "VBoxGuestAdditions_{{.Version}}.iso",
+      "guest_additions_url":      "{{user `vbox_guest_additions_path`}}/VBoxGuestAdditions.iso",
+      "vm_name":                  "{{user `instance_name`}}"
     }
   ],
   "provisioners": [
     {
       "type": "shell",
       "scripts": [
-        "scripts/virtualbox/virtualbox-ubuntu.sh",
+        "scripts/virtualbox/virtualbox-ubuntu.sh {{.Version}}",
         "scripts/vagrant.sh"
       ],
       "execute_command": "{{.Vars}} sudo -S -E bash '{{.Path}}'",
@@ -143,24 +168,13 @@
     {
       "type":   "shell",
       "scripts": [
-        "scripts/serverspec/create-serverspec-temp-dirs.sh",
-        "scripts/nginx/create-nginx-temp-dirs.sh"
+        "scripts/serverspec/create-serverspec-temp-dirs.sh"
       ]
     },
     {
       "type":         "file",
       "source":       "resources/serverspec/configs/",
       "destination":  "/tmp/serverspec/"
-    },
-    {
-      "type":         "file",
-      "source":       "resources/nginx/configs/",
-      "destination":  "/tmp/nginx/configs/"
-    },
-    {
-      "type":         "file",
-      "source":       "resources/nginx/tests/",
-      "destination":  "/tmp/nginx/tests/"
     },
     {
       "type": "shell",
@@ -172,14 +186,12 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/nginx/nginx-ubuntu.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "scripts": [
-        "scripts/serverspec/serverspec-nginx.sh",
-        "scripts/serverspec/serverspec-launch-test.sh"
+        "scripts/java/java-jdk-ubuntu.sh",
+        "scripts/graphviz/graphviz-ubuntu.sh",
+        "scripts/git/git-ubuntu.sh",
+        "scripts/pip/pip-ubuntu.sh",
+        "scripts/awscli/awscli.sh",
+        "scripts/openstackcli/openstackcli.sh"
       ]
     }
   ],
