@@ -1,7 +1,10 @@
 
-
-//variable "webserver_machine_type" {}
-//variable "webserver_image_name"   {}
+terraform {
+  backend "gcs" {
+    bucket  = "tf-state-devpaas"
+    prefix  = "beta/vpc"
+  }
+}
 
 // Configure the Google Cloud provider
 provider "google" {
@@ -12,18 +15,20 @@ provider "google" {
 
 resource "google_compute_network" "devpass_si_network" {
   name       = "${var.platform_name}-network"
+  auto_create_subnetworks = false
+  //ipv4_range = "10.0.0.0/16"
 }
 
 resource "google_compute_subnetwork" "devpass_si_subnet" {
   name          = "${var.platform_name}"
 
   region        = "${var.gcloud_region}"
-  network       = "${google_compute_network.devpass_si_network.self_link}"
-  ip_cidr_range = "10.0.0.0/16"
+  network       = "${google_compute_network.devpass_si_network.id}"
+  ip_cidr_range = "${var.devpaas_cidr}"
 }
 
-resource "google_compute_firewall" "devpass_si_fr_a_ssh" {
-  name    = "${var.platform_name}-fr-allow-ssh"
+resource "google_compute_firewall" "devpass_si_fr_a_in_ssh" {
+  name    = "${var.platform_name}-fwr-allow-ssh-22"
   network = "${google_compute_network.devpass_si_network.id}"
 
   allow {
@@ -33,11 +38,10 @@ resource "google_compute_firewall" "devpass_si_fr_a_ssh" {
 
   source_ranges = ["0.0.0.0/0"]
 
-  target_tags   = ["ssh"]
 }
 
-resource "google_compute_firewall" "devpass_si_fr_a_hhtp_80_8080_8081_9000" {
-  name    = "${var.platform_name}-fr-allow-http"
+resource "google_compute_firewall" "devpass_si_fr_a_in_hhtp_80_8080_8081_9000" {
+  name    = "${var.platform_name}-fwr-allow-http-80-8080-8081-9000"
   network = "${google_compute_network.devpass_si_network.id}"
 
   allow {
@@ -47,18 +51,19 @@ resource "google_compute_firewall" "devpass_si_fr_a_hhtp_80_8080_8081_9000" {
 
   source_ranges = ["0.0.0.0/0"]
 
-  target_tags   = ["jenkins", "nexus", "sonarqube"]
 }
 
 // Create a new instance
-resource "google_compute_instance" "jenkins" {
+resource "google_compute_instance" "devpass_vm_singleinstance" {
   name         = "${var.platform_name}-01"
   machine_type = "${var.devpaas_machine_type}"
   zone         = "${var.gcloud_zone}"
   tags 		   = ["devpaas-si"]
 
-  disk {
-    image = "${var.devpaas_image_name}"
+  boot_disk {
+    initialize_params {
+      image = "${var.devpaas_image_name}"
+    }
   }
 
   network_interface {
@@ -69,6 +74,7 @@ resource "google_compute_instance" "jenkins" {
       # ephemeral external ip address
     }
   }
+
 }
 
 
