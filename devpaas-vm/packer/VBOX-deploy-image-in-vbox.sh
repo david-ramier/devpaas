@@ -33,13 +33,13 @@ cd $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/
 tar -xvf $MM_DEVPAAS_IMAGE_NAME.tar.gz -C $MM_DEVPAAS_IMAGE_NAME/
 
 echo "****** Import .ovf file in Virtual Box ******"
-vboxmanage import $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/$MM_DEVPAAS_IMAGE_NAME/$MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION.ova
+vboxmanage import $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/$MM_DEVPAAS_IMAGE_NAME/$MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION.ovf
 
 echo "****** Start the VM in Virtual Box ******"
 vboxmanage startvm --type gui $MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION
 
 echo "**************************************************************************"
-echo "TO POWER OFF: vboxmanage controlvm $MM_DEVPAAS_UBUNTU_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION poweroff"
+echo "TO POWER OFF: vboxmanage controlvm $MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION poweroff"
 echo "**************************************************************************"
 
 duration=$SECONDS
