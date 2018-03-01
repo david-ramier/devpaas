@@ -16,7 +16,11 @@ echo " Start: " `date`
 
 MM_DEVPAAS_DEPLOYMENT_HOME_DIR=$1       #ex. $1=~/Development/deployment/vms/mm/devpaas
 MM_DEVPAAS_IMAGE_NAME=$2                #ex. $2=mm-devpaas-single-ubuntu  - omit extension .tar.gz
-MM_DEVPAAS_IMAGE_VERSION=$3
+MM_DEVPAAS_IMAGE_VERSION=$3		#ex. 20180228-0202 value present at the end of the extracted archive
+
+MM_DEVPAAS_IMAGE_TYPE_OVA=ova		#ex. ova or ovf
+MM_DEVPAAS_IMAGE_TYPE_OVF=ovf		#ex. ova or ovf
+
 
 echo "Deployment dir: $MM_DEVPAAS_DEPLOYMENT_HOME_DIR"
 
@@ -30,10 +34,19 @@ cp build/$MM_DEVPAAS_IMAGE_NAME.tar.gz $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/
 
 echo "****** Extract devpaas ubuntu-16.04 image from tar.gz file into a deployment dir ******"
 cd $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/
-tar -xvf $MM_DEVPAAS_IMAGE_NAME.tar.gz -C $MM_DEVPAAS_IMAGE_NAME/
+#tar -xvf $MM_DEVPAAS_IMAGE_NAME.tar.gz -C $MM_DEVPAAS_IMAGE_NAME/
 
-echo "****** Import .ovf file in Virtual Box ******"
-vboxmanage import $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/$MM_DEVPAAS_IMAGE_NAME/$MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION.ovf
+if [ -f "$MM_DEVPAAS_DEPLOYMENT_HOME_DIR/$MM_DEVPAAS_IMAGE_NAME/$MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION.$MM_DEVPAAS_IMAGE_TYPE_OVA" ];then
+
+echo "****** Import .$MM_DEVPAAS_IMAGE_TYPE_OVA file in Virtual Box ******"
+vboxmanage import $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/$MM_DEVPAAS_IMAGE_NAME/$MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION.$MM_DEVPAAS_IMAGE_TYPE_OVA
+fi
+
+if [ -f "$MM_DEVPAAS_DEPLOYMENT_HOME_DIR/$MM_DEVPAAS_IMAGE_NAME/$MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION.$MM_DEVPAAS_IMAGE_TYPE_OVF" ];then
+echo "****** Import .$MM_DEVPAAS_IMAGE_TYPE_OVF file in Virtual Box ******"
+vboxmanage import $MM_DEVPAAS_DEPLOYMENT_HOME_DIR/$MM_DEVPAAS_IMAGE_NAME/$MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION.$MM_DEVPAAS_IMAGE_TYPE_OVF
+
+fi
 
 echo "****** Start the VM in Virtual Box ******"
 vboxmanage startvm --type gui $MM_DEVPAAS_IMAGE_NAME-v$MM_DEVPAAS_IMAGE_VERSION
